@@ -15,20 +15,17 @@ const vals = [
 const App: React.FC = () => {
     const [values, setValues] = useState(vals);
 
-    console.log('Before Values: ', values);
 
     useEffect(() => {
         axios.get('http://localhost:5000/api/values')
             .then(resp => {
                 setValues(resp.data);
-                console.log('After: ', values);
             })
             .catch(err => console.log(err))
     }, []);
 
     return (
         <div>
-
         </div>
     );
 };
