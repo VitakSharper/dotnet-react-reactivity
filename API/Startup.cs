@@ -1,3 +1,5 @@
+using Application.Activities;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -42,6 +44,8 @@ namespace API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Reactivity API", Version = "v1" });
             });
+
+            services.AddMediatR(typeof(List.Handler).Assembly);
 
             services.AddControllers();
         }
