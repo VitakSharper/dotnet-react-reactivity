@@ -3,10 +3,11 @@ import {Item, Button, Label} from 'semantic-ui-react'
 import {IActivity} from "../models/activity";
 
 type IProps = {
-    activity: IActivity
+    activity: IActivity,
+    selectActivity: (id: string) => void
 }
 
-const ItemActivity: React.FC<IProps> = ({activity}) => (
+const ActivityItem: React.FC<IProps> = ({activity, selectActivity}) => (
     <Item>
         <Item.Image size='tiny' src={`/assets/categoryImages/${activity.category}.jpg`}/>
         <Item.Content>
@@ -17,11 +18,18 @@ const ItemActivity: React.FC<IProps> = ({activity}) => (
                 <div>{activity.city}, {activity.venue}</div>
             </Item.Description>
             <Item.Extra>
-                <Button basic color='blue' floated={"right"} content={'View'} size={"mini"}/>
+                <Button
+                    basic
+                    color='blue'
+                    floated={"right"}
+                    content={'View'}
+                    size={"mini"}
+                    onClick={() => selectActivity(activity.id)}
+                />
                 <Label basic content={activity.category}/>
             </Item.Extra>
         </Item.Content>
     </Item>
 );
 
-export default ItemActivity
+export default ActivityItem
