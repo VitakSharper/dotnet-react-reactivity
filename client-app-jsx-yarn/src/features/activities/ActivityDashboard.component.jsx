@@ -1,14 +1,20 @@
 import React, {useEffect, useState} from "react";
 import {Grid, Segment} from "semantic-ui-react";
+
+import {connect} from 'react-redux';
+import {createStructuredSelector} from "reselect";
+import {setSelectedActivity} from "../../app/redux/activities/activity.actions";
+import {selectSelectedActivity} from "../../app/redux/activities/activity.selectors";
+
 import axios from "axios";
+
 
 import Activities from "./Activities.component";
 import ActivityDetails from "./ActivityDetails.component";
 import ActivityForm from "./ActivityForm.component";
 
-const ActivityDashboard = () => {
+const ActivityDashboard = ({selectedActivity, setSelectedActivity}) => {
     const [activities, setActivities] = useState([]);
-    const [selectedActivity, setSelectedActivity] = useState(null);
 
     useEffect(() => {
         axios.get('http://localhost:5000/api/activities')
@@ -38,4 +44,12 @@ const ActivityDashboard = () => {
     )
 };
 
-export default ActivityDashboard;
+const mapStateToProps = createStructuredSelector({
+    selectedActivity: selectSelectedActivity
+});
+
+const mapDispatchToProps = dispatch => ({
+    setSelectedActivity: (activity) => dispatch(setSelectedActivity(activity))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ActivityDashboard);

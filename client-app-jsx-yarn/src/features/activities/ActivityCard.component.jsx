@@ -2,7 +2,6 @@ import React from 'react'
 import {Card, Image, Button} from 'semantic-ui-react'
 
 const ActivityCard = ({selectedActivity: {title, date, description, category}}) => {
-    console.log(`/asserts/categoryImages/${category}.jpg`);
     return (
         <Card fluid>
             <Image src={`/assets/categoryImages/${category}.jpg`} wrapped ui={false}/>
