@@ -1,8 +1,8 @@
 import ActivityActionTypes from "./activity.types";
 
-export const setSelectedActivity = activity => ({
+export const setSelectedActivity = activityId => ({
     type: ActivityActionTypes.SET_SELECTED_ACTIVITY,
-    payload: activity
+    payload: activityId
 });
 
 export const fetchActivitiesStart = () => ({

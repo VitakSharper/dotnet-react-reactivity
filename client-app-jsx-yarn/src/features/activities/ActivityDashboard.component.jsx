@@ -1,38 +1,30 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {Grid, Segment} from "semantic-ui-react";
 
 import {connect} from 'react-redux';
 import {createStructuredSelector} from "reselect";
-import {setSelectedActivity} from "../../app/redux/activities/activity.actions";
-import {selectSelectedActivity} from "../../app/redux/activities/activity.selectors";
+import {fetchActivitiesStart} from "../../app/redux/activities/activity.actions";
+import {
+    selectActivities,
+    selectSelectedActivity
+} from "../../app/redux/activities/activity.selectors";
 
-import axios from "axios";
-
-
-import Activities from "./Activities.component";
+import ActivitiesContainer from "./Activities.container";
 import ActivityDetails from "./ActivityDetails.component";
 import ActivityForm from "./ActivityForm.component";
 
-const ActivityDashboard = ({selectedActivity, setSelectedActivity}) => {
-    const [activities, setActivities] = useState([]);
+const ActivityDashboard = ({selectedActivity, fetchActivitiesStart, activities}) => {
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/activities')
-            .then(resp => {
-                setActivities(resp.data);
-            })
-            .catch(err => console.log(err))
-    }, []);
+        fetchActivitiesStart()
+    }, [fetchActivitiesStart]);
 
-    const handleSelectActivity = (id) => {
-        setSelectedActivity(activities.filter(a => a.id === id)[0]);
-    };
 
     return (
         <Segment>
             <Grid>
                 <Grid.Column width={10}>
-                    <Activities activities={activities} selectActivity={handleSelectActivity}/>
+                    <ActivitiesContainer activities={activities}/>
                 </Grid.Column>
                 <Grid.Column width={6}>
                     {
@@ -45,11 +37,12 @@ const ActivityDashboard = ({selectedActivity, setSelectedActivity}) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-    selectedActivity: selectSelectedActivity
+    activities: selectActivities,
+    selectedActivity: selectSelectedActivity,
 });
 
 const mapDispatchToProps = dispatch => ({
-    setSelectedActivity: (activity) => dispatch(setSelectedActivity(activity))
+    fetchActivitiesStart: () => dispatch(fetchActivitiesStart())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActivityDashboard);

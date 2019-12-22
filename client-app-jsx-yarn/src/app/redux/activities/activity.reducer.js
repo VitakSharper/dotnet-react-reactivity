@@ -1,7 +1,8 @@
 import ActivityActionTypes from "./activity.types";
+import {setSelectedActivity} from "./activity.utils";
 
 const INITIAL_STATE = {
-    activities: [],
+    activities: null,
     selectedActivity: null,
     isFetching: false,
     errorMessage: undefined
@@ -12,7 +13,7 @@ const activityReducer = (state = INITIAL_STATE, action) => {
         case ActivityActionTypes.SET_SELECTED_ACTIVITY:
             return {
                 ...state,
-                selectedActivity: action.payload
+                selectedActivity: setSelectedActivity(action.payload, state.activities)
             };
         case ActivityActionTypes.FETCH_ACTIVITIES_START:
             return {

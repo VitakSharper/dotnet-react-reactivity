@@ -1,7 +1,10 @@
 import React from 'react'
 import {Item, Button, Label} from 'semantic-ui-react'
 
-const ActivityItem = ({activity, selectActivity}) => {
+import {connect} from 'react-redux';
+import {setSelectedActivity} from "../../app/redux/activities/activity.actions";
+
+const ActivityItem = ({activity, setSelectedActivity}) => {
     const {id, venue, category, date, city, title, description} = activity;
 
     return (
@@ -21,7 +24,7 @@ const ActivityItem = ({activity, selectActivity}) => {
                         floated={"right"}
                         content={'View'}
                         size={"mini"}
-                        onClick={() => selectActivity(id)}
+                        onClick={() => setSelectedActivity(id)}
                     />
                     <Label basic content={category}/>
                 </Item.Extra>
@@ -30,4 +33,8 @@ const ActivityItem = ({activity, selectActivity}) => {
     )
 };
 
-export default ActivityItem
+const mapDispatchToProps = dispatch => ({
+    setSelectedActivity: (activityId) => dispatch(setSelectedActivity(activityId)),
+});
+
+export default connect(null, mapDispatchToProps)(ActivityItem)
