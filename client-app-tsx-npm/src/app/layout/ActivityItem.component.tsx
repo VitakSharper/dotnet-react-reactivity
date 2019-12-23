@@ -7,6 +7,7 @@ type IProps = {
     selectActivity: (id: string) => void
 }
 
+
 const ActivityItem: React.FC<IProps> = ({activity, selectActivity}) => (
     <Item>
         <Item.Image size='tiny' src={`/assets/categoryImages/${activity.category}.jpg`}/>

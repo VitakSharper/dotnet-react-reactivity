@@ -1,6 +1,8 @@
 import React, {useState} from "react";
 import {useHistory} from 'react-router-dom';
 import {Menu, Container, Icon, MenuHeaderProps} from 'semantic-ui-react'
+import ActivityFormModal from "./ActivityFormModal.component";
+import {IActivity} from "../../app/models/activity";
 
 const menuBar = {
     background: 'linear-gradient(#009eda, #007cbe,#9575CD 100%)',
@@ -11,6 +13,9 @@ const menuBar = {
 
 const NavBar = () => {
     const [activeItem, setActiveItem] = useState('');
+    const [open, setOpen] = useState(false);
+    const [activities, setActivities] = useState<IActivity | null>(null);
+
     const history = useHistory();
 
     const handleActivitiesClick = (e: React.MouseEvent, menuParams: MenuHeaderProps[]) => {
@@ -19,7 +24,13 @@ const NavBar = () => {
     };
 
     const handleCreate = (e: React.MouseEvent, menuParams: MenuHeaderProps[]) => {
-        setActiveItem(menuParams[0].name)
+        setActiveItem(menuParams[0].name);
+        setOpen(true)
+    };
+
+    const handleEditActivities = (activity: IActivity) => {
+        setActivities(activity);
+        console.log('Create: ', activities);
     };
 
     return (
@@ -47,6 +58,7 @@ const NavBar = () => {
                     Add Activity
                 </Menu.Item>
             </Container>
+            <ActivityFormModal open={open} setOpen={setOpen} handleEditActivities={handleEditActivities}/>
         </Menu>
     )
 };

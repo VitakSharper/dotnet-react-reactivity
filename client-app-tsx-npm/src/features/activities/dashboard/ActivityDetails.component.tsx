@@ -4,13 +4,21 @@ import ActivityCard from "../../../app/layout/ActivityCard.component";
 import {IActivity} from "../../../app/models/activity";
 
 type IProps = {
-    selectedActivity: IActivity
+    selectedActivity: IActivity;
+    editMode: boolean;
+    setEditMode: (editMode: boolean) => void;
+    setSelectedActivity: (activity: IActivity | null) => void;
 }
 
-const ActivityDetails: React.FC<IProps> = ({selectedActivity}) => {
+const ActivityDetails: React.FC<IProps> = ({selectedActivity, editMode, setEditMode, setSelectedActivity}) => {
     return (
         <>
-            <ActivityCard selectedActivity={selectedActivity}/>
+            <ActivityCard
+                selectedActivity={selectedActivity}
+                setEditMode={setEditMode}
+                editMode={editMode}
+                setSelectedActivity={setSelectedActivity}
+            />
         </>
     )
 };
