@@ -8,6 +8,11 @@ export const selectSelectedActivity = createSelector(
     (activityDashboard) => activityDashboard.selectedActivity
 );
 
+export const selectEditMode = createSelector(
+    [selectActivityDashboard],
+    (activityDashboard) => activityDashboard.editMode
+);
+
 export const selectActivities = createSelector(
     [selectActivityDashboard],
     (activityDashboard) => activityDashboard.activities

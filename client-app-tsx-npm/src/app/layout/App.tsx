@@ -1,7 +1,7 @@
 import React from 'react';
-import NavBar from "../../features/nav/NavBar.component";
 import {Route, Switch} from 'react-router-dom';
 
+import NavBar from "../../features/nav/NavBar.component";
 import HomePage from "../../features/home/HomePage";
 import ActivityDashboard from "../../features/activities/dashboard/AcivityDashboard";
 

@@ -7,9 +7,10 @@ import {IActivity} from "../../../app/models/activity";
 type IProps = {
     activities: IActivity[],
     selectActivity: (id: string) => void;
+    handleDeleteActivity: (id: string) => void;
 }
 
-const ActivitiesItems: React.FC<IProps> = ({activities, selectActivity}) => {
+const ActivitiesItems: React.FC<IProps> = ({activities, selectActivity, handleDeleteActivity}) => {
 
     return (
         <Segment clearing>
@@ -20,6 +21,7 @@ const ActivitiesItems: React.FC<IProps> = ({activities, selectActivity}) => {
                             key={activity.id}
                             activity={activity}
                             selectActivity={selectActivity}
+                            handleDeleteActivity={handleDeleteActivity}
                         />
                     ))
                 }

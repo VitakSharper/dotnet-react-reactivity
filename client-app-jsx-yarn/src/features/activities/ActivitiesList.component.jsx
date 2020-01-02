@@ -3,7 +3,9 @@ import {Item, Segment} from "semantic-ui-react";
 
 import ActivityItem from "./Activity.Item.component";
 
-const ActivitiesItems = ({activities, selectActivity}) => {
+const ActivitiesList = ({activities, selectActivity}) => {
+
+    if (!activities) return null;
 
     return (
         <Segment clearing>
@@ -22,4 +24,4 @@ const ActivitiesItems = ({activities, selectActivity}) => {
     )
 };
 
-export default ActivitiesItems;
+export default ActivitiesList;

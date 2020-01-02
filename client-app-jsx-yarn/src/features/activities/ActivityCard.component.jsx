@@ -1,7 +1,12 @@
 import React from 'react'
 import {Card, Image, Button} from 'semantic-ui-react'
 
-const ActivityCard = ({selectedActivity: {title, date, description, category}}) => {
+import {connect} from 'react-redux';
+import {setSelectedActivity} from "../../app/redux/activities/activity.actions";
+import {setEditMode} from "../../app/redux/activities/activity.actions";
+
+const ActivityCard = ({selectedActivity, setSelectedActivity, setEditMode}) => {
+    const {title, date, description, category} = selectedActivity;
     return (
         <Card fluid>
             <Image src={`/assets/categoryImages/${category}.jpg`} wrapped ui={false}/>
@@ -15,13 +20,19 @@ const ActivityCard = ({selectedActivity: {title, date, description, category}}) 
                 </Card.Description>
             </Card.Content>
             <Card.Content extra>
-                <Button.Group widths={2}>
-                    <Button color={"blue"} basic content={'Edit'}/>
-                    <Button color={"grey"} basic content={'Cancel'}/>
+                <Button.Group floated={"left"}>
+                    <Button color={"blue"} basic content={'Edit'} onClick={() => setEditMode(true)}/>
+                    <Button.Or/>
+                    <Button color={"grey"} basic content={'Cancel'} onClick={() => setSelectedActivity(null)}/>
                 </Button.Group>
             </Card.Content>
         </Card>
     )
 };
 
-export default ActivityCard
+const mapDispatchToProps = dispatch => ({
+    setSelectedActivity: (activityId) => dispatch(setSelectedActivity(activityId)),
+    setEditMode: (mode) => dispatch(setEditMode(mode))
+});
+
+export default connect(null, mapDispatchToProps)(ActivityCard)

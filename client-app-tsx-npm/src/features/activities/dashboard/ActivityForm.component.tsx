@@ -13,7 +13,14 @@ type IProps = {
 }
 
 
-const ActivityForm: React.FC<IProps> = ({editMode, setEditMode, createMode, activity, handleCreateActivity, handleEditActivity}) => {
+const ActivityForm: React.FC<IProps> = ({
+                                            editMode,
+                                            setEditMode,
+                                            createMode,
+                                            activity,
+                                            handleCreateActivity,
+                                            handleEditActivity
+                                        }) => {
     const initForm = () => {
         if (activity) {
             return (({id, ...o}) => o)(activity)
@@ -77,20 +84,22 @@ const ActivityForm: React.FC<IProps> = ({editMode, setEditMode, createMode, acti
                     value={initActivity.city}
                     onChange={handleChange}/>
                 <Form.Input
-                    type={'date'}
+                    type={'datetime-local'}
                     name={'date'}
                     label='Date'
                     placeholder='Date'
                     value={initActivity.date}
                     onChange={handleChange}/>
-                <Button
-                    floated={"right"}
-                    basic secondary
-                    type={'button'}
-                    content={'Cancel'}
-                    onClick={() => setEditMode(!editMode)}
-                />
-                <Button floated={"right"} basic positive type={'submit'} content={'Submit'}/>
+                <Button.Group floated={"right"}>
+                    <Button
+                        basic secondary
+                        type={'button'}
+                        content={'Cancel'}
+                        onClick={() => setEditMode(!editMode)}
+                    />
+                    <Button.Or/>
+                    <Button basic positive type={'submit'} content={'Submit'}/>
+                </Button.Group>
             </Form>
         </Segment>
     )

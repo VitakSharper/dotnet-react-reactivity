@@ -5,6 +5,11 @@ export const setSelectedActivity = activityId => ({
     payload: activityId
 });
 
+export const setEditMode = (mode) => ({
+    type: ActivityActionTypes.SET_EDIT_MODE,
+    payload: mode
+});
+
 export const fetchActivitiesStart = () => ({
     type: ActivityActionTypes.FETCH_ACTIVITIES_START
 });

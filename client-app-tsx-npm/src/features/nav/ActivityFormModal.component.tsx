@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {Header, Modal} from 'semantic-ui-react'
 
 import ActivityForm from "../activities/dashboard/ActivityForm.component";
@@ -10,7 +10,7 @@ type IProps = {
     handleEditActivities: (activity: IActivity) => void;
 }
 
-const ActivityFormModal: React.FC<IProps> = ({open, setOpen,handleEditActivities}) => {
+const ActivityFormModal: React.FC<IProps> = ({open, setOpen, handleEditActivities}) => {
 
     return (
         <Modal open={open} basic size='small'>
@@ -19,8 +19,11 @@ const ActivityFormModal: React.FC<IProps> = ({open, setOpen,handleEditActivities
             <Modal.Content>
             </Modal.Content>
             <Modal.Actions>
-                <ActivityForm editMode={open} setEditMode={setOpen} createMode={true}
-                              handleCreateActivity={handleEditActivities}/>
+                <ActivityForm
+                    editMode={open}
+                    setEditMode={setOpen}
+                    createMode={true}
+                    handleCreateActivity={handleEditActivities}/>
             </Modal.Actions>
         </Modal>
     )

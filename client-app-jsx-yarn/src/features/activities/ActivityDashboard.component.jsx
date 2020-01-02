@@ -6,31 +6,44 @@ import {createStructuredSelector} from "reselect";
 import {fetchActivitiesStart} from "../../app/redux/activities/activity.actions";
 import {
     selectActivities,
-    selectSelectedActivity
+    selectSelectedActivity,
+    selectEditMode
 } from "../../app/redux/activities/activity.selectors";
 
 import ActivitiesContainer from "./Activities.container";
 import ActivityDetails from "./ActivityDetails.component";
 import ActivityForm from "./ActivityForm.component";
 
-const ActivityDashboard = ({selectedActivity, fetchActivitiesStart, activities}) => {
+const ActivityDashboard = ({selectedActivity, fetchActivitiesStart, activities, editMode}) => {
 
     useEffect(() => {
         fetchActivitiesStart()
     }, [fetchActivitiesStart]);
 
-
+    console.log(activities)
+    if (!activities) return null;
     return (
         <Segment>
             <Grid>
-                <Grid.Column width={10}>
+                <Grid.Column width={selectedActivity ? 10 : 16}>
                     <ActivitiesContainer activities={activities}/>
                 </Grid.Column>
-                <Grid.Column width={6}>
-                    {
-                        selectedActivity && (<ActivityDetails selectedActivity={selectedActivity}/>)
-                    }
-                </Grid.Column>
+                {
+                    selectedActivity && !editMode && (
+                        <Grid.Column width={6}>
+                            <ActivityDetails selectedActivity={selectedActivity}/>
+                        </Grid.Column>
+                    )
+                }
+                {
+                    editMode && (
+                        <Grid.Column width={6}>
+                            <ActivityForm
+                                activity={selectedActivity}
+                            />
+                        </Grid.Column>
+                    )
+                }
             </Grid>
         </Segment>
     )
@@ -39,6 +52,7 @@ const ActivityDashboard = ({selectedActivity, fetchActivitiesStart, activities})
 const mapStateToProps = createStructuredSelector({
     activities: selectActivities,
     selectedActivity: selectSelectedActivity,
+    editMode: selectEditMode
 });
 
 const mapDispatchToProps = dispatch => ({

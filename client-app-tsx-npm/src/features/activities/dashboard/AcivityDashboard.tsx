@@ -16,6 +16,9 @@ const ActivityDashboard = () => {
     useEffect(() => {
         axios.get<IActivity[]>('http://localhost:5000/api/activities')
             .then(resp => {
+                resp.data.forEach(a => {
+                    a.date = a.date.split('.')[0];
+                });
                 setActivities(resp.data);
             })
             .catch(err => console.log(err))
@@ -36,11 +39,20 @@ const ActivityDashboard = () => {
         setEditMode(false);
     };
 
+    const handleDeleteActivity = (id: string) => {
+        const someResp = activities.filter(a => a.id !== id);
+        setActivities(someResp);
+    };
+
     return (
         <Segment>
             <Grid>
                 <Grid.Column width={selectedActivity ? 10 : 16}>
-                    <ActivitiesItems activities={activities} selectActivity={handleSelectActivity}/>
+                    <ActivitiesItems
+                        activities={activities}
+                        selectActivity={handleSelectActivity}
+                        handleDeleteActivity={handleDeleteActivity}
+                    />
                 </Grid.Column>
                 {selectedActivity && !editMode && (
                     <Grid.Column width={6}>

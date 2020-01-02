@@ -5,7 +5,8 @@ const INITIAL_STATE = {
     activities: null,
     selectedActivity: null,
     isFetching: false,
-    errorMessage: undefined
+    errorMessage: undefined,
+    editMode: false
 };
 
 const activityReducer = (state = INITIAL_STATE, action) => {
@@ -14,6 +15,11 @@ const activityReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 selectedActivity: setSelectedActivity(action.payload, state.activities)
+            };
+        case ActivityActionTypes.SET_EDIT_MODE:
+            return {
+                ...state,
+                editMode: action.payload
             };
         case ActivityActionTypes.FETCH_ACTIVITIES_START:
             return {
@@ -24,7 +30,10 @@ const activityReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 isFetching: false,
-                activities: action.payload
+                activities: action.payload.map(a => {
+                    a.date = a.date.split('.')[0];
+                    return a;
+                })
             };
         case ActivityActionTypes.FETCH_ACTIVITIES_FAILURE:
             return {
