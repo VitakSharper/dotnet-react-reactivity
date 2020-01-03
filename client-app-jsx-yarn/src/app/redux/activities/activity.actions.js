@@ -23,3 +23,8 @@ export const fetchActivitiesError = error => ({
     type: ActivityActionTypes.FETCH_ACTIVITIES_FAILURE,
     payload: error
 });
+
+export const editExistingActivity = activity => ({
+    type: ActivityActionTypes.EDIT_EXISTING_ACTIVITY,
+    payload: activity
+});

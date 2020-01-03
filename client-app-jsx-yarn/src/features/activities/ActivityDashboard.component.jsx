@@ -20,7 +20,6 @@ const ActivityDashboard = ({selectedActivity, fetchActivitiesStart, activities, 
         fetchActivitiesStart()
     }, [fetchActivitiesStart]);
 
-    console.log(activities)
     if (!activities) return null;
     return (
         <Segment>

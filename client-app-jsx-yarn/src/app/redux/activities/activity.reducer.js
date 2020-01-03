@@ -1,5 +1,5 @@
 import ActivityActionTypes from "./activity.types";
-import {setSelectedActivity} from "./activity.utils";
+import {setSelectedActivity, editExistingActivity, fetchActivities} from "./activity.utils";
 
 const INITIAL_STATE = {
     activities: null,
@@ -30,16 +30,18 @@ const activityReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 isFetching: false,
-                activities: action.payload.map(a => {
-                    a.date = a.date.split('.')[0];
-                    return a;
-                })
+                activities: fetchActivities(action.payload)
             };
         case ActivityActionTypes.FETCH_ACTIVITIES_FAILURE:
             return {
                 ...state,
                 isFetching: false,
                 errorMessage: action.payload
+            };
+        case ActivityActionTypes.EDIT_EXISTING_ACTIVITY:
+            return {
+                ...state,
+                activities: editExistingActivity(action.payload, state.activities)
             };
         default:
             return state;
