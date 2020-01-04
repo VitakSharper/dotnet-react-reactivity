@@ -1,7 +1,7 @@
 import React from "react";
 import {Item, Segment} from "semantic-ui-react";
 
-import ActivityItem from "./Activity.Item.component";
+import ActivityItem from "./ActivityItem.component";
 
 const ActivitiesList = ({activities, selectActivity}) => {
 

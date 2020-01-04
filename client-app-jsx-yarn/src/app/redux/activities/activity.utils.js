@@ -1,10 +1,14 @@
 export const setSelectedActivity = (activityId, activities) => {
     // const existActivity = activities.find(a => a.id === activityId);
+    const activity = [];
+
     if (activities[activityId]) {
-        return Object.keys(activities[activityId]).reduce((acc, key) => {
-            acc[key] = activities[activityId][key];
-            return acc
-        }, []);
+        activity.push(activities[activityId]);
+        return activity;
+        // return Object.keys(activities[activityId]).reduce((acc, key) => {
+        //     acc[key] = activities[activityId][key];
+        //     return acc
+        // }, []);
     }
     return null
 };

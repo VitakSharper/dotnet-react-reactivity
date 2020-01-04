@@ -1,6 +1,11 @@
 import React, {useState} from "react";
-import {withRouter} from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 import {Menu, Container, Icon} from 'semantic-ui-react'
+
+import {connect} from 'react-redux';
+import {setEditMode} from "../../app/redux/activities/activity.actions";
+
+import ActivityModalForm from "../activities/ActivityModalForm.component";
 
 const menuBar = {
     background: 'linear-gradient(#009eda, #007cbe,#9575CD 100%)',
@@ -9,8 +14,10 @@ const menuBar = {
 };
 
 
-const NavBar = ({history}) => {
+const NavBar = ({setEditMode}) => {
     const [activeItem, setActiveItem] = useState('');
+    const [open, setOpen] = useState(false);
+    const history = useHistory();
 
     const handleActivities = (e, menuParams) => {
         setActiveItem(menuParams.name);
@@ -18,7 +25,9 @@ const NavBar = ({history}) => {
     };
 
     const handleCreate = (e, menuParams) => {
-        setActiveItem(menuParams.name)
+        setActiveItem(menuParams.name);
+        setEditMode(false);
+        setOpen(true);
     };
 
     const handleHome = (e, menuParams) => {
@@ -57,8 +66,14 @@ const NavBar = ({history}) => {
                     Add Activity
                 </Menu.Item>
             </Container>
+            <ActivityModalForm open={open} setOpen={setOpen}/>
         </Menu>
     )
 };
 
-export default withRouter(NavBar);
+
+const mapDispatchToProps = dispatch => ({
+    setEditMode: (mode) => dispatch(setEditMode(mode))
+});
+
+export default connect(null, mapDispatchToProps)(NavBar);

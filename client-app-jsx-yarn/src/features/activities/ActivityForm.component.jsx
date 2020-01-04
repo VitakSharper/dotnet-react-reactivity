@@ -7,7 +7,7 @@ import {createStructuredSelector} from "reselect";
 import {setEditMode, editExistingActivity} from "../../app/redux/activities/activity.actions";
 import {selectEditMode} from "../../app/redux/activities/activity.selectors";
 
-const ActivityForm = ({activity, setEditMode, editMode, editExistingActivity}) => {
+const ActivityForm = ({activity, setEditMode, editMode, setOpen, editExistingActivity}) => {
 
     const initForm = () => {
         if (activity) {
@@ -32,6 +32,11 @@ const ActivityForm = ({activity, setEditMode, editMode, editExistingActivity}) =
     const handleChange = (e) => {
         const {name, value} = e.target;
         setInitActivity({...initActivity, [name]: value});
+    };
+
+    const handleCancel = () => {
+        setEditMode(false);
+        setOpen && setOpen(false);
     };
 
     return (
@@ -81,7 +86,7 @@ const ActivityForm = ({activity, setEditMode, editMode, editExistingActivity}) =
                         basic secondary
                         type={'button'}
                         content={'Cancel'}
-                        onClick={() => setEditMode()}
+                        onClick={() => handleCancel()}
                     />
                     <Button.Or/>
                     <Button basic positive type={'submit'} content={'Submit'}/>
@@ -96,7 +101,7 @@ const mapStateToProps = createStructuredSelector(
 );
 
 const mapDispatchToProps = dispatch => ({
-    setEditMode: () => dispatch(setEditMode()),
+    setEditMode: (mode) => dispatch(setEditMode(mode)),
     editExistingActivity: (activityId) => dispatch(editExistingActivity(activityId))
 });
 

@@ -13,7 +13,7 @@ export const selectActivities = createSelector(
 
 export const selectSelectedActivity = createSelector(
     [selectActivityDashboard],
-    (activityDashboard) => activityDashboard.selectedActivity
+    (activityDashboard) => activityDashboard.selectedActivity && activityDashboard.selectedActivity[0]
 );
 
 export const selectEditMode = createSelector(

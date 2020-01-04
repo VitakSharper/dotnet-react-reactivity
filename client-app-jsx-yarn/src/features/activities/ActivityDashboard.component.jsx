@@ -15,7 +15,6 @@ import ActivityDetails from "./ActivityDetails.component";
 import ActivityForm from "./ActivityForm.component";
 
 const ActivityDashboard = ({selectedActivity, fetchActivitiesStart, activities, editMode}) => {
-
     useEffect(() => {
         fetchActivitiesStart()
     }, [fetchActivitiesStart]);
