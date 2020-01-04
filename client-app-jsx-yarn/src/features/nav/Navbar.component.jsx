@@ -25,7 +25,7 @@ const NavBar = ({setEditMode}) => {
     };
 
     const handleCreate = (e, menuParams) => {
-        setActiveItem(menuParams.name);
+        // setActiveItem(menuParams.name);
         setEditMode(false);
         setOpen(true);
     };
