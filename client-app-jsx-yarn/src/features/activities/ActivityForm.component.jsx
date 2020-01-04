@@ -9,7 +9,6 @@ import {selectEditMode} from "../../app/redux/activities/activity.selectors";
 
 const ActivityForm = ({activity, setEditMode, editMode, editExistingActivity}) => {
 
-
     const initForm = () => {
         if (activity) {
             return (({id, ...o}) => o)(activity)
@@ -34,7 +33,6 @@ const ActivityForm = ({activity, setEditMode, editMode, editExistingActivity}) =
         const {name, value} = e.target;
         setInitActivity({...initActivity, [name]: value});
     };
-
 
     return (
         <Segment clearing>

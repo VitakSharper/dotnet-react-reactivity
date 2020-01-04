@@ -3,6 +3,14 @@ import {createSelector} from "reselect";
 const selectActivityDashboard = state => state.activityDashboard;
 
 // MEMOIZATION
+
+export const selectActivities = createSelector(
+    [selectActivityDashboard],
+    (activityDashboard) => {
+        return activityDashboard.activities ? Object.values(activityDashboard.activities) : [];
+    }
+);
+
 export const selectSelectedActivity = createSelector(
     [selectActivityDashboard],
     (activityDashboard) => activityDashboard.selectedActivity
@@ -11,11 +19,6 @@ export const selectSelectedActivity = createSelector(
 export const selectEditMode = createSelector(
     [selectActivityDashboard],
     (activityDashboard) => activityDashboard.editMode
-);
-
-export const selectActivities = createSelector(
-    [selectActivityDashboard],
-    (activityDashboard) => activityDashboard.activities
 );
 
 export const selectIsActivitiesFetching = createSelector(
