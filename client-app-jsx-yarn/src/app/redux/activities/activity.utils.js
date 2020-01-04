@@ -21,3 +21,16 @@ export const editExistingActivity = (activity, activities) => {
     }
     return activities
 };
+
+export const addActivity = (activity, activities) => {
+    if (activity) {
+        activities[activity.id] = activity
+    }
+    return activities;
+};
+
+export const removeExistingActivity = (activityId, activities) => {
+    console.log('Remove Activity', activityId);
+    delete activities[activityId];
+    return activities;
+};

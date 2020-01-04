@@ -2,15 +2,20 @@ import React from 'react'
 import {Item, Button, Label} from 'semantic-ui-react'
 
 import {connect} from 'react-redux';
-import {setSelectedActivity} from "../../app/redux/activities/activity.actions";
+import {removeExistingActivity, setSelectedActivity} from "../../app/redux/activities/activity.actions";
 import {setEditMode} from "../../app/redux/activities/activity.actions";
 
-const ActivityItem = ({activity, setSelectedActivity, setEditMode}) => {
+const ActivityItem = ({activity, setSelectedActivity, setEditMode, removeExistingActivity}) => {
     const {id, venue, category, date, city, title, description} = activity;
 
     const handleViewActivity = () => {
         setEditMode(false);
         setSelectedActivity(id);
+    };
+
+    const handleRemoveActivity = () => {
+        removeExistingActivity(id);
+        setSelectedActivity(null);
     };
 
     return (
@@ -34,7 +39,7 @@ const ActivityItem = ({activity, setSelectedActivity, setEditMode}) => {
                             onClick={handleViewActivity}
                         />
                         <Button.Or/>
-                        <Button basic negative content={'Delete'}/>
+                        <Button basic negative content={'Delete'} onClick={handleRemoveActivity}/>
                     </Button.Group>
                     <Label basic content={category}/>
                 </Item.Extra>
@@ -45,7 +50,8 @@ const ActivityItem = ({activity, setSelectedActivity, setEditMode}) => {
 
 const mapDispatchToProps = dispatch => ({
     setSelectedActivity: (activityId) => dispatch(setSelectedActivity(activityId)),
-    setEditMode: (mode) => dispatch(setEditMode(mode))
+    setEditMode: (mode) => dispatch(setEditMode(mode)),
+    removeExistingActivity: (activityId) => dispatch(removeExistingActivity(activityId))
 });
 
 export default connect(null, mapDispatchToProps)(ActivityItem)

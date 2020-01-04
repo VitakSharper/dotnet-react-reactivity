@@ -28,3 +28,13 @@ export const editExistingActivity = activity => ({
     type: ActivityActionTypes.EDIT_EXISTING_ACTIVITY,
     payload: activity
 });
+
+export const addActivity = activity => ({
+    type: ActivityActionTypes.ADD_ACTIVITY,
+    payload: activity
+});
+
+export const removeExistingActivity = activityId => ({
+    type: ActivityActionTypes.REMOVE_EXISTING_ACTIVITY,
+    payload: activityId
+});

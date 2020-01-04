@@ -1,5 +1,5 @@
 import ActivityActionTypes from "./activity.types";
-import {setSelectedActivity, editExistingActivity} from "./activity.utils";
+import {setSelectedActivity, editExistingActivity, addActivity, removeExistingActivity} from "./activity.utils";
 
 const INITIAL_STATE = {
     activities: null,
@@ -43,6 +43,16 @@ const activityReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 activities: editExistingActivity(action.payload, state.activities)
             };
+        case ActivityActionTypes.ADD_ACTIVITY:
+            return {
+                ...state,
+                activities: addActivity(action.payload, state.activities)
+            };
+        case ActivityActionTypes.REMOVE_EXISTING_ACTIVITY:
+            return {
+                ...state,
+                activities: removeExistingActivity(action.payload, state.activities)
+            }
         default:
             return state;
     }

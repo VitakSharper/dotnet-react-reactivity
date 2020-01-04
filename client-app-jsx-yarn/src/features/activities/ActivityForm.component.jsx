@@ -1,13 +1,14 @@
 import React, {useState} from "react";
+import {v4 as uuid} from 'uuid';
 
 import {Form, Segment, Button} from "semantic-ui-react";
 
 import {connect} from 'react-redux';
 import {createStructuredSelector} from "reselect";
-import {setEditMode, editExistingActivity} from "../../app/redux/activities/activity.actions";
+import {setEditMode, editExistingActivity, addActivity} from "../../app/redux/activities/activity.actions";
 import {selectEditMode} from "../../app/redux/activities/activity.selectors";
 
-const ActivityForm = ({activity, setEditMode, editMode, setOpen, editExistingActivity}) => {
+const ActivityForm = ({activity, setEditMode, editMode, setOpen, editExistingActivity, addActivity}) => {
 
     const initForm = () => {
         if (activity) {
@@ -26,6 +27,8 @@ const ActivityForm = ({activity, setEditMode, editMode, setOpen, editExistingAct
 
     const handleSubmit = () => {
         editMode && activity && editExistingActivity({id: activity?.id, ...initActivity});
+        !editMode && addActivity({id: uuid(), ...initActivity});
+        setOpen && setOpen(false);
         // if (createMode) handleCreateActivity({id: uuid(), ...initActivity});
     };
 
@@ -102,7 +105,8 @@ const mapStateToProps = createStructuredSelector(
 
 const mapDispatchToProps = dispatch => ({
     setEditMode: (mode) => dispatch(setEditMode(mode)),
-    editExistingActivity: (activityId) => dispatch(editExistingActivity(activityId))
+    editExistingActivity: (activity) => dispatch(editExistingActivity(activity)),
+    addActivity: (activity) => dispatch(addActivity(activity))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActivityForm);
