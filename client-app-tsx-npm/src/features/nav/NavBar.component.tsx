@@ -15,6 +15,8 @@ const NavBar = () => {
     const [activeItem, setActiveItem] = useState('');
     const [open, setOpen] = useState(false);
     const [newActivity, setNewActivity] = useState<IActivity | null>(null);
+    const [createMode, setCreateMode] = useState(false);
+
 
     const history = useHistory();
 
@@ -25,6 +27,7 @@ const NavBar = () => {
 
     const handleCreate = (e: React.MouseEvent, menuParams: MenuHeaderProps[]) => {
         setActiveItem(menuParams[0].name);
+        setCreateMode(true);
         setOpen(true)
     };
 
@@ -60,7 +63,10 @@ const NavBar = () => {
             <ActivityFormModal
                 open={open}
                 setOpen={setOpen}
-                handleEditActivities={handleEditActivities}/>
+                handleEditActivities={handleEditActivities}
+                createMode={createMode}
+                setCreateMode={setCreateMode}
+            />
         </Menu>
     )
 };

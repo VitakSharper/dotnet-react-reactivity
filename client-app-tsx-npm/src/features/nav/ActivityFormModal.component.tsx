@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {Header, Modal} from 'semantic-ui-react'
 
 import ActivityForm from "../activities/dashboard/ActivityForm.component";
@@ -8,10 +8,11 @@ type IProps = {
     open: boolean;
     setOpen: (open: boolean) => void;
     handleEditActivities: (activity: IActivity) => void;
+    createMode: boolean;
+    setCreateMode: (mode: boolean) => void;
 }
 
-const ActivityFormModal: React.FC<IProps> = ({open, setOpen, handleEditActivities}) => {
-
+const ActivityFormModal: React.FC<IProps> = ({open, setOpen, handleEditActivities, createMode, setCreateMode}) => {
     return (
         <Modal open={open} basic size='small'>
             <Header icon='add' content='CREATE A NEW ACTIVITY'/>
@@ -21,7 +22,10 @@ const ActivityFormModal: React.FC<IProps> = ({open, setOpen, handleEditActivitie
                 <ActivityForm
                     editMode={open}
                     setEditMode={setOpen}
-                    createMode={true}
+                    createMode={createMode}
+                    setCreateMode={setCreateMode}
+                    setOpen={setOpen}
+
                     handleCreateActivity={handleEditActivities}/>
             </Modal.Actions>
         </Modal>

@@ -2,11 +2,14 @@ import React, {FormEvent, useState} from "react";
 import {Form, Segment, Button, Icon} from "semantic-ui-react";
 import {IActivity} from "../../../app/models/activity";
 import {v4 as uuid} from 'uuid';
+import Activities from "../../../app/api/agent";
 
 type IProps = {
     activity?: IActivity | null;
     editMode: boolean;
     createMode?: boolean;
+    setCreateMode?: (mode: boolean) => void;
+    setOpen?: (open: boolean) => void;
     setEditMode: (editMode: boolean) => void;
     handleCreateActivity: (activity: IActivity) => void;
     handleEditActivity?: (activity: IActivity) => void;
@@ -17,6 +20,8 @@ const ActivityForm: React.FC<IProps> = ({
                                             editMode,
                                             setEditMode,
                                             createMode,
+                                            setCreateMode,
+                                            setOpen,
                                             activity,
                                             handleCreateActivity,
                                             handleEditActivity
@@ -40,7 +45,13 @@ const ActivityForm: React.FC<IProps> = ({
         if (editMode && activity && handleEditActivity) {
             handleEditActivity({id: activity?.id, ...initActivity});
         }
-        if (createMode) handleCreateActivity({id: uuid(), ...initActivity});
+        if (createMode) {
+            Activities.create({id: uuid(), ...initActivity}).then(() => {
+                setCreateMode && setCreateMode(false);
+                setOpen && setOpen(false);
+            });
+            console.log({id: uuid(), ...initActivity});
+        }
     };
 
     const handleChange = (e: FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {

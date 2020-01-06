@@ -31,7 +31,11 @@ const ActivityDashboard = () => {
     };
 
     const handleCreateActivity = (activity: IActivity) => {
-        setActivities([...activities, activity])
+        Activities.create(activity).then(() => {
+            setActivities([...activities, activity]);
+            setSelectedActivity(activity);
+            setEditMode(false);
+        })
     };
 
     const handleEditActivity = (activity: IActivity) => {
