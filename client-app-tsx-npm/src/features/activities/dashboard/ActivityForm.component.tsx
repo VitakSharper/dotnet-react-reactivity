@@ -1,5 +1,5 @@
 import React, {FormEvent, useState} from "react";
-import {Form, Segment, Button} from "semantic-ui-react";
+import {Form, Segment, Button, Icon} from "semantic-ui-react";
 import {IActivity} from "../../../app/models/activity";
 import {v4 as uuid} from 'uuid';
 
@@ -90,15 +90,21 @@ const ActivityForm: React.FC<IProps> = ({
                     placeholder='Date'
                     value={initActivity.date}
                     onChange={handleChange}/>
+
                 <Button.Group floated={"right"}>
-                    <Button
-                        basic secondary
-                        type={'button'}
-                        content={'Cancel'}
-                        onClick={() => setEditMode(!editMode)}
-                    />
+                    <Button animated basic positive type={'submit'} size={"tiny"}>
+                        <Button.Content hidden>Submit</Button.Content>
+                        <Button.Content visible>
+                            <Icon name={'send'}/>
+                        </Button.Content>
+                    </Button>
                     <Button.Or/>
-                    <Button basic positive type={'submit'} content={'Submit'}/>
+                    <Button animated type={'button'} basic negative onClick={() => setEditMode(!editMode)}>
+                        <Button.Content hidden>Cancel</Button.Content>
+                        <Button.Content visible>
+                            <Icon name={'cancel'}/>
+                        </Button.Content>
+                    </Button>
                 </Button.Group>
             </Form>
         </Segment>

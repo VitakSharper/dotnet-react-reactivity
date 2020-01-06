@@ -1,5 +1,5 @@
 import React from 'react'
-import {Item, Button, Label} from 'semantic-ui-react'
+import {Item, Button, Label, Icon} from 'semantic-ui-react'
 import {IActivity} from "../models/activity";
 
 type IProps = {
@@ -22,16 +22,19 @@ const ActivityItem: React.FC<IProps> = ({activity, selectActivity, handleDeleteA
             </Item.Description>
             <Item.Extra>
                 <Button.Group floated={"right"}>
-                    <Button
-                        basic
-                        color='blue'
-                        floated={"right"}
-                        content={'View'}
-                        size={"mini"}
-                        onClick={() => selectActivity(activity.id)}
-                    />
+                    <Button animated basic positive onClick={() => selectActivity(activity.id)}>
+                        <Button.Content hidden>View</Button.Content>
+                        <Button.Content visible>
+                            <Icon name={'eye'}/>
+                        </Button.Content>
+                    </Button>
                     <Button.Or/>
-                    <Button basic negative onClick={() => handleDeleteActivity(activity.id)}>Delete</Button>
+                    <Button animated basic negative onClick={() => handleDeleteActivity(activity.id)}>
+                        <Button.Content hidden>Delete</Button.Content>
+                        <Button.Content visible>
+                            <Icon name={'trash alternate'}/>
+                        </Button.Content>
+                    </Button>
                 </Button.Group>
                 <Label basic content={activity.category}/>
             </Item.Extra>

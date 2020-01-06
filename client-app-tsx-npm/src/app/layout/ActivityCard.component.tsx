@@ -1,5 +1,5 @@
 import React from 'react'
-import {Card, Image, Button} from 'semantic-ui-react'
+import {Card, Image, Button, Icon, Form} from 'semantic-ui-react'
 import {IActivity} from "../models/activity";
 
 type IProps = {
@@ -25,18 +25,21 @@ const ActivityCard: React.FC<IProps> = ({selectedActivity, editMode, setEditMode
                 </Card.Description>
             </Card.Content>
             <Card.Content extra>
+
                 <Button.Group>
-                    <Button
-                        color={"blue"}
-                        basic content={'Edit'}
-                        onClick={() => setEditMode(!editMode)}
-                    />
+                    <Button animated basic positive type={'button'} onClick={() => setEditMode(!editMode)}>
+                        <Button.Content hidden>Edit</Button.Content>
+                        <Button.Content visible>
+                            <Icon name={'edit'}/>
+                        </Button.Content>
+                    </Button>
                     <Button.Or/>
-                    <Button
-                        color={"grey"}
-                        basic content={'Cancel'}
-                        onClick={() => setSelectedActivity(null)}
-                    />
+                    <Button animated type={'button'} basic negative onClick={() => setSelectedActivity(null)}>
+                        <Button.Content hidden>Cancel</Button.Content>
+                        <Button.Content visible>
+                            <Icon name={'cancel'}/>
+                        </Button.Content>
+                    </Button>
                 </Button.Group>
             </Card.Content>
         </Card>

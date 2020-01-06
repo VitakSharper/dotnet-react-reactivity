@@ -15,7 +15,6 @@ const ActivityFormModal: React.FC<IProps> = ({open, setOpen, handleEditActivitie
     return (
         <Modal open={open} basic size='small'>
             <Header icon='add' content='CREATE A NEW ACTIVITY'/>
-            <Header icon='tasks'/>
             <Modal.Content>
             </Modal.Content>
             <Modal.Actions>

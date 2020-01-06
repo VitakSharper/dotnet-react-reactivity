@@ -5,7 +5,7 @@ import ActivitiesItems from "./Activities.component";
 import ActivityDetails from "./ActivityDetails.component";
 import ActivityForm from "./ActivityForm.component";
 import {IActivity} from "../../../app/models/activity";
-import axios from "axios";
+import Activities from "../../../app/api/agent";
 
 
 const ActivityDashboard = () => {
@@ -14,15 +14,16 @@ const ActivityDashboard = () => {
     const [editMode, setEditMode] = useState(false);
 
     useEffect(() => {
-        axios.get<IActivity[]>('http://localhost:5000/api/activities')
+        Activities.list()
             .then(resp => {
-                resp.data.forEach(a => {
+                resp.forEach(a => {
                     a.date = a.date.split('.')[0];
                 });
-                setActivities(resp.data);
+                setActivities(resp);
             })
             .catch(err => console.log(err))
     }, []);
+
 
     const handleSelectActivity = (id: string) => {
         setEditMode(false);
