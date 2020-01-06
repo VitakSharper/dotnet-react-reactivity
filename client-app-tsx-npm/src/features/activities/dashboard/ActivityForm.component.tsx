@@ -13,6 +13,7 @@ type IProps = {
     setEditMode: (editMode: boolean) => void;
     handleCreateActivity: (activity: IActivity) => void;
     handleEditActivity?: (activity: IActivity) => void;
+    submitting?: boolean;
 }
 
 
@@ -24,7 +25,8 @@ const ActivityForm: React.FC<IProps> = ({
                                             setOpen,
                                             activity,
                                             handleCreateActivity,
-                                            handleEditActivity
+                                            handleEditActivity,
+                                            submitting
                                         }) => {
     const initForm = () => {
         if (activity) {
@@ -38,7 +40,6 @@ const ActivityForm: React.FC<IProps> = ({
             venue: ''
         }
     };
-
     const [initActivity, setInitActivity] = useState(initForm());
 
     const handleSubmit = () => {
@@ -103,7 +104,7 @@ const ActivityForm: React.FC<IProps> = ({
                     onChange={handleChange}/>
 
                 <Button.Group floated={"right"}>
-                    <Button animated basic positive type={'submit'} size={"tiny"}>
+                    <Button animated basic positive loading={!!submitting} type={'submit'}>
                         <Button.Content hidden>Submit</Button.Content>
                         <Button.Content visible>
                             <Icon name={'send'}/>

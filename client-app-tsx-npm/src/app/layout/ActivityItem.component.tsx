@@ -1,16 +1,18 @@
-import React from 'react'
+import React, {SyntheticEvent} from 'react'
 import {Item, Button, Label, Icon} from 'semantic-ui-react'
 import {IActivity} from "../models/activity";
 
 type IProps = {
     activity: IActivity;
     selectActivity: (id: string) => void;
-    handleDeleteActivity: (id: string) => void;
+    handleDeleteActivity: (id: string, e: SyntheticEvent<HTMLButtonElement>) => void;
+    target: string;
+    submitting: boolean;
 
 }
 
 
-const ActivityItem: React.FC<IProps> = ({activity, selectActivity, handleDeleteActivity}) => (
+const ActivityItem: React.FC<IProps> = ({activity, selectActivity, handleDeleteActivity, submitting, target}) => (
     <Item>
         <Item.Image size='tiny' src={`/assets/categoryImages/${activity.category}.jpg`}/>
         <Item.Content>
@@ -29,7 +31,11 @@ const ActivityItem: React.FC<IProps> = ({activity, selectActivity, handleDeleteA
                         </Button.Content>
                     </Button>
                     <Button.Or/>
-                    <Button animated basic negative onClick={() => handleDeleteActivity(activity.id)}>
+                    <Button animated basic
+                            loading={target === activity.id && submitting}
+                            negative
+                            name={activity?.id}
+                            onClick={(e, ...menuParams) => handleDeleteActivity(activity.id, e)}>
                         <Button.Content hidden>Delete</Button.Content>
                         <Button.Content visible>
                             <Icon name={'trash alternate'}/>

@@ -9,7 +9,12 @@ type IProps = {
     setSelectedActivity: (activity: IActivity | null) => void;
 }
 
-const ActivityCard: React.FC<IProps> = ({selectedActivity, editMode, setEditMode, setSelectedActivity}) => {
+const ActivityCard: React.FC<IProps> = ({
+                                            selectedActivity,
+                                            editMode,
+                                            setEditMode,
+                                            setSelectedActivity
+                                        }) => {
     const {title, date, description, category} = selectedActivity;
 
     return (
@@ -27,14 +32,16 @@ const ActivityCard: React.FC<IProps> = ({selectedActivity, editMode, setEditMode
             <Card.Content extra>
 
                 <Button.Group>
-                    <Button animated basic positive type={'button'} onClick={() => setEditMode(!editMode)}>
+                    <Button animated basic positive type={'button'}
+                            onClick={() => setEditMode(!editMode)}>
                         <Button.Content hidden>Edit</Button.Content>
                         <Button.Content visible>
                             <Icon name={'edit'}/>
                         </Button.Content>
                     </Button>
                     <Button.Or/>
-                    <Button animated type={'button'} basic negative onClick={() => setSelectedActivity(null)}>
+                    <Button animated type={'button'} basic negative
+                            onClick={() => setSelectedActivity(null)}>
                         <Button.Content hidden>Cancel</Button.Content>
                         <Button.Content visible>
                             <Icon name={'cancel'}/>
