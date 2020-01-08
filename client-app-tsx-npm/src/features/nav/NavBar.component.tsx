@@ -14,7 +14,6 @@ const menuBar = {
 const NavBar = () => {
     const [activeItem, setActiveItem] = useState('');
     const [open, setOpen] = useState(false);
-    const [newActivity, setNewActivity] = useState<IActivity | null>(null);
     const [createMode, setCreateMode] = useState(false);
 
 
@@ -31,9 +30,6 @@ const NavBar = () => {
         setOpen(true)
     };
 
-    const handleEditActivities = (activity: IActivity) => {
-        setNewActivity(activity);
-    };
 
     return (
         <Menu fixed={"top"} borderless style={menuBar}>
@@ -63,7 +59,6 @@ const NavBar = () => {
             <ActivityFormModal
                 open={open}
                 setOpen={setOpen}
-                handleEditActivities={handleEditActivities}
                 createMode={createMode}
                 setCreateMode={setCreateMode}
             />

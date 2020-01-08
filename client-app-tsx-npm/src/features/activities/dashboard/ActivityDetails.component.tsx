@@ -1,26 +1,22 @@
-import React from "react";
+import React, {useContext} from "react";
 
 import ActivityCard from "../../../app/layout/ActivityCard.component";
-import {IActivity} from "../../../app/models/activity";
+import activityStore from "../../../app/store/Activity.store";
+import {observer} from "mobx-react-lite";
 
-type IProps = {
-    selectedActivity: IActivity;
-    editMode: boolean;
-    setEditMode: (editMode: boolean) => void;
-    setSelectedActivity: (activity: IActivity | null) => void;
-}
-
-const ActivityDetails: React.FC<IProps> = ({selectedActivity, editMode, setEditMode, setSelectedActivity}) => {
+const ActivityDetails = () => {
+    const ActivityStore = useContext(activityStore);
+    const {editMode, selectedActivity, setEditMode, setSelectedActivity} = ActivityStore;
     return (
         <>
             <ActivityCard
                 selectedActivity={selectedActivity}
-                setEditMode={setEditMode}
                 editMode={editMode}
+                setEditMode={setEditMode}
                 setSelectedActivity={setSelectedActivity}
             />
         </>
     )
 };
 
-export default ActivityDetails;
+export default observer(ActivityDetails);

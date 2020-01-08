@@ -1,32 +1,25 @@
-import React, {FormEvent, useState} from "react";
+import React, {FormEvent, useContext, useState} from "react";
 import {Form, Segment, Button, Icon} from "semantic-ui-react";
 import {IActivity} from "../../../app/models/activity";
 import {v4 as uuid} from 'uuid';
 import Activities from "../../../app/api/agent";
+import activityStore from "../../../app/store/Activity.store";
+import {observer} from "mobx-react-lite";
 
 type IProps = {
     activity?: IActivity | null;
-    editMode: boolean;
     createMode?: boolean;
     setCreateMode?: (mode: boolean) => void;
     setOpen?: (open: boolean) => void;
-    setEditMode: (editMode: boolean) => void;
-    handleCreateActivity: (activity: IActivity) => void;
     handleEditActivity?: (activity: IActivity) => void;
-    submitting?: boolean;
 }
 
-
 const ActivityForm: React.FC<IProps> = ({
-                                            editMode,
-                                            setEditMode,
                                             createMode,
                                             setCreateMode,
                                             setOpen,
                                             activity,
-                                            handleCreateActivity,
-                                            handleEditActivity,
-                                            submitting
+                                            handleEditActivity
                                         }) => {
     const initForm = () => {
         if (activity) {
@@ -41,6 +34,8 @@ const ActivityForm: React.FC<IProps> = ({
         }
     };
     const [initActivity, setInitActivity] = useState(initForm());
+    const ActivityStore = useContext(activityStore);
+    const {setEditMode, editMode, submitting} = ActivityStore;
 
     const handleSubmit = () => {
         if (editMode && activity && handleEditActivity) {
@@ -51,7 +46,6 @@ const ActivityForm: React.FC<IProps> = ({
                 setCreateMode && setCreateMode(false);
                 setOpen && setOpen(false);
             });
-            console.log({id: uuid(), ...initActivity});
         }
     };
 
@@ -104,14 +98,14 @@ const ActivityForm: React.FC<IProps> = ({
                     onChange={handleChange}/>
 
                 <Button.Group floated={"right"}>
-                    <Button animated basic positive loading={!!submitting} type={'submit'}>
+                    <Button animated basic positive loading={submitting} type={'submit'}>
                         <Button.Content hidden>Submit</Button.Content>
                         <Button.Content visible>
                             <Icon name={'send'}/>
                         </Button.Content>
                     </Button>
                     <Button.Or/>
-                    <Button animated type={'button'} basic negative onClick={() => setEditMode(!editMode)}>
+                    <Button animated type={'button'} basic negative onClick={() => setEditMode()}>
                         <Button.Content hidden>Cancel</Button.Content>
                         <Button.Content visible>
                             <Icon name={'cancel'}/>
@@ -123,4 +117,4 @@ const ActivityForm: React.FC<IProps> = ({
     )
 };
 
-export default ActivityForm;
+export default observer(ActivityForm);

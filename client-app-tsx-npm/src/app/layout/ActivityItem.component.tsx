@@ -1,6 +1,7 @@
 import React, {SyntheticEvent} from 'react'
 import {Item, Button, Label, Icon} from 'semantic-ui-react'
 import {IActivity} from "../models/activity";
+import {observer} from "mobx-react-lite";
 
 type IProps = {
     activity: IActivity;
@@ -10,7 +11,6 @@ type IProps = {
     submitting: boolean;
 
 }
-
 
 const ActivityItem: React.FC<IProps> = ({activity, selectActivity, handleDeleteActivity, submitting, target}) => (
     <Item>
