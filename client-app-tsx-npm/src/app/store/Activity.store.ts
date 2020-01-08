@@ -9,6 +9,7 @@ class ActivityStore {
     @observable loading = false;
     @observable submitting = false;
     @observable editMode = false;
+    @observable createMode = false;
     @observable target = '';
 
     @action loadActivities = () => {
@@ -26,9 +27,9 @@ class ActivityStore {
     @action createActivity = (activity: IActivity) => {
         this.submitting = true;
         Activities.create(activity).then(() => {
-            // setActivities([...activities, activity]);
+            this.activities = [...this.activities, activity];
             this.selectedActivity = activity;
-            this.editMode = false;
+            this.createMode = false;
         }).then(() => this.submitting = false)
     };
     @action editActivity = (activity: IActivity) => {
@@ -48,14 +49,20 @@ class ActivityStore {
         this.submitting = true;
         Activities.delete(id).then(() => {
             this.activities = this.activities.filter(a => a.id !== id);
+            this.selectedActivity = null;
         }).then(() => this.submitting = false)
     };
 
-    @action setEditMode = () => {
-        this.editMode = !this.editMode
+    @action setEditMode = (mode: boolean) => {
+        this.editMode = mode;
     };
+
     @action setSelectedActivity = () => {
         this.selectedActivity = null;
+    };
+
+    @action setCreateMode = (mode: boolean) => {
+        this.createMode = mode;
     }
 }
 

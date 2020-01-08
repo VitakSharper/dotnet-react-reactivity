@@ -6,13 +6,12 @@ import {observer} from "mobx-react-lite";
 type IProps = {
     activity: IActivity;
     selectActivity: (id: string) => void;
-    handleDeleteActivity: (id: string, e: SyntheticEvent<HTMLButtonElement>) => void;
     target: string;
     submitting: boolean;
-
+    deleteActivity: (id: string, e: SyntheticEvent<HTMLButtonElement>) => void;
 }
 
-const ActivityItem: React.FC<IProps> = ({activity, selectActivity, handleDeleteActivity, submitting, target}) => (
+const ActivityItem: React.FC<IProps> = ({activity, selectActivity, submitting, target, deleteActivity}) => (
     <Item>
         <Item.Image size='tiny' src={`/assets/categoryImages/${activity.category}.jpg`}/>
         <Item.Content>
@@ -35,7 +34,7 @@ const ActivityItem: React.FC<IProps> = ({activity, selectActivity, handleDeleteA
                             loading={target === activity.id && submitting}
                             negative
                             name={activity?.id}
-                            onClick={(e, ...menuParams) => handleDeleteActivity(activity.id, e)}>
+                            onClick={(e, ...menuParams) => deleteActivity(activity.id, e)}>
                         <Button.Content hidden>Delete</Button.Content>
                         <Button.Content visible>
                             <Icon name={'trash alternate'}/>
@@ -48,4 +47,4 @@ const ActivityItem: React.FC<IProps> = ({activity, selectActivity, handleDeleteA
     </Item>
 );
 
-export default ActivityItem
+export default observer(ActivityItem);

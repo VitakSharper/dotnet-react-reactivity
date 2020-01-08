@@ -1,8 +1,9 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {useHistory} from 'react-router-dom';
 import {Menu, Container, Icon, MenuHeaderProps} from 'semantic-ui-react'
 import ActivityFormModal from "./ActivityFormModal.component";
-import {IActivity} from "../../app/models/activity";
+import {observer} from "mobx-react-lite";
+import activityStore from "../../app/store/Activity.store";
 
 const menuBar = {
     background: 'linear-gradient(#009eda, #007cbe,#9575CD 100%)',
@@ -10,26 +11,23 @@ const menuBar = {
     borderBottom: '1px solid #29B6F6'
 };
 
-
 const NavBar = () => {
     const [activeItem, setActiveItem] = useState('');
-    const [open, setOpen] = useState(false);
-    const [createMode, setCreateMode] = useState(false);
 
+    const ActivityStore = useContext(activityStore);
+    const {setCreateMode, setEditMode} = ActivityStore;
 
     const history = useHistory();
 
-    const handleActivitiesClick = (e: React.MouseEvent, menuParams: MenuHeaderProps[]) => {
+    const handleActivities = (e: React.MouseEvent, menuParams: MenuHeaderProps[]) => {
         setActiveItem(menuParams[0].name);
         history.push(`/${menuParams[0].name}`);
     };
 
     const handleCreate = (e: React.MouseEvent, menuParams: MenuHeaderProps[]) => {
-        setActiveItem(menuParams[0].name);
         setCreateMode(true);
-        setOpen(true)
+        setEditMode(false);
     };
-
 
     return (
         <Menu fixed={"top"} borderless style={menuBar}>
@@ -44,7 +42,7 @@ const NavBar = () => {
                 <Menu.Item
                     name='activities'
                     active={activeItem === 'activities'}
-                    onClick={(e, ...menuParams) => handleActivitiesClick(e, menuParams)}
+                    onClick={(e, ...menuParams) => handleActivities(e, menuParams)}
                 >Activities</Menu.Item>
 
                 <Menu.Item
@@ -56,14 +54,9 @@ const NavBar = () => {
                     Add Activity
                 </Menu.Item>
             </Container>
-            <ActivityFormModal
-                open={open}
-                setOpen={setOpen}
-                createMode={createMode}
-                setCreateMode={setCreateMode}
-            />
+            <ActivityFormModal/>
         </Menu>
     )
 };
 
-export default NavBar;
+export default observer(NavBar);

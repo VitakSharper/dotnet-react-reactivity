@@ -8,19 +8,9 @@ import {observer} from "mobx-react-lite";
 
 type IProps = {
     activity?: IActivity | null;
-    createMode?: boolean;
-    setCreateMode?: (mode: boolean) => void;
-    setOpen?: (open: boolean) => void;
-    handleEditActivity?: (activity: IActivity) => void;
 }
 
-const ActivityForm: React.FC<IProps> = ({
-                                            createMode,
-                                            setCreateMode,
-                                            setOpen,
-                                            activity,
-                                            handleEditActivity
-                                        }) => {
+const ActivityForm: React.FC<IProps> = ({activity}) => {
     const initForm = () => {
         if (activity) {
             return (({id, ...o}) => o)(activity)
@@ -35,23 +25,25 @@ const ActivityForm: React.FC<IProps> = ({
     };
     const [initActivity, setInitActivity] = useState(initForm());
     const ActivityStore = useContext(activityStore);
-    const {setEditMode, editMode, submitting} = ActivityStore;
+    const {setEditMode, editMode, submitting, setCreateMode, createMode, editActivity,createActivity} = ActivityStore;
 
     const handleSubmit = () => {
-        if (editMode && activity && handleEditActivity) {
-            handleEditActivity({id: activity?.id, ...initActivity});
+        if (editMode && activity) {
+            editActivity({id: activity?.id, ...initActivity});
         }
         if (createMode) {
-            Activities.create({id: uuid(), ...initActivity}).then(() => {
-                setCreateMode && setCreateMode(false);
-                setOpen && setOpen(false);
-            });
+          createActivity({id: uuid(), ...initActivity})
         }
     };
 
     const handleChange = (e: FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {name, value} = e.currentTarget;
         setInitActivity({...initActivity, [name]: value});
+    };
+
+    const handleCancel = () => {
+        setEditMode(false);
+        setCreateMode(false);
     };
 
     return (
@@ -105,7 +97,7 @@ const ActivityForm: React.FC<IProps> = ({
                         </Button.Content>
                     </Button>
                     <Button.Or/>
-                    <Button animated type={'button'} basic negative onClick={() => setEditMode()}>
+                    <Button animated type={'button'} basic negative onClick={handleCancel}>
                         <Button.Content hidden>Cancel</Button.Content>
                         <Button.Content visible>
                             <Icon name={'cancel'}/>
@@ -113,8 +105,7 @@ const ActivityForm: React.FC<IProps> = ({
                     </Button>
                 </Button.Group>
             </Form>
-        </Segment>
-    )
+        </Segment>)
 };
 
 export default observer(ActivityForm);
