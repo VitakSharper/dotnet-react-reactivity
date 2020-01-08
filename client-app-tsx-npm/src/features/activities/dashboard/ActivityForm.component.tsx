@@ -2,7 +2,6 @@ import React, {FormEvent, useContext, useState} from "react";
 import {Form, Segment, Button, Icon} from "semantic-ui-react";
 import {IActivity} from "../../../app/models/activity";
 import {v4 as uuid} from 'uuid';
-import Activities from "../../../app/api/agent";
 import activityStore from "../../../app/store/Activity.store";
 import {observer} from "mobx-react-lite";
 
@@ -25,14 +24,14 @@ const ActivityForm: React.FC<IProps> = ({activity}) => {
     };
     const [initActivity, setInitActivity] = useState(initForm());
     const ActivityStore = useContext(activityStore);
-    const {setEditMode, editMode, submitting, setCreateMode, createMode, editActivity,createActivity} = ActivityStore;
+    const {setEditMode, editMode, submitting, setCreateMode, createMode, editActivity, createActivity} = ActivityStore;
 
     const handleSubmit = () => {
         if (editMode && activity) {
             editActivity({id: activity?.id, ...initActivity});
         }
         if (createMode) {
-          createActivity({id: uuid(), ...initActivity})
+            createActivity({id: uuid(), ...initActivity})
         }
     };
 
