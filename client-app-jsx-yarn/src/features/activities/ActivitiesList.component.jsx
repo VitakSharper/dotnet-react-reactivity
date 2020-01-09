@@ -5,8 +5,6 @@ import ActivityItem from "./ActivityItem.component";
 
 const ActivitiesList = ({activities, selectActivity}) => {
 
-    if (!activities) return null;
-
     return (
         <Segment clearing>
             <Item.Group divided>
@@ -20,8 +18,7 @@ const ActivitiesList = ({activities, selectActivity}) => {
                     ))
                 }
             </Item.Group>
-        </Segment>
-    )
+        </Segment>)
 };
 
 export default ActivitiesList;

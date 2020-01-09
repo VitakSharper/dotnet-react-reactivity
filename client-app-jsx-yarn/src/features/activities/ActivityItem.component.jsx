@@ -3,11 +3,14 @@ import {Item, Button, Label, Icon} from 'semantic-ui-react'
 
 import {connect} from 'react-redux';
 import {createStructuredSelector} from 'reselect'
-import {removeExistingActivityStart, setSelectedActivity} from "../../app/redux/activities/activity.actions";
-import {setEditMode} from "../../app/redux/activities/activity.actions";
-import {selectBtnTarget} from "../../app/redux/activities/activity.selectors";
+import {
+    removeExistingActivityStart,
+    setSelectedActivity,
+    setEditMode
+} from "../../app/redux/activities/activity.actions";
+import {selectBtnTarget, selectSubmitting} from "../../app/redux/activities/activity.selectors";
 
-const ActivityItem = ({activity, setSelectedActivity, setEditMode, removeExistingActivity, btnTarget}) => {
+const ActivityItem = ({activity, setSelectedActivity, setEditMode, removeExistingActivity, btnTarget, submitting}) => {
     const {id, venue, category, date, city, title, description} = activity;
 
     const handleViewActivity = () => {
@@ -19,7 +22,6 @@ const ActivityItem = ({activity, setSelectedActivity, setEditMode, removeExistin
         removeExistingActivity(id);
         setSelectedActivity(null);
     };
-
     return (
         <Item>
             <Item.Image size='tiny' src={`/assets/categoryImages/${category}.jpg`}/>
@@ -42,7 +44,6 @@ const ActivityItem = ({activity, setSelectedActivity, setEditMode, removeExistin
                         <Button.Or/>
                         <Button animated basic
                                 loading={btnTarget === activity.id}
-                            // loading={target === activity.id && submitting}
                                 negative
                                 name={activity?.id}
                                 onClick={handleRemoveActivity}>
@@ -60,7 +61,8 @@ const ActivityItem = ({activity, setSelectedActivity, setEditMode, removeExistin
 };
 
 const mapStateToProps = createStructuredSelector({
-    btnTarget: selectBtnTarget
+    btnTarget: selectBtnTarget,
+    submitting: selectSubmitting
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -6,9 +6,9 @@ import {Form, Segment, Button, Icon} from "semantic-ui-react";
 import {connect} from 'react-redux';
 import {createStructuredSelector} from "reselect";
 import {setEditMode, addActivityStart, editExistingActivityStart} from "../../app/redux/activities/activity.actions";
-import {selectEditMode} from "../../app/redux/activities/activity.selectors";
+import {selectEditMode, selectSubmitting} from "../../app/redux/activities/activity.selectors";
 
-const ActivityForm = ({activity, setEditMode, editMode, setOpen, editExistingActivity, addActivity}) => {
+const ActivityForm = ({activity, setEditMode, editMode, setOpen, editExistingActivity, addActivity, submitting}) => {
 
     const initForm = () => {
         if (activity) {
@@ -33,7 +33,6 @@ const ActivityForm = ({activity, setEditMode, editMode, setOpen, editExistingAct
             addActivity({id: uuid(), ...initActivity});
         }
         setOpen && setOpen(false);
-        // if (createMode) handleCreateActivity({id: uuid(), ...initActivity});
     };
 
     const handleChange = (e) => {
@@ -90,7 +89,7 @@ const ActivityForm = ({activity, setEditMode, editMode, setOpen, editExistingAct
                     onChange={handleChange}/>
 
                 <Button.Group floated={"right"}>
-                    <Button animated basic positive loading={false} type={'submit'}>
+                    <Button animated basic positive loading={submitting} type={'submit'}>
                         <Button.Content hidden>Submit</Button.Content>
                         <Button.Content visible>
                             <Icon name={'send'}/>
@@ -110,7 +109,10 @@ const ActivityForm = ({activity, setEditMode, editMode, setOpen, editExistingAct
 };
 
 const mapStateToProps = createStructuredSelector(
-    {editMode: selectEditMode}
+    {
+        editMode: selectEditMode,
+        submitting: selectSubmitting
+    }
 );
 
 const mapDispatchToProps = dispatch => ({

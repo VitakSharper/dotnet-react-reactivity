@@ -41,8 +41,9 @@ export const editExistingActivitySuccess = activity => ({
 });
 
 
-export const removeExistingActivityStart = () => ({
-    type: ActivityActionTypes.REMOVE_EXISTING_ACTIVITY_START
+export const removeExistingActivityStart = (activityId) => ({
+    type: ActivityActionTypes.REMOVE_EXISTING_ACTIVITY_START,
+    payload: activityId
 });
 export const removeExistingActivitySuccess = activityId => ({
     type: ActivityActionTypes.REMOVE_EXISTING_ACTIVITY_SUCCESS,

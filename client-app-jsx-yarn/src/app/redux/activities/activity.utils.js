@@ -14,7 +14,6 @@ export const editExistingActivity = (activity, activities) => {
 };
 
 export const addActivity = (activity, activities) => {
-    console.log('in utils: ', activity);
     if (activity) {
         activities[activity.id] = activity
     }

@@ -3,7 +3,13 @@ import ActivityActionTypes from "./activity.types";
 import {dataNormalizeToObject} from "../backend.utils";
 import httpActivities from "./activity.http";
 
-import {fetchActivitiesSuccess, addActivitySuccess, editExistingActivitySuccess, failure} from "./activity.actions";
+import {
+    fetchActivitiesSuccess,
+    addActivitySuccess,
+    editExistingActivitySuccess,
+    removeExistingActivitySuccess,
+    failure
+} from "./activity.actions";
 
 export function* fetchActivitiesAsync() {
     try {
@@ -33,6 +39,16 @@ export function* editExistingActivityAsync({payload}) {
     }
 }
 
+export function* removeExistingActivityAsync({payload}) {
+    try {
+        yield httpActivities.delete(payload);
+        yield put(removeExistingActivitySuccess(payload))
+    } catch (e) {
+        yield put(failure(e))
+    }
+}
+
+//
 export function* fetchActivitiesStart() {
     yield takeEvery(ActivityActionTypes.FETCH_ACTIVITIES_START, fetchActivitiesAsync)
 }
@@ -43,4 +59,8 @@ export function* addNewActivity() {
 
 export function* editExistingActivity() {
     yield takeEvery(ActivityActionTypes.EDIT_EXISTING_ACTIVITY_START, editExistingActivityAsync)
+}
+
+export function* removeExistingActivity() {
+    yield takeEvery(ActivityActionTypes.REMOVE_EXISTING_ACTIVITY_START, removeExistingActivityAsync)
 }
