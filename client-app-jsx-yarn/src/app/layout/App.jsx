@@ -6,6 +6,7 @@ import HomePage from "../../features/home/HomePage.component";
 import ActivityDashboard from "../../features/activities/ActivityDashboard.component";
 
 const App = () => {
+
     return (
         <>
             <NavBar/>
@@ -16,5 +17,6 @@ const App = () => {
         </>
     );
 };
+
 
 export default App;

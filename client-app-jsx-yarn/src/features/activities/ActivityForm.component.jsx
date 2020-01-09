@@ -1,11 +1,11 @@
 import React, {useState} from "react";
 import {v4 as uuid} from 'uuid';
 
-import {Form, Segment, Button} from "semantic-ui-react";
+import {Form, Segment, Button, Icon} from "semantic-ui-react";
 
 import {connect} from 'react-redux';
 import {createStructuredSelector} from "reselect";
-import {setEditMode, editExistingActivity, addActivity} from "../../app/redux/activities/activity.actions";
+import {setEditMode, addActivityStart, editExistingActivityStart} from "../../app/redux/activities/activity.actions";
 import {selectEditMode} from "../../app/redux/activities/activity.selectors";
 
 const ActivityForm = ({activity, setEditMode, editMode, setOpen, editExistingActivity, addActivity}) => {
@@ -26,8 +26,12 @@ const ActivityForm = ({activity, setEditMode, editMode, setOpen, editExistingAct
     const [initActivity, setInitActivity] = useState(initForm());
 
     const handleSubmit = () => {
-        editMode && activity && editExistingActivity({id: activity?.id, ...initActivity});
-        !editMode && addActivity({id: uuid(), ...initActivity});
+        if (editMode && activity) {
+            editExistingActivity({id: activity?.id, ...initActivity});
+        }
+        if (!editMode) {
+            addActivity({id: uuid(), ...initActivity});
+        }
         setOpen && setOpen(false);
         // if (createMode) handleCreateActivity({id: uuid(), ...initActivity});
     };
@@ -84,19 +88,25 @@ const ActivityForm = ({activity, setEditMode, editMode, setOpen, editExistingAct
                     placeholder='Date'
                     value={initActivity.date}
                     onChange={handleChange}/>
+
                 <Button.Group floated={"right"}>
-                    <Button
-                        basic secondary
-                        type={'button'}
-                        content={'Cancel'}
-                        onClick={() => handleCancel()}
-                    />
+                    <Button animated basic positive loading={false} type={'submit'}>
+                        <Button.Content hidden>Submit</Button.Content>
+                        <Button.Content visible>
+                            <Icon name={'send'}/>
+                        </Button.Content>
+                    </Button>
                     <Button.Or/>
-                    <Button basic positive type={'submit'} content={'Submit'}/>
+                    <Button animated type={'button'} basic negative onClick={handleCancel}>
+                        <Button.Content hidden>Cancel</Button.Content>
+                        <Button.Content visible>
+                            <Icon name={'cancel'}/>
+                        </Button.Content>
+                    </Button>
                 </Button.Group>
+
             </Form>
-        </Segment>
-    )
+        </Segment>)
 };
 
 const mapStateToProps = createStructuredSelector(
@@ -105,8 +115,8 @@ const mapStateToProps = createStructuredSelector(
 
 const mapDispatchToProps = dispatch => ({
     setEditMode: (mode) => dispatch(setEditMode(mode)),
-    editExistingActivity: (activity) => dispatch(editExistingActivity(activity)),
-    addActivity: (activity) => dispatch(addActivity(activity))
+    editExistingActivity: (activity) => dispatch(editExistingActivityStart(activity)),
+    addActivity: (activity) => dispatch(addActivityStart(activity))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActivityForm);

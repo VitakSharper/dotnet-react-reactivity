@@ -1,11 +1,13 @@
 import React from 'react'
-import {Item, Button, Label} from 'semantic-ui-react'
+import {Item, Button, Label, Icon} from 'semantic-ui-react'
 
 import {connect} from 'react-redux';
-import {removeExistingActivity, setSelectedActivity} from "../../app/redux/activities/activity.actions";
+import {createStructuredSelector} from 'reselect'
+import {removeExistingActivityStart, setSelectedActivity} from "../../app/redux/activities/activity.actions";
 import {setEditMode} from "../../app/redux/activities/activity.actions";
+import {selectBtnTarget} from "../../app/redux/activities/activity.selectors";
 
-const ActivityItem = ({activity, setSelectedActivity, setEditMode, removeExistingActivity}) => {
+const ActivityItem = ({activity, setSelectedActivity, setEditMode, removeExistingActivity, btnTarget}) => {
     const {id, venue, category, date, city, title, description} = activity;
 
     const handleViewActivity = () => {
@@ -29,29 +31,42 @@ const ActivityItem = ({activity, setSelectedActivity, setEditMode, removeExistin
                     <div>{city}, {venue}</div>
                 </Item.Description>
                 <Item.Extra>
+
                     <Button.Group floated={"right"}>
-                        <Button
-                            basic
-                            color='blue'
-                            floated={"right"}
-                            content={'View'}
-                            size={"mini"}
-                            onClick={handleViewActivity}
-                        />
+                        <Button animated basic positive onClick={handleViewActivity}>
+                            <Button.Content hidden>View</Button.Content>
+                            <Button.Content visible>
+                                <Icon name={'eye'}/>
+                            </Button.Content>
+                        </Button>
                         <Button.Or/>
-                        <Button basic negative content={'Delete'} onClick={handleRemoveActivity}/>
+                        <Button animated basic
+                                loading={btnTarget === activity.id}
+                            // loading={target === activity.id && submitting}
+                                negative
+                                name={activity?.id}
+                                onClick={handleRemoveActivity}>
+                            <Button.Content hidden>Delete</Button.Content>
+                            <Button.Content visible>
+                                <Icon name={'trash alternate'}/>
+                            </Button.Content>
+                        </Button>
                     </Button.Group>
+
                     <Label basic content={category}/>
                 </Item.Extra>
             </Item.Content>
-        </Item>
-    )
+        </Item>)
 };
+
+const mapStateToProps = createStructuredSelector({
+    btnTarget: selectBtnTarget
+});
 
 const mapDispatchToProps = dispatch => ({
     setSelectedActivity: (activityId) => dispatch(setSelectedActivity(activityId)),
     setEditMode: (mode) => dispatch(setEditMode(mode)),
-    removeExistingActivity: (activityId) => dispatch(removeExistingActivity(activityId))
+    removeExistingActivity: (activityId) => dispatch(removeExistingActivityStart(activityId))
 });
 
-export default connect(null, mapDispatchToProps)(ActivityItem)
+export default connect(mapStateToProps, mapDispatchToProps)(ActivityItem)

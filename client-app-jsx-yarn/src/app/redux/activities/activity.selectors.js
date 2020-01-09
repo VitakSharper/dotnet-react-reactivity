@@ -21,12 +21,17 @@ export const selectEditMode = createSelector(
     (activityDashboard) => activityDashboard.editMode
 );
 
-export const selectIsActivitiesFetching = createSelector(
+export const selectSubmitting = createSelector(
     [selectActivityDashboard],
-    activityDashboard => activityDashboard.isFetching
+    activityDashboard => activityDashboard.submitting
 );
 
 export const selectIsActivitiesLoaded = createSelector(
     [selectActivityDashboard],
     activityDashboard => !!activityDashboard.activities
+);
+
+export const selectBtnTarget = createSelector(
+    [selectActivityDashboard],
+    activityDashboard => activityDashboard.btnTarget
 );

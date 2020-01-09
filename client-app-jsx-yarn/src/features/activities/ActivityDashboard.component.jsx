@@ -7,24 +7,28 @@ import {fetchActivitiesStart} from "../../app/redux/activities/activity.actions"
 import {
     selectActivities,
     selectSelectedActivity,
-    selectEditMode
+    selectEditMode,
+    selectIsActivitiesLoaded
 } from "../../app/redux/activities/activity.selectors";
 
-import ActivitiesContainer from "./Activities.container";
+// import ActivitiesContainer from "./Activities.container";
+import ActivitiesList from "./ActivitiesList.component";
 import ActivityDetails from "./ActivityDetails.component";
 import ActivityForm from "./ActivityForm.component";
+import LoadingSpinner from "./LoadingSpinner.component";
 
-const ActivityDashboard = ({selectedActivity, fetchActivitiesStart, activities, editMode}) => {
+const ActivityDashboard = ({selectedActivity, fetchActivitiesStart, activities, editMode, loading}) => {
     useEffect(() => {
         fetchActivitiesStart()
     }, [fetchActivitiesStart]);
 
-    if (!activities) return null;
+    if (!loading) return (<LoadingSpinner content={'Loading activities...'} inverted={true}/>);
+
     return (
         <Segment>
             <Grid>
                 <Grid.Column width={selectedActivity ? 10 : 16}>
-                    <ActivitiesContainer activities={activities}/>
+                    <ActivitiesList activities={activities}/>
                 </Grid.Column>
                 {
                     selectedActivity && !editMode && (
@@ -50,7 +54,8 @@ const ActivityDashboard = ({selectedActivity, fetchActivitiesStart, activities, 
 const mapStateToProps = createStructuredSelector({
     activities: selectActivities,
     selectedActivity: selectSelectedActivity,
-    editMode: selectEditMode
+    editMode: selectEditMode,
+    loading: selectIsActivitiesLoaded
 });
 
 const mapDispatchToProps = dispatch => ({

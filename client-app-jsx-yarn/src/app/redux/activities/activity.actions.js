@@ -10,6 +10,7 @@ export const setEditMode = (mode) => ({
     payload: mode
 });
 
+
 export const fetchActivitiesStart = () => ({
     type: ActivityActionTypes.FETCH_ACTIVITIES_START
 });
@@ -19,22 +20,36 @@ export const fetchActivitiesSuccess = activities => ({
     payload: activities
 });
 
-export const fetchActivitiesError = error => ({
-    type: ActivityActionTypes.FETCH_ACTIVITIES_FAILURE,
-    payload: error
-});
 
-export const editExistingActivity = activity => ({
-    type: ActivityActionTypes.EDIT_EXISTING_ACTIVITY,
+export const addActivityStart = (activity) => ({
+    type: ActivityActionTypes.ADD_ACTIVITY_START,
+    payload: activity
+});
+export const addActivitySuccess = activity => ({
+    type: ActivityActionTypes.ADD_ACTIVITY_SUCCESS,
     payload: activity
 });
 
-export const addActivity = activity => ({
-    type: ActivityActionTypes.ADD_ACTIVITY,
+
+export const editExistingActivityStart = (activity) => ({
+    type: ActivityActionTypes.EDIT_EXISTING_ACTIVITY_START,
+    payload: activity
+});
+export const editExistingActivitySuccess = activity => ({
+    type: ActivityActionTypes.EDIT_EXISTING_ACTIVITY_SUCCESS,
     payload: activity
 });
 
-export const removeExistingActivity = activityId => ({
-    type: ActivityActionTypes.REMOVE_EXISTING_ACTIVITY,
+
+export const removeExistingActivityStart = () => ({
+    type: ActivityActionTypes.REMOVE_EXISTING_ACTIVITY_START
+});
+export const removeExistingActivitySuccess = activityId => ({
+    type: ActivityActionTypes.REMOVE_EXISTING_ACTIVITY_SUCCESS,
     payload: activityId
+});
+
+export const failure = error => ({
+    type: ActivityActionTypes.FETCH_FAILURE,
+    payload: error
 });
