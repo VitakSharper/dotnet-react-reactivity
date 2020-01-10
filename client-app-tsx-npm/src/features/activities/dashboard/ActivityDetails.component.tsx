@@ -6,17 +6,14 @@ import {observer} from "mobx-react-lite";
 
 const ActivityDetails = () => {
     const ActivityStore = useContext(activityStore);
-    const {editMode, selectedActivity, setEditMode, setSelectedActivity} = ActivityStore;
+    const {editMode, selectedActivity, setEditMode, setSelectedActivityNull} = ActivityStore;
     return (
-        <>
-            <ActivityCard
-                selectedActivity={selectedActivity}
-                editMode={editMode}
-                setEditMode={setEditMode}
-                setSelectedActivity={setSelectedActivity}
-            />
-        </>
-    )
+        <ActivityCard
+            selectedActivity={selectedActivity}
+            editMode={editMode}
+            setEditMode={setEditMode}
+            setSelectedActivity={setSelectedActivityNull}
+        />)
 };
 
 export default observer(ActivityDetails);

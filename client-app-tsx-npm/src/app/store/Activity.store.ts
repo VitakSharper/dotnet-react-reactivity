@@ -1,69 +1,114 @@
-import {observable, action} from "mobx";
+import {observable, action, computed, configure, runInAction} from "mobx";
 import {createContext, SyntheticEvent} from "react";
 import {IActivity} from "../models/activity";
 import Activities from "../api/agent";
 
+configure({enforceActions: 'always'});
+
 class ActivityStore {
+    @observable activityRegistry = new Map<string, IActivity>();
     @observable activities: IActivity[] = [];
-    @observable selectedActivity: IActivity | null = null;
+    @observable selectedActivity: IActivity | undefined = undefined;
     @observable loading = false;
     @observable submitting = false;
     @observable editMode = false;
     @observable createMode = false;
     @observable target = '';
 
-    @action loadActivities = () => {
+    @computed get activitiesByDate() {
+        return Array.from(this.activityRegistry.values()).slice().sort(((a, b) => Date.parse(a.date) - Date.parse(b.date)))
+    }
+
+    @action loadActivities = async () => {
         this.loading = true;
-        Activities.list()
-            .then(resp => {
-                resp.forEach((a) => {
-                    a.date = a.date.split('.')[0];
-                });
-                this.activities = resp.slice();
-            }).then(() => this.loading = false)
-            .catch(err => console.log(err))
-            .finally(() => this.loading = false)
+        try {
+            const response = await Activities.list();
+            runInAction('Loading Activities', () => {
+                this.activityRegistry = response
+                    .map(a => {
+                        a.date = a.date.split('.')[0];
+                        return a;
+                    })
+                    .reduce((acc, v) => acc.set(v.id, v), new Map<string, IActivity>());
+            });
+        } catch (e) {
+            console.log(e)
+        } finally {
+            runInAction(() => {
+                this.loading = false;
+            })
+        }
     };
-    @action createActivity = (activity: IActivity) => {
-        this.submitting = true;
-        Activities.create(activity).then(() => {
-            this.activities = [...this.activities, activity];
-            this.selectedActivity = activity;
-            this.createMode = false;
-        }).then(() => this.submitting = false)
-    };
-    @action editActivity = (activity: IActivity) => {
-        this.submitting = true;
-        Activities.update(activity).then(() => {
-            this.activities = [...this.activities.filter(a => a.id !== activity.id), activity];
-            this.selectedActivity = activity;
-            this.editMode = false;
-        }).then(() => this.submitting = false)
-    };
+
     @action selectActivity = (id: string) => {
         this.editMode = false;
-        this.selectedActivity = this.activities.filter(a => a.id === id)[0];
+        this.selectedActivity = this.activityRegistry.get(id);
     };
-    @action deleteActivity = (id: string, e: SyntheticEvent<HTMLButtonElement>) => {
+
+    @action createActivity = async (activity: IActivity) => {
+        this.submitting = true;
+        try {
+            await Activities.create(activity);
+            runInAction('Create new activity', () => {
+                this.activityRegistry.set(activity.id, activity);
+                this.selectedActivity = activity;
+                this.createMode = false;
+            });
+        } catch (e) {
+            console.log(e);
+        } finally {
+            runInAction(() => {
+                this.submitting = false
+            })
+        }
+    };
+
+    @action editActivity = async (activity: IActivity) => {
+        this.submitting = true;
+        try {
+            await Activities.update(activity);
+            runInAction('Update existing activity', () => {
+                this.activityRegistry.set(activity.id, activity);
+            })
+        } catch (e) {
+            console.log(e);
+        } finally {
+            runInAction(() => {
+                this.submitting = false
+            })
+        }
+    };
+
+    @action deleteActivity = async (id: string, e: SyntheticEvent<HTMLButtonElement>) => {
         this.target = e.currentTarget.name;
         this.submitting = true;
-        Activities.delete(id).then(() => {
-            this.activities = this.activities.filter(a => a.id !== id);
-            this.selectedActivity = null;
-        }).then(() => this.submitting = false)
+        try {
+            await Activities.delete(id);
+            runInAction('Delete an existing activity', () => {
+                this.activityRegistry.delete(id);
+                this.selectedActivity = undefined;
+            })
+        } catch (e) {
+            console.log(e);
+        } finally {
+            runInAction(() => {
+                this.submitting = false;
+                this.target = '';
+            })
+        }
     };
 
     @action setEditMode = (mode: boolean) => {
         this.editMode = mode;
     };
 
-    @action setSelectedActivity = () => {
-        this.selectedActivity = null;
-    };
-
     @action setCreateMode = (mode: boolean) => {
         this.createMode = mode;
-    }
+    };
+
+    @action setSelectedActivityNull = () => {
+        this.selectedActivity = undefined;
+    };
 }
 
 const activityStore = createContext(new ActivityStore());

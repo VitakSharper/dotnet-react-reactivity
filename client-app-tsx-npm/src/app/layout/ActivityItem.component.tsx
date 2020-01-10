@@ -1,7 +1,6 @@
 import React, {SyntheticEvent} from 'react'
 import {Item, Button, Label, Icon} from 'semantic-ui-react'
 import {IActivity} from "../models/activity";
-import {observer} from "mobx-react-lite";
 
 type IProps = {
     activity: IActivity;
@@ -47,4 +46,4 @@ const ActivityItem: React.FC<IProps> = ({activity, selectActivity, submitting, t
     </Item>
 );
 
-export default observer(ActivityItem);
+export default ActivityItem;

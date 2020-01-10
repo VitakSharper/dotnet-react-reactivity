@@ -11,7 +11,7 @@ import {observer} from "mobx-react-lite";
 
 const ActivityDashboard = () => {
     const ActivityStore = useContext(activityStore);
-    const {loadActivities, activities, loading, editMode, selectedActivity} = ActivityStore;
+    const {loadActivities, loading, editMode, selectedActivity, activitiesByDate} = ActivityStore;
 
     useEffect(() => {
         loadActivities()
@@ -23,22 +23,16 @@ const ActivityDashboard = () => {
         <Segment>
             <Grid>
                 <Grid.Column width={selectedActivity ? 10 : 16}>
-                    <ActivitiesItems
-                        activities={activities}
-                    />
+                    <ActivitiesItems activities={activitiesByDate}/>
                 </Grid.Column>
                 {selectedActivity && !editMode && (
                     <Grid.Column width={6}>
                         <ActivityDetails/>
-                    </Grid.Column>
-                )}
-                {
-                    editMode && (
-                        <Grid.Column width={6}>
-                            <ActivityForm
-                                activity={selectedActivity}/>
-                        </Grid.Column>)
-                }
+                    </Grid.Column>)}
+                {editMode && (
+                    <Grid.Column width={6}>
+                        <ActivityForm/>
+                    </Grid.Column>)}
             </Grid>
         </Segment>)
 };

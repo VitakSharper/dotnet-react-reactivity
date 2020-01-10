@@ -15,7 +15,7 @@ const NavBar = () => {
     const [activeItem, setActiveItem] = useState('');
 
     const ActivityStore = useContext(activityStore);
-    const {setCreateMode, setEditMode} = ActivityStore;
+    const {setCreateMode, setEditMode, setSelectedActivityNull} = ActivityStore;
 
     const history = useHistory();
 
@@ -25,6 +25,7 @@ const NavBar = () => {
     };
 
     const handleCreate = (e: React.MouseEvent, menuParams: MenuHeaderProps[]) => {
+        setSelectedActivityNull();
         setCreateMode(true);
         setEditMode(false);
     };
@@ -55,8 +56,7 @@ const NavBar = () => {
                 </Menu.Item>
             </Container>
             <ActivityFormModal/>
-        </Menu>
-    )
+        </Menu>)
 };
 
 export default observer(NavBar);

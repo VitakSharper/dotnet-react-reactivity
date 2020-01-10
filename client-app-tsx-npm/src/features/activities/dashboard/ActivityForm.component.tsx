@@ -1,18 +1,25 @@
 import React, {FormEvent, useContext, useState} from "react";
 import {Form, Segment, Button, Icon} from "semantic-ui-react";
-import {IActivity} from "../../../app/models/activity";
 import {v4 as uuid} from 'uuid';
 import activityStore from "../../../app/store/Activity.store";
 import {observer} from "mobx-react-lite";
 
-type IProps = {
-    activity?: IActivity | null;
-}
+const ActivityForm = () => {
+    const ActivityStore = useContext(activityStore);
+    const {
+        setEditMode,
+        editMode,
+        submitting,
+        setCreateMode,
+        createMode,
+        editActivity,
+        createActivity,
+        selectedActivity
+    } = ActivityStore;
 
-const ActivityForm: React.FC<IProps> = ({activity}) => {
     const initForm = () => {
-        if (activity) {
-            return (({id, ...o}) => o)(activity)
+        if (selectedActivity) {
+            return (({id, ...o}) => o)(selectedActivity)
         } else return {
             title: '',
             category: '',
@@ -23,15 +30,13 @@ const ActivityForm: React.FC<IProps> = ({activity}) => {
         }
     };
     const [initActivity, setInitActivity] = useState(initForm());
-    const ActivityStore = useContext(activityStore);
-    const {setEditMode, editMode, submitting, setCreateMode, createMode, editActivity, createActivity} = ActivityStore;
 
-    const handleSubmit = () => {
-        if (editMode && activity) {
-            editActivity({id: activity?.id, ...initActivity});
+    const handleSubmit = async () => {
+        if (editMode && selectedActivity) {
+            await editActivity({id: selectedActivity?.id, ...initActivity});
         }
         if (createMode) {
-            createActivity({id: uuid(), ...initActivity})
+            await createActivity({id: uuid(), ...initActivity})
         }
     };
 
