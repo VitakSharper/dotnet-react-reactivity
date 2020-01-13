@@ -7,10 +7,10 @@ import activityStore from "../../app/store/Activity.store";
 
 const ActivityFormModal = () => {
     const ActivityStore = useContext(activityStore);
-    const {createMode} = ActivityStore;
-
+    const {openForm} = ActivityStore;
+    console.log(openForm)
     return (
-        <Modal open={createMode} basic size='small'>
+        <Modal open={openForm} basic size='small'>
             <Header icon='add' content='CREATE A NEW ACTIVITY'/>
             <Modal.Content>
             </Modal.Content>

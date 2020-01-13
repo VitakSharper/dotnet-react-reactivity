@@ -29,10 +29,10 @@ const ActivityDashboard = () => {
                     <Grid.Column width={6}>
                         <ActivityDetails/>
                     </Grid.Column>)}
-                {editMode && (
-                    <Grid.Column width={6}>
-                        <ActivityForm/>
-                    </Grid.Column>)}
+                {/*{editMode && (*/}
+                {/*    <Grid.Column width={6}>*/}
+                {/*        <ActivityForm/>*/}
+                {/*    </Grid.Column>)}*/}
             </Grid>
         </Segment>)
 };

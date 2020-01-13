@@ -7,12 +7,11 @@ configure({enforceActions: 'always'});
 
 class ActivityStore {
     @observable activityRegistry = new Map<string, IActivity>();
-    @observable activities: IActivity[] = [];
     @observable selectedActivity: IActivity | undefined = undefined;
     @observable loading = false;
     @observable submitting = false;
     @observable editMode = false;
-    @observable createMode = false;
+    @observable openForm = false;
     @observable target = '';
 
     @computed get activitiesByDate() {
@@ -52,7 +51,7 @@ class ActivityStore {
             runInAction('Create new activity', () => {
                 this.activityRegistry.set(activity.id, activity);
                 this.selectedActivity = activity;
-                this.createMode = false;
+                this.editMode = false;
             });
         } catch (e) {
             console.log(e);
@@ -102,8 +101,8 @@ class ActivityStore {
         this.editMode = mode;
     };
 
-    @action setCreateMode = (mode: boolean) => {
-        this.createMode = mode;
+    @action setOpenForm = (mode: boolean) => {
+        this.openForm = mode;
     };
 
     @action setSelectedActivityNull = () => {

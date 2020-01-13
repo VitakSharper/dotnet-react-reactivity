@@ -10,8 +10,8 @@ const ActivityForm = () => {
         setEditMode,
         editMode,
         submitting,
-        setCreateMode,
-        createMode,
+        setOpenForm,
+        openForm,
         editActivity,
         createActivity,
         selectedActivity
@@ -35,7 +35,7 @@ const ActivityForm = () => {
         if (editMode && selectedActivity) {
             await editActivity({id: selectedActivity?.id, ...initActivity});
         }
-        if (createMode) {
+        if (!editMode) {
             await createActivity({id: uuid(), ...initActivity})
         }
     };
@@ -47,7 +47,7 @@ const ActivityForm = () => {
 
     const handleCancel = () => {
         setEditMode(false);
-        setCreateMode(false);
+        setOpenForm(false);
     };
 
     return (

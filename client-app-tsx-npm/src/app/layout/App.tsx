@@ -1,5 +1,6 @@
 import React from 'react';
 import {Route, Switch} from 'react-router-dom';
+import {Container} from "semantic-ui-react";
 
 import NavBar from "../../features/nav/NavBar.component";
 import HomePage from "../../features/home/HomePage";
@@ -10,10 +11,12 @@ const App = () => {
     return (
         <>
             <NavBar/>
-            <Switch>
-                <Route path={'/'} exact component={HomePage}/>
-                <Route path={'/activities'} component={ActivityDashboard}/>
-            </Switch>
+            <Container>
+                <Switch>
+                    <Route path={'/'} exact component={HomePage}/>
+                    <Route path={'/activities'} component={ActivityDashboard}/>
+                </Switch>
+            </Container>
         </>
     );
 };

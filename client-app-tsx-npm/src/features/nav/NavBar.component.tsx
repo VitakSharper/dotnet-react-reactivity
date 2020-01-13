@@ -15,7 +15,7 @@ const NavBar = () => {
     const [activeItem, setActiveItem] = useState('');
 
     const ActivityStore = useContext(activityStore);
-    const {setCreateMode, setEditMode, setSelectedActivityNull} = ActivityStore;
+    const {setOpenForm, setEditMode, setSelectedActivityNull} = ActivityStore;
 
     const history = useHistory();
 
@@ -26,8 +26,14 @@ const NavBar = () => {
 
     const handleCreate = (e: React.MouseEvent, menuParams: MenuHeaderProps[]) => {
         setSelectedActivityNull();
-        setCreateMode(true);
+        setOpenForm(true);
         setEditMode(false);
+        console.log('Open create form: ')
+    };
+
+    const handleHome = (e: React.MouseEvent, menuParams: MenuHeaderProps[]) => {
+        setActiveItem(menuParams[0].name);
+        history.push('/');
     };
 
     return (
@@ -39,6 +45,12 @@ const NavBar = () => {
                 <Menu.Item header>
                     IMeetUp
                 </Menu.Item>
+
+                <Menu.Item
+                    name='home'
+                    active={activeItem === 'home'}
+                    onClick={(e, ...menuParams) => handleHome(e, menuParams)}
+                >Home</Menu.Item>
 
                 <Menu.Item
                     name='activities'
