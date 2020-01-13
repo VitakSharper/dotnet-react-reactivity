@@ -1,5 +1,6 @@
 import React, {useContext} from "react";
 import {Item, Segment} from "semantic-ui-react";
+import {useHistory} from 'react-router-dom';
 
 import ActivityItem from "../../../app/layout/ActivityItem.component";
 import {IActivity} from "../../../app/models/activity";
@@ -13,6 +14,14 @@ type IProps = {
 const ActivitiesItems: React.FC<IProps> = ({activities}) => {
     const ActivityStore = useContext(activityStore);
     const {target, submitting, selectActivity, deleteActivity} = ActivityStore;
+
+    const history = useHistory();
+
+    const handleView = (activityId: string) => {
+        // selectActivity(activityId);
+        history.push(`/activities/${activityId}`)
+
+    };
     return (
         <Segment clearing>
             <Item.Group divided>
@@ -20,10 +29,10 @@ const ActivitiesItems: React.FC<IProps> = ({activities}) => {
                     <ActivityItem
                         key={activity.id}
                         activity={activity}
-                        selectActivity={selectActivity}
                         submitting={submitting}
                         target={target}
                         deleteActivity={deleteActivity}
+                        handleView={handleView}
                     />))}
             </Item.Group>
         </Segment>)

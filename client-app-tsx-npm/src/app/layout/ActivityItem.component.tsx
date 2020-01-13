@@ -4,13 +4,13 @@ import {IActivity} from "../models/activity";
 
 type IProps = {
     activity: IActivity;
-    selectActivity: (id: string) => void;
     target: string;
     submitting: boolean;
+    handleView: (activityId: string) => void;
     deleteActivity: (id: string, e: SyntheticEvent<HTMLButtonElement>) => void;
 }
 
-const ActivityItem: React.FC<IProps> = ({activity, selectActivity, submitting, target, deleteActivity}) => (
+const ActivityItem: React.FC<IProps> = ({activity, submitting, target, deleteActivity, handleView}) => (
     <Item>
         <Item.Image size='tiny' src={`/assets/categoryImages/${activity.category}.jpg`}/>
         <Item.Content>
@@ -22,7 +22,7 @@ const ActivityItem: React.FC<IProps> = ({activity, selectActivity, submitting, t
             </Item.Description>
             <Item.Extra>
                 <Button.Group floated={"right"}>
-                    <Button animated basic positive onClick={() => selectActivity(activity.id)}>
+                    <Button animated basic positive onClick={() => handleView(activity.id)}>
                         <Button.Content hidden>View</Button.Content>
                         <Button.Content visible>
                             <Icon name={'eye'}/>

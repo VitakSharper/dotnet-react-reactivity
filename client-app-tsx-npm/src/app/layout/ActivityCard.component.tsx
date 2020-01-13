@@ -1,21 +1,17 @@
 import React from 'react'
+import {Link} from "react-router-dom";
+
 import {Card, Image, Button, Icon} from 'semantic-ui-react'
 import {IActivity} from "../models/activity";
 
 type IProps = {
     selectedActivity: IActivity | undefined;
-    editMode: boolean;
-    setEditMode: (editMode: boolean) => void;
-    setSelectedActivity: (activity: IActivity | null) => void;
+    handleModalForm: () => void;
 }
 
 const ActivityCard: React.FC<IProps> = ({
-                                            selectedActivity,
-                                            editMode,
-                                            setEditMode,
-                                            setSelectedActivity
+                                            selectedActivity, handleModalForm
                                         }) => {
-    // const {title, date, description, category} = selectedActivity;
 
     return (
         <Card fluid>
@@ -33,7 +29,7 @@ const ActivityCard: React.FC<IProps> = ({
 
                 <Button.Group>
                     <Button animated basic positive type={'button'}
-                            onClick={() => setEditMode(!editMode)}>
+                            onClick={handleModalForm}>
                         <Button.Content hidden>Edit</Button.Content>
                         <Button.Content visible>
                             <Icon name={'edit'}/>
@@ -41,7 +37,7 @@ const ActivityCard: React.FC<IProps> = ({
                     </Button>
                     <Button.Or/>
                     <Button animated type={'button'} basic negative
-                            onClick={() => setSelectedActivity(null)}>
+                            as={Link} to={'/activities'}>
                         <Button.Content hidden>Cancel</Button.Content>
                         <Button.Content visible>
                             <Icon name={'cancel'}/>

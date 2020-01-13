@@ -39,7 +39,7 @@ const NavBar = () => {
     return (
         <Menu fixed={"top"} borderless style={menuBar}>
             <Container text>
-                <Menu.Item>
+                <Menu.Item header>
                     <img src="/assets/logo.png" alt="logo"/>
                 </Menu.Item>
                 <Menu.Item header>

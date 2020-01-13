@@ -39,8 +39,28 @@ class ActivityStore {
         }
     };
 
+    @action loadActivity = async (id: string) => {
+        let activity = this.activityRegistry.get(id);
+        if (activity) {
+            this.selectedActivity = activity
+        } else {
+            this.loading = true;
+            try {
+                activity = await Activities.details(id);
+                runInAction('Getting activity', () => {
+                    this.selectedActivity = activity;
+                })
+            } catch (e) {
+                console.log(e);
+            } finally {
+                runInAction(() => {
+                    this.loading = false;
+                })
+            }
+        }
+    };
+
     @action selectActivity = (id: string) => {
-        this.editMode = false;
         this.selectedActivity = this.activityRegistry.get(id);
     };
 
@@ -51,7 +71,6 @@ class ActivityStore {
             runInAction('Create new activity', () => {
                 this.activityRegistry.set(activity.id, activity);
                 this.selectedActivity = activity;
-                this.editMode = false;
             });
         } catch (e) {
             console.log(e);
@@ -68,6 +87,7 @@ class ActivityStore {
             await Activities.update(activity);
             runInAction('Update existing activity', () => {
                 this.activityRegistry.set(activity.id, activity);
+                this.selectActivity(activity.id);
             })
         } catch (e) {
             console.log(e);
