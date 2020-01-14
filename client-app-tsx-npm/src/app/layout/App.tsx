@@ -1,6 +1,8 @@
 import React from 'react';
-import {Route, Switch} from 'react-router-dom';
+import {Route, Switch, withRouter, RouteComponentProps} from 'react-router-dom';
+import {observer} from "mobx-react-lite";
 import {Container} from "semantic-ui-react";
+
 
 import NavBar from "../../features/nav/NavBar.component";
 import HomePage from "../../features/home/HomePage";
@@ -8,7 +10,7 @@ import ActivityDashboard from "../../features/activities/dashboard/AcivityDashbo
 import ActivityDetails from "../../features/activities/dashboard/ActivityDetails.component";
 import ActivityFormModal from "../../features/nav/ActivityFormModal.component";
 
-const App = () => {
+const App: React.FC<RouteComponentProps> = ({location}) => {
 
     return (
         <>
@@ -18,11 +20,12 @@ const App = () => {
                     <Route exact path={'/'} component={HomePage}/>
                     <Route exact path={'/activities'} component={ActivityDashboard}/>
                     <Route path={'/activities/:id'} component={ActivityDetails}/>
-                    <Route path={['/createActivity', '/manageActivity/:id']} component={ActivityFormModal}/>
+                    <Route key={location.key} path={['/createActivity', '/manageActivity/:id']}
+                           component={ActivityFormModal}/>
                 </Switch>
             </Container>
         </>
     );
 };
 
-export default App;
+export default withRouter(observer(App));

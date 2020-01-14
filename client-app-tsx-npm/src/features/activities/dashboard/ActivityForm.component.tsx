@@ -1,13 +1,18 @@
-import React, {FormEvent, useContext, useState} from "react";
+import React, {FormEvent, useContext, useState, useEffect} from "react";
+import {Form, Segment, Button, Icon} from "semantic-ui-react";
 import {useHistory} from 'react-router-dom';
-import {observer} from "mobx-react-lite";
 import {v4 as uuid} from 'uuid';
 
-import {Form, Segment, Button, Icon} from "semantic-ui-react";
 
 import activityStore from "../../../app/store/Activity.store";
+import {IActivity} from "../../../app/models/activity";
+import {observer} from "mobx-react-lite";
 
-const ActivityForm = () => {
+type IProps = {
+    activityId: string | null
+}
+
+const ActivityForm: React.FC<IProps> = ({activityId}) => {
     const ActivityStore = useContext(activityStore);
     const {
         editMode,
@@ -15,30 +20,51 @@ const ActivityForm = () => {
         setOpenForm,
         editActivity,
         createActivity,
-        selectedActivity
+        loadActivity,
+        activity,
+        setSelectedActivityNull
     } = ActivityStore;
 
-    const initForm = () => {
-        if (selectedActivity) {
-            return (({id, ...o}) => o)(selectedActivity)
-        } else return {
-            title: '',
-            category: '',
-            description: '',
-            date: '',
-            city: '',
-            venue: ''
-        }
-    };
-    const [initActivity, setInitActivity] = useState(initForm());
+    // const initForm = () => {
+    //     if (selectedActivity) {
+    //         return (({id, ...o}) => o)(selectedActivity)
+    //     } else return {
+    //         title: '',
+    //         category: '',
+    //         description: '',
+    //         date: '',
+    //         city: '',
+    //         venue: ''
+    //     }
+    // };
+
+    const [initActivity, setInitActivity] = useState<IActivity>({
+        id: '',
+        title: '',
+        category: '',
+        description: '',
+        date: '',
+        city: '',
+        venue: ''
+    });
     const history = useHistory();
 
+    useEffect(() => {
+        if (activityId) {
+            loadActivity(activityId).then(() => {
+                activity && setInitActivity(activity)
+            });
+        }
+        return () => {
+            setSelectedActivityNull()
+        }
+    }, [loadActivity, setSelectedActivityNull, activityId, activity]);
+
     const handleSubmit = async () => {
-        if (editMode && selectedActivity) {
-            await editActivity({id: selectedActivity?.id, ...initActivity});
+        if (editMode && activity) {
+            await editActivity({id: activity?.id, ...initActivity});
         } else {
-            await createActivity({id: uuid(), ...initActivity});
-            closeForm('/activities');
+            await createActivity({...initActivity, id: uuid()}).then(() => closeForm('/activities'));
         }
     };
 
@@ -48,8 +74,8 @@ const ActivityForm = () => {
     };
 
     const handleCancel = () => {
-        if (editMode && selectedActivity) {
-            closeForm(`/activities/${selectedActivity?.id}`);
+        if (editMode && activity) {
+            closeForm(`/activities/${activity?.id}`);
         } else {
             closeForm('/activities')
         }

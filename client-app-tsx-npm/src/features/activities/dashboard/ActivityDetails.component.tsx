@@ -12,7 +12,7 @@ interface DetailParams {
 
 const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({match}) => {
     const ActivityStore = useContext(activityStore);
-    const {selectedActivity, setEditMode, setOpenForm, loadActivity, loading} = ActivityStore;
+    const {activity, setEditMode, setOpenForm, loadActivity, loading} = ActivityStore;
 
     useEffect(() => {
         loadActivity(match.params.id)
@@ -27,7 +27,7 @@ const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({match}) =
 
     return (
         <ActivityCard
-            selectedActivity={selectedActivity}
+            selectedActivity={activity}
             handleModalForm={handleModalForm}
         />)
 };

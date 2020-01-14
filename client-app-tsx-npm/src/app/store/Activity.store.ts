@@ -7,7 +7,7 @@ configure({enforceActions: 'always'});
 
 class ActivityStore {
     @observable activityRegistry = new Map<string, IActivity>();
-    @observable selectedActivity: IActivity | undefined = undefined;
+    @observable activity: IActivity | undefined;
     @observable loading = false;
     @observable submitting = false;
     @observable editMode = false;
@@ -42,13 +42,13 @@ class ActivityStore {
     @action loadActivity = async (id: string) => {
         let activity = this.activityRegistry.get(id);
         if (activity) {
-            this.selectedActivity = activity
+            this.activity = activity
         } else {
             this.loading = true;
             try {
                 activity = await Activities.details(id);
                 runInAction('Getting activity', () => {
-                    this.selectedActivity = activity;
+                    this.activity = activity;
                 })
             } catch (e) {
                 console.log(e);
@@ -61,7 +61,7 @@ class ActivityStore {
     };
 
     @action selectActivity = (id: string) => {
-        this.selectedActivity = this.activityRegistry.get(id);
+        // this.activity = this.activityRegistry.get(id);
     };
 
     @action createActivity = async (activity: IActivity) => {
@@ -70,7 +70,7 @@ class ActivityStore {
             await Activities.create(activity);
             runInAction('Create new activity', () => {
                 this.activityRegistry.set(activity.id, activity);
-                this.selectedActivity = activity;
+                this.activity = activity;
             });
         } catch (e) {
             console.log(e);
@@ -105,7 +105,7 @@ class ActivityStore {
             await Activities.delete(id);
             runInAction('Delete an existing activity', () => {
                 this.activityRegistry.delete(id);
-                this.selectedActivity = undefined;
+                this.activity = undefined;
             })
         } catch (e) {
             console.log(e);
@@ -126,7 +126,7 @@ class ActivityStore {
     };
 
     @action setSelectedActivityNull = () => {
-        this.selectedActivity = undefined;
+        this.activity = undefined;
     };
 }
 

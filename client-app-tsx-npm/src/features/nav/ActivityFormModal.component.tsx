@@ -12,7 +12,7 @@ interface DetailParams {
 
 const ActivityFormModal: React.FC<RouteComponentProps<DetailParams>> = ({match}) => {
     const ActivityStore = useContext(activityStore);
-    const {openForm, editMode, selectedActivity, setEditMode, setOpenForm, setSelectedActivityNull} = ActivityStore;
+    const {openForm, editMode, activity, setEditMode, setOpenForm, setSelectedActivityNull} = ActivityStore;
 
     useEffect(() => {
         if (match.params.id) {
@@ -23,16 +23,17 @@ const ActivityFormModal: React.FC<RouteComponentProps<DetailParams>> = ({match})
             setEditMode(false);
             setOpenForm(true);
         }
-    }, [setEditMode, setOpenForm, match, setSelectedActivityNull]);
+    }, [setEditMode, setOpenForm, setSelectedActivityNull, match.params.id]);
+
 
     return (
         <Modal open={openForm} basic size='small'>
             <Header icon={editMode ? 'edit' : 'add'}
-                    content={editMode ? `EDIT ${selectedActivity?.title}` : 'CREATE A NEW ACTIVITY'}/>
+                    content={editMode ? `EDIT ${activity?.title}` : 'CREATE A NEW ACTIVITY'}/>
             <Modal.Content>
             </Modal.Content>
             <Modal.Actions>
-                <ActivityForm/>
+                <ActivityForm activityId={match.params?.id}/>
             </Modal.Actions>
         </Modal>)
 };
