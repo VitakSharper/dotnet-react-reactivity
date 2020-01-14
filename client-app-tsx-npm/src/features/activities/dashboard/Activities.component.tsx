@@ -13,7 +13,7 @@ type IProps = {
 
 const ActivitiesItems: React.FC<IProps> = ({activities}) => {
     const ActivityStore = useContext(activityStore);
-    const {target, submitting, selectActivity, deleteActivity} = ActivityStore;
+    const {target, submitting, deleteActivity} = ActivityStore;
 
     const history = useHistory();
 

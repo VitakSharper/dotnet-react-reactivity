@@ -29,7 +29,7 @@ const ActivityCard: React.FC<IProps> = ({
 
                 <Button.Group>
                     <Button animated basic positive type={'button'}
-                            onClick={handleModalForm}>
+                            as={Link} to={`/manageActivity/${selectedActivity?.id}`}>
                         <Button.Content hidden>Edit</Button.Content>
                         <Button.Content visible>
                             <Icon name={'edit'}/>

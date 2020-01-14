@@ -1,13 +1,15 @@
 import React, {FormEvent, useContext, useState} from "react";
-import {Form, Segment, Button, Icon} from "semantic-ui-react";
-import {v4 as uuid} from 'uuid';
-import activityStore from "../../../app/store/Activity.store";
+import {useHistory} from 'react-router-dom';
 import {observer} from "mobx-react-lite";
+import {v4 as uuid} from 'uuid';
+
+import {Form, Segment, Button, Icon} from "semantic-ui-react";
+
+import activityStore from "../../../app/store/Activity.store";
 
 const ActivityForm = () => {
     const ActivityStore = useContext(activityStore);
     const {
-        setEditMode,
         editMode,
         submitting,
         setOpenForm,
@@ -29,14 +31,14 @@ const ActivityForm = () => {
         }
     };
     const [initActivity, setInitActivity] = useState(initForm());
+    const history = useHistory();
 
     const handleSubmit = async () => {
         if (editMode && selectedActivity) {
             await editActivity({id: selectedActivity?.id, ...initActivity});
-        }
-        if (!editMode) {
+        } else {
             await createActivity({id: uuid(), ...initActivity});
-            setOpenForm(false);
+            closeForm('/activities');
         }
     };
 
@@ -46,8 +48,16 @@ const ActivityForm = () => {
     };
 
     const handleCancel = () => {
-        setEditMode(false);
+        if (editMode && selectedActivity) {
+            closeForm(`/activities/${selectedActivity?.id}`);
+        } else {
+            closeForm('/activities')
+        }
+    };
+
+    const closeForm = (url: string) => {
         setOpenForm(false);
+        history.push(url)
     };
 
     return (

@@ -1,13 +1,30 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect} from 'react'
+import {RouteComponentProps} from 'react-router';
 import {Header, Modal} from 'semantic-ui-react'
 
 import ActivityForm from "../activities/dashboard/ActivityForm.component";
 import {observer} from "mobx-react-lite";
 import activityStore from "../../app/store/Activity.store";
 
-const ActivityFormModal = () => {
+interface DetailParams {
+    id: string;
+}
+
+const ActivityFormModal: React.FC<RouteComponentProps<DetailParams>> = ({match}) => {
     const ActivityStore = useContext(activityStore);
-    const {openForm, editMode, selectedActivity} = ActivityStore;
+    const {openForm, editMode, selectedActivity, setEditMode, setOpenForm, setSelectedActivityNull} = ActivityStore;
+
+    useEffect(() => {
+        if (match.params.id) {
+            setEditMode(true);
+            setOpenForm(true);
+        } else {
+            setSelectedActivityNull();
+            setEditMode(false);
+            setOpenForm(true);
+        }
+    }, [setEditMode, setOpenForm, match, setSelectedActivityNull]);
+
     return (
         <Modal open={openForm} basic size='small'>
             <Header icon={editMode ? 'edit' : 'add'}

@@ -1,9 +1,8 @@
-import React, {useContext, useState} from "react";
-import {useHistory} from 'react-router-dom';
-import {Menu, Container, Icon, MenuHeaderProps} from 'semantic-ui-react'
-import ActivityFormModal from "./ActivityFormModal.component";
+import React, {useState} from "react";
+import {useHistory, Link} from 'react-router-dom';
 import {observer} from "mobx-react-lite";
-import activityStore from "../../app/store/Activity.store";
+
+import {Menu, Container, Icon, MenuHeaderProps} from 'semantic-ui-react'
 
 const menuBar = {
     background: 'linear-gradient(#009eda, #007cbe,#9575CD 100%)',
@@ -14,21 +13,11 @@ const menuBar = {
 const NavBar = () => {
     const [activeItem, setActiveItem] = useState('');
 
-    const ActivityStore = useContext(activityStore);
-    const {setOpenForm, setEditMode, setSelectedActivityNull} = ActivityStore;
-
     const history = useHistory();
 
     const handleActivities = (e: React.MouseEvent, menuParams: MenuHeaderProps[]) => {
         setActiveItem(menuParams[0].name);
         history.push(`/${menuParams[0].name}`);
-    };
-
-    const handleCreate = (e: React.MouseEvent, menuParams: MenuHeaderProps[]) => {
-        setSelectedActivityNull();
-        setOpenForm(true);
-        setEditMode(false);
-        console.log('Open create form: ')
     };
 
     const handleHome = (e: React.MouseEvent, menuParams: MenuHeaderProps[]) => {
@@ -58,17 +47,13 @@ const NavBar = () => {
                     onClick={(e, ...menuParams) => handleActivities(e, menuParams)}
                 >Activities</Menu.Item>
 
-                <Menu.Item
-                    name='createActivity'
-                    onClick={(e, ...menuParams) => handleCreate(e, menuParams)}
-                    active={activeItem === 'createActivity'}
-                >
+                <Menu.Item as={Link} to={'/createActivity'}>
                     <Icon name={'add'}/>
                     Add Activity
                 </Menu.Item>
             </Container>
-            <ActivityFormModal/>
         </Menu>)
 };
 
 export default observer(NavBar);
+
