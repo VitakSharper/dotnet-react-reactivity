@@ -1,5 +1,7 @@
 import React from "react";
+import {Link} from "react-router-dom";
 import {Segment} from "semantic-ui-react";
+
 
 const HomePage = () => {
     return (
@@ -64,6 +66,7 @@ const HomePage = () => {
                 cupiditate dignissimos distinctio doloremque eaque fuga fugiat fugit, inventore, ipsum magni natus
                 nostrum obcaecati odit officia optio pariatur porro, quam qui rem repellat sapiente tempora veniam
                 voluptas voluptatibus.</p>
+            <h3>Go to <Link to={'/activities'}>Activities</Link></h3>
         </Segment>
     )
 };

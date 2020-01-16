@@ -13,17 +13,21 @@ import ActivityFormModal from "../../features/nav/ActivityFormModal.component";
 const App: React.FC<RouteComponentProps> = ({location}) => {
 
     return (<>
-        <NavBar/>
-        <Container>
-            <Switch>
-                <Route exact path={'/'} component={HomePage}/>
-                <Route exact path={'/activities'} component={ActivityDashboard}/>
-                <Route path={'/activities/:id'} component={ActivityDetails}/>
-                <Route key={location.key} path={['/createActivity', '/manageActivity/:id']}
-                       component={ActivityFormModal}/>
-            </Switch>
-        </Container>
-    </>);
+        <Route exact path={'/'} component={HomePage}/>
+        <Route path={'/(.+)'} render={() => (
+            <>
+                <NavBar/>
+                <Container>
+                    <Switch>
+                        <Route exact path={'/activities'} component={ActivityDashboard}/>
+                        <Route path={'/activities/:id'} component={ActivityDetails}/>
+                        <Route key={location.key} path={['/createActivity', '/manageActivity/:id']}
+                               component={ActivityFormModal}/>
+                    </Switch>
+                </Container>
+            </>
+        )}/>
+    </>)
 };
 
 export default withRouter(observer(App));
