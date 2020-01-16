@@ -5,31 +5,27 @@ import {Card, Image, Button, Icon} from 'semantic-ui-react'
 import {IActivity} from "../models/activity";
 
 type IProps = {
-    selectedActivity: IActivity | undefined;
-    handleModalForm: () => void;
+    activity: IActivity | undefined;
 }
 
-const ActivityCard: React.FC<IProps> = ({
-                                            selectedActivity, handleModalForm
-                                        }) => {
-
+const ActivityCard: React.FC<IProps> = ({activity}) => {
     return (
         <Card fluid>
-            <Image src={`/assets/categoryImages/${selectedActivity?.category}.jpg`} wrapped ui={false}/>
+            <Image src={`/assets/categoryImages/${activity?.category}.jpg`} wrapped ui={false}/>
             <Card.Content>
-                <Card.Header>{selectedActivity?.title}</Card.Header>
+                <Card.Header>{activity?.title}</Card.Header>
                 <Card.Meta>
-                    <span>{selectedActivity?.date}</span>
+                    <span>{activity?.date}</span>
                 </Card.Meta>
                 <Card.Description>
-                    {selectedActivity?.description}
+                    {activity?.description}
                 </Card.Description>
             </Card.Content>
             <Card.Content extra>
 
                 <Button.Group>
                     <Button animated basic positive type={'button'}
-                            as={Link} to={`/manageActivity/${selectedActivity?.id}`}>
+                            as={Link} to={`/manageActivity/${activity?.id}`}>
                         <Button.Content hidden>Edit</Button.Content>
                         <Button.Content visible>
                             <Icon name={'edit'}/>

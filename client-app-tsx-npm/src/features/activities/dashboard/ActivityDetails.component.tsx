@@ -12,23 +12,17 @@ interface DetailParams {
 
 const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({match}) => {
     const ActivityStore = useContext(activityStore);
-    const {activity, setEditMode, setOpenForm, loadActivity, loading} = ActivityStore;
+    const {activity, loading, getActivityById} = ActivityStore;
 
     useEffect(() => {
-        loadActivity(match.params.id)
-    }, [loadActivity, match]);
-
-    const handleModalForm = () => {
-        setEditMode(true);
-        setOpenForm(true);
-    };
+        getActivityById(match.params.id)
+    }, [getActivityById, match.params.id]);
 
     if (loading) return <LoadingSpinner content={'Loading activity...'} inverted={true}/>;
 
     return (
         <ActivityCard
-            selectedActivity={activity}
-            handleModalForm={handleModalForm}
+            activity={activity}
         />)
 };
 

@@ -1,5 +1,6 @@
 import React, {FormEvent, useContext, useState, useEffect} from "react";
 import {Form, Segment, Button, Icon} from "semantic-ui-react";
+import TextareaAutosize from "react-textarea-autosize";
 import {useHistory} from 'react-router-dom';
 import {v4 as uuid} from 'uuid';
 
@@ -8,11 +9,8 @@ import activityStore from "../../../app/store/Activity.store";
 import {IActivity} from "../../../app/models/activity";
 import {observer} from "mobx-react-lite";
 
-type IProps = {
-    activityId: string | null
-}
 
-const ActivityForm: React.FC<IProps> = ({activityId}) => {
+const ActivityForm = () => {
     const ActivityStore = useContext(activityStore);
     const {
         editMode,
@@ -20,9 +18,8 @@ const ActivityForm: React.FC<IProps> = ({activityId}) => {
         setOpenForm,
         editActivity,
         createActivity,
-        loadActivity,
         activity,
-        setSelectedActivityNull
+        setActivityNull
     } = ActivityStore;
 
     // const initForm = () => {
@@ -38,7 +35,7 @@ const ActivityForm: React.FC<IProps> = ({activityId}) => {
     //     }
     // };
 
-    const [initActivity, setInitActivity] = useState<IActivity>({
+    const [initForm, setInitForm] = useState<IActivity>({
         id: '',
         title: '',
         category: '',
@@ -50,27 +47,24 @@ const ActivityForm: React.FC<IProps> = ({activityId}) => {
     const history = useHistory();
 
     useEffect(() => {
-        if (activityId) {
-            loadActivity(activityId).then(() => {
-                activity && setInitActivity(activity)
-            });
-        }
+        activity && setInitForm(activity);
         return () => {
-            setSelectedActivityNull()
+            setActivityNull()
         }
-    }, [loadActivity, setSelectedActivityNull, activityId, activity]);
+    }, [setActivityNull, activity]);
 
     const handleSubmit = async () => {
         if (editMode && activity) {
-            await editActivity({id: activity?.id, ...initActivity});
+            await editActivity({id: activity?.id, ...initForm});
         } else {
-            await createActivity({...initActivity, id: uuid()}).then(() => closeForm('/activities'));
+            const id = uuid();
+            await createActivity({...initForm, id}).then(() => closeForm(`/activities/${id}`));
         }
     };
 
     const handleChange = (e: FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {name, value} = e.currentTarget;
-        setInitActivity({...initActivity, [name]: value});
+        setInitForm({...initForm, [name]: value});
     };
 
     const handleCancel = () => {
@@ -91,42 +85,43 @@ const ActivityForm: React.FC<IProps> = ({activityId}) => {
             <Form onSubmit={handleSubmit}>
                 <Form.Input
                     label='Title' placeholder='Title'
-                    value={initActivity.title}
+                    value={initForm.title}
                     name={'title'}
                     onChange={handleChange}
                 />
                 <Form.TextArea
-                    rows={2}
+                    control={TextareaAutosize}
                     name={'description'}
                     label='Description'
                     placeholder='Description'
-                    value={initActivity.description}
+                    value={initForm.description}
+                    useCacheForDOMMeasurements
                     onChange={handleChange}
                 />
                 <Form.Input
                     label='Category'
                     name={'category'}
                     placeholder='Category'
-                    value={initActivity.category}
+                    value={initForm.category}
                     onChange={handleChange}/>
                 <Form.Input
                     label='Venue'
                     name={'venue'}
                     placeholder='Venue'
-                    value={initActivity.venue}
+                    value={initForm.venue}
                     onChange={handleChange}/>
                 <Form.Input
                     label='City'
                     name={'city'}
                     placeholder='City'
-                    value={initActivity.city}
+                    value={initForm.city}
                     onChange={handleChange}/>
                 <Form.Input
                     type={'datetime-local'}
                     name={'date'}
                     label='Date'
                     placeholder='Date'
-                    value={initActivity.date}
+                    value={initForm.date}
                     onChange={handleChange}/>
 
                 <Button.Group floated={"right"}>

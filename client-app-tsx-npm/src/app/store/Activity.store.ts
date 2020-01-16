@@ -60,6 +60,23 @@ class ActivityStore {
         }
     };
 
+
+    @action getActivityById = async (id: string) => {
+        this.loading = true;
+        try {
+            const response = await Activities.details(id);
+            runInAction('Getting activity', () => {
+                this.activity = response;
+            });
+        } catch (e) {
+            console.log(e)
+        } finally {
+            runInAction(() => {
+                this.loading = false;
+            })
+        }
+    };
+
     @action selectActivity = (id: string) => {
         // this.activity = this.activityRegistry.get(id);
     };
@@ -125,7 +142,7 @@ class ActivityStore {
         this.openForm = mode;
     };
 
-    @action setSelectedActivityNull = () => {
+    @action setActivityNull = () => {
         this.activity = undefined;
     };
 }

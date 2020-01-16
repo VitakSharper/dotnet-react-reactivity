@@ -5,6 +5,7 @@ import {Header, Modal} from 'semantic-ui-react'
 import ActivityForm from "../activities/dashboard/ActivityForm.component";
 import {observer} from "mobx-react-lite";
 import activityStore from "../../app/store/Activity.store";
+import LoadingSpinner from "../../app/layout/LoadingSpinner.component";
 
 interface DetailParams {
     id: string;
@@ -12,19 +13,23 @@ interface DetailParams {
 
 const ActivityFormModal: React.FC<RouteComponentProps<DetailParams>> = ({match}) => {
     const ActivityStore = useContext(activityStore);
-    const {openForm, editMode, activity, setEditMode, setOpenForm, setSelectedActivityNull} = ActivityStore;
+    const {openForm, loading, editMode, activity, setEditMode, setOpenForm, setActivityNull, getActivityById} = ActivityStore;
 
     useEffect(() => {
         if (match.params.id) {
-            setEditMode(true);
-            setOpenForm(true);
+            getActivityById(match.params.id).then(() => {
+                setEditMode(true);
+                setOpenForm(true);
+            });
         } else {
-            setSelectedActivityNull();
+            setActivityNull();
             setEditMode(false);
             setOpenForm(true);
         }
-    }, [setEditMode, setOpenForm, setSelectedActivityNull, match.params.id]);
+    }, [setEditMode, setOpenForm, setActivityNull, getActivityById, match.params.id]);
 
+    if (loading)
+        return (<LoadingSpinner content={'Loading activities...'} inverted={true}/>);
 
     return (
         <Modal open={openForm} basic size='small'>
@@ -33,7 +38,7 @@ const ActivityFormModal: React.FC<RouteComponentProps<DetailParams>> = ({match})
             <Modal.Content>
             </Modal.Content>
             <Modal.Actions>
-                <ActivityForm activityId={match.params?.id}/>
+                <ActivityForm/>
             </Modal.Actions>
         </Modal>)
 };
