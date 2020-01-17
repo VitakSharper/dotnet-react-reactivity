@@ -2,11 +2,11 @@ import React, {useContext, Fragment} from "react";
 import {Item, Segment, Label} from "semantic-ui-react";
 import {useHistory} from 'react-router-dom';
 
-import ActivityItem from "../../../app/layout/ActivityItem.component";
-import activityStore from "../../../app/store/Activity.store";
+import ActivityDashboardItem from "../../../components/ActivityDashboardItem.component";
+import activityStore from "../../../store/Activity.store";
 import {observer} from "mobx-react-lite";
 
-const ActivityList = () => {
+const ActivityDashboardList = () => {
     const ActivityStore = useContext(activityStore);
     const {target, submitting, deleteActivity, activitiesByDate} = ActivityStore;
 
@@ -25,7 +25,7 @@ const ActivityList = () => {
                             <Label size={'large'} color={'blue'} ribbon>{group}</Label>
                             <Item.Group>
                                 {activities.map((activity) => (
-                                    <ActivityItem
+                                    <ActivityDashboardItem
                                         key={activity.id}
                                         activity={activity}
                                         submitting={submitting}
@@ -42,4 +42,4 @@ const ActivityList = () => {
     )
 };
 
-export default observer(ActivityList);
+export default observer(ActivityDashboardList);

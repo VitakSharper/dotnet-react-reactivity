@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter} from 'react-router-dom';
 
-import './app/layout/styles.scss';
-import App from './app/layout/App';
-import ScrollToTop from "./app/layout/ScrollToTop.component";
+import './styles.scss';
+import App from './app/App';
+import ScrollToTop from "./app/components/ScrollToTop.component";
 import * as serviceWorker from './serviceWorker';
 
 const app = (

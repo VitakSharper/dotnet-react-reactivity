@@ -8,7 +8,8 @@ type IProps = {
     activity: IActivity | undefined;
 }
 
-const ActivityCard: React.FC<IProps> = ({activity}) => {
+
+const ActivityDetailCard: React.FC<IProps> = ({activity}) => {
     return (
         <Card fluid>
             <Image src={`/assets/categoryImages/${activity?.category}.jpg`} wrapped ui={false}/>
@@ -44,4 +45,4 @@ const ActivityCard: React.FC<IProps> = ({activity}) => {
         </Card>)
 };
 
-export default ActivityCard
+export default ActivityDetailCard

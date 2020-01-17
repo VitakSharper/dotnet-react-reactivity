@@ -4,11 +4,11 @@ import {observer} from "mobx-react-lite";
 import {Container} from "semantic-ui-react";
 
 
-import NavBar from "../../features/nav/NavBar.component";
-import HomePage from "../../features/home/HomePage";
-import ActivityDashboard from "../../features/activities/dashboard/AcivityDashboard";
-import ActivityDetails from "../../features/activities/dashboard/ActivityDetails.component";
-import ActivityFormModal from "../../features/nav/ActivityFormModal.component";
+import NavBar from "./pages/nav/NavBar.component";
+import HomePage from "./pages/home/HomePage";
+import ActivityDashboard from "./pages/activities/dashboard/AcivityDashboard.page";
+import ActivityDetails from "./pages/activities/activityDetail/ActivityDetails.page";
+import ActivityFormModal from "./components/ActivityFormModal.component";
 
 const App: React.FC<RouteComponentProps> = ({location}) => {
 

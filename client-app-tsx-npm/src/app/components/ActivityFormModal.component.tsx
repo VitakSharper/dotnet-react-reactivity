@@ -2,10 +2,10 @@ import React, {useContext, useEffect} from 'react'
 import {RouteComponentProps} from 'react-router';
 import {Header, Modal} from 'semantic-ui-react'
 
-import ActivityForm from "../activities/dashboard/ActivityForm.component";
+import ActivityForm from "./ActivityForm.component";
 import {observer} from "mobx-react-lite";
-import activityStore from "../../app/store/Activity.store";
-import LoadingSpinner from "../../app/layout/LoadingSpinner.component";
+import activityStore from "../store/Activity.store";
+import LoadingSpinner from "./LoadingSpinner.component";
 
 interface DetailParams {
     id: string;

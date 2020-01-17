@@ -5,8 +5,8 @@ import {useHistory} from 'react-router-dom';
 import {v4 as uuid} from 'uuid';
 
 
-import activityStore from "../../../app/store/Activity.store";
-import {IActivity} from "../../../app/models/activity";
+import activityStore from "../store/Activity.store";
+import {IActivity} from "../models/activity";
 import {observer} from "mobx-react-lite";
 
 

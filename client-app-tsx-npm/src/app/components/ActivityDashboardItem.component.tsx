@@ -10,7 +10,7 @@ type IProps = {
     deleteActivity: (id: string, e: SyntheticEvent<HTMLButtonElement>) => void;
 }
 
-const ActivityItem: React.FC<IProps> = ({activity, submitting, target, deleteActivity, handleView}) => {
+const ActivityDashboardItem: React.FC<IProps> = ({activity, submitting, target, deleteActivity, handleView}) => {
     const {date, category, city, description, title, venue, id} = activity;
     return (
         <Segment.Group>
@@ -63,4 +63,4 @@ const ActivityItem: React.FC<IProps> = ({activity, submitting, target, deleteAct
     )
 };
 
-export default ActivityItem;
+export default ActivityDashboardItem;
