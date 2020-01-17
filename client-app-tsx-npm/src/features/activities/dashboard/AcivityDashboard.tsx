@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from "react";
 import {Grid, Segment} from "semantic-ui-react";
 
-import ActivitiesItems from "./Activities.component";
+import ActivityList from "./ActivityList.component";
 import LoadingSpinner from "../../../app/layout/LoadingSpinner.component";
 
 import activityStore from "../../../app/store/Activity.store";
@@ -9,7 +9,7 @@ import {observer} from "mobx-react-lite";
 
 const ActivityDashboard = () => {
     const ActivityStore = useContext(activityStore);
-    const {loadActivities, loading, activitiesByDate} = ActivityStore;
+    const {loadActivities, loading} = ActivityStore;
 
     useEffect(() => {
         loadActivities()
@@ -22,7 +22,7 @@ const ActivityDashboard = () => {
                     {
                         loading
                             ? (<LoadingSpinner content={'Loading activities...'} inverted={true}/>)
-                            : (<ActivitiesItems activities={activitiesByDate}/>)
+                            : (<ActivityList/>)
                     }
                 </Grid.Column>
                 <Grid.Column width={6}>

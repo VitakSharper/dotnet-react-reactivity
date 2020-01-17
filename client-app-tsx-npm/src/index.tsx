@@ -4,7 +4,7 @@ import {BrowserRouter} from 'react-router-dom';
 
 import './app/layout/styles.scss';
 import App from './app/layout/App';
-import ScrollToTop from "./app/layout/ScrollToTop";
+import ScrollToTop from "./app/layout/ScrollToTop.component";
 import * as serviceWorker from './serviceWorker';
 
 const app = (

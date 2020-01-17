@@ -15,13 +15,44 @@ class ActivityStore {
     @observable target = '';
 
     @computed get activitiesByDate() {
-        return Array.from(this.activityRegistry.values()).slice().sort(((a, b) => Date.parse(a.date) - Date.parse(b.date)))
+        return this.groupActivitiesByDate(Array.from(this.activityRegistry.values()))
+    }
+
+    groupActivitiesByDate(activities: IActivity[]) {
+        const sortedActivities = activities.slice().sort(
+            (a, b) => Date.parse(a.date) - Date.parse(b.date)
+        );
+
+        // const transformedDate = (date: string) => {
+        //     return date.split('T')[0];
+        // };
+        //
+        // const dateCategory = sortedActivities.reduce((acc, item) => ({
+        //     ...acc,
+        //     [transformedDate(item.date)]: []
+        // }), {} as { [key: string]: IActivity[] });
+        //
+        // return Object.entries(
+        //     sortedActivities.reduce((acc, item) => {
+        //         acc[transformedDate(item.date)] = [...acc[transformedDate(item.date)], item];
+        //         return acc;
+        //     }, dateCategory)
+        // );
+
+        return Object.entries(
+            sortedActivities.reduce((acc, v) => {
+                const date = v.date.split('T')[0];
+                acc[date] = acc[date] ? [...acc[date], v] : [v];
+                return acc;
+            }, {} as { [key: string]: IActivity[] })
+        );
     }
 
     @action loadActivities = async () => {
         this.loading = true;
         try {
             const response = await Activities.list();
+            console.log('Pre loading: ', this.groupActivitiesByDate(response));
             runInAction('Loading Activities', () => {
                 this.activityRegistry = response
                     .map(a => {
