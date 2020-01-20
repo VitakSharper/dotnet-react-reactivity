@@ -6,6 +6,13 @@ import ActivityDashboardItem from "../../../components/ActivityDashboardItem.com
 import activityStore from "../../../store/Activity.store";
 import {observer} from "mobx-react-lite";
 
+const styles = {
+    activityListSegment: {
+        background: '#E3F2FD',
+        padding: 0
+    }
+};
+
 const ActivityDashboardList = () => {
     const ActivityStore = useContext(activityStore);
     const {target, submitting, deleteActivity, activitiesByDate} = ActivityStore;
@@ -21,7 +28,7 @@ const ActivityDashboardList = () => {
             {activitiesByDate.map(([group, activities]) => (
                 <Fragment key={group}>
                     <Segment.Group>
-                        <Segment clearing style={{background: '#E3F2FD'}}>
+                        <Segment clearing style={styles.activityListSegment}>
                             <Label size={'large'} color={'blue'} ribbon>{group}</Label>
                             <Item.Group>
                                 {activities.map((activity) => (

@@ -52,7 +52,6 @@ class ActivityStore {
         this.loading = true;
         try {
             const response = await Activities.list();
-            console.log('Pre loading: ', this.groupActivitiesByDate(response));
             runInAction('Loading Activities', () => {
                 this.activityRegistry = response
                     .map(a => {

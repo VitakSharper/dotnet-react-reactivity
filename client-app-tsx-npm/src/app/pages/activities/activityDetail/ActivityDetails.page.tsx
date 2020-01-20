@@ -1,10 +1,10 @@
 import React, {useContext, useEffect} from "react";
 import {RouteComponentProps} from 'react-router';
 
-import ActivityDetailCard from "../../../components/ActivityDetailCard.component";
 import activityStore from "../../../store/Activity.store";
 import {observer} from "mobx-react-lite";
 import LoadingSpinner from "../../../components/LoadingSpinner.component";
+import ActivityDetailGrid from "../../../components/ActivityDetailGrid.component";
 
 interface DetailParams {
     id: string;
@@ -12,7 +12,7 @@ interface DetailParams {
 
 const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({match}) => {
     const ActivityStore = useContext(activityStore);
-    const {activity, loading, getActivityById} = ActivityStore;
+    const {loading, getActivityById} = ActivityStore;
 
     useEffect(() => {
         getActivityById(match.params.id)
@@ -20,7 +20,8 @@ const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({match}) =
 
     if (loading) return <LoadingSpinner content={'Loading activity...'} inverted={true}/>;
 
-    return (<ActivityDetailCard activity={activity}/>)
+    // return (<ActivityDetailCard activity={activity}/>)
+    return (<ActivityDetailGrid/>)
 };
 
 export default observer(ActivityDetails);
