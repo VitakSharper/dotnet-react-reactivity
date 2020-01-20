@@ -1,14 +1,14 @@
 import React, {FormEvent, useContext, useState, useEffect} from "react";
-import {Form, Segment, Button, Icon} from "semantic-ui-react";
-import TextareaAutosize from "react-textarea-autosize";
 import {useHistory} from 'react-router-dom';
 import {v4 as uuid} from 'uuid';
 
+import {Form, Segment, Grid, Button, Icon} from "semantic-ui-react";
+
+import TextareaAutosize from "react-textarea-autosize";
 
 import activityStore from "../store/Activity.store";
 import {IActivity} from "../models/activity";
 import {observer} from "mobx-react-lite";
-
 
 const ActivityForm = () => {
     const ActivityStore = useContext(activityStore);
@@ -22,18 +22,7 @@ const ActivityForm = () => {
         setActivityNull
     } = ActivityStore;
 
-    // const initForm = () => {
-    //     if (selectedActivity) {
-    //         return (({id, ...o}) => o)(selectedActivity)
-    //     } else return {
-    //         title: '',
-    //         category: '',
-    //         description: '',
-    //         date: '',
-    //         city: '',
-    //         venue: ''
-    //     }
-    // };
+    // return (({id, ...o}) => o)(selectedActivity) // return object elements without id ;
 
     const [initForm, setInitForm] = useState<IActivity>({
         id: '',
@@ -81,66 +70,71 @@ const ActivityForm = () => {
     };
 
     return (
-        <Segment clearing>
-            <Form onSubmit={handleSubmit}>
-                <Form.Input
-                    label='Title' placeholder='Title'
-                    value={initForm.title}
-                    name={'title'}
-                    onChange={handleChange}
-                />
-                <Form.TextArea
-                    control={TextareaAutosize}
-                    name={'description'}
-                    label='Description'
-                    placeholder='Description'
-                    value={initForm.description}
-                    useCacheForDOMMeasurements
-                    onChange={handleChange}
-                />
-                <Form.Input
-                    label='Category'
-                    name={'category'}
-                    placeholder='Category'
-                    value={initForm.category}
-                    onChange={handleChange}/>
-                <Form.Input
-                    label='Venue'
-                    name={'venue'}
-                    placeholder='Venue'
-                    value={initForm.venue}
-                    onChange={handleChange}/>
-                <Form.Input
-                    label='City'
-                    name={'city'}
-                    placeholder='City'
-                    value={initForm.city}
-                    onChange={handleChange}/>
-                <Form.Input
-                    type={'datetime-local'}
-                    name={'date'}
-                    label='Date'
-                    placeholder='Date'
-                    value={initForm.date}
-                    onChange={handleChange}/>
+        <Grid>
+            <Grid.Column width={10}>
+                <Segment clearing>
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Input
+                            label='Title' placeholder='Title'
+                            value={initForm.title}
+                            name={'title'}
+                            onChange={handleChange}
+                        />
+                        <Form.TextArea
+                            control={TextareaAutosize}
+                            name={'description'}
+                            label='Description'
+                            placeholder='Description'
+                            value={initForm.description}
+                            useCacheForDOMMeasurements
+                            onChange={handleChange}
+                        />
+                        <Form.Input
+                            label='Category'
+                            name={'category'}
+                            placeholder='Category'
+                            value={initForm.category}
+                            onChange={handleChange}/>
+                        <Form.Input
+                            label='Venue'
+                            name={'venue'}
+                            placeholder='Venue'
+                            value={initForm.venue}
+                            onChange={handleChange}/>
+                        <Form.Input
+                            label='City'
+                            name={'city'}
+                            placeholder='City'
+                            value={initForm.city}
+                            onChange={handleChange}/>
+                        <Form.Input
+                            type={'datetime-local'}
+                            name={'date'}
+                            label='Date'
+                            placeholder='Date'
+                            value={initForm.date}
+                            onChange={handleChange}/>
 
-                <Button.Group floated={"right"}>
-                    <Button animated basic positive loading={submitting} type={'submit'}>
-                        <Button.Content hidden>Submit</Button.Content>
-                        <Button.Content visible>
-                            <Icon name={'send'}/>
-                        </Button.Content>
-                    </Button>
-                    <Button.Or/>
-                    <Button animated type={'button'} basic negative onClick={handleCancel}>
-                        <Button.Content hidden>Cancel</Button.Content>
-                        <Button.Content visible>
-                            <Icon name={'cancel'}/>
-                        </Button.Content>
-                    </Button>
-                </Button.Group>
-            </Form>
-        </Segment>)
+                        <Button.Group floated={"right"}>
+                            <Button animated basic positive loading={submitting} type={'submit'}>
+                                <Button.Content hidden>Submit</Button.Content>
+                                <Button.Content visible>
+                                    <Icon name={'send'}/>
+                                </Button.Content>
+                            </Button>
+                            <Button.Or/>
+                            <Button animated type={'button'} basic negative onClick={handleCancel}>
+                                <Button.Content hidden>Cancel</Button.Content>
+                                <Button.Content visible>
+                                    <Icon name={'cancel'}/>
+                                </Button.Content>
+                            </Button>
+                        </Button.Group>
+                    </Form>
+                </Segment>
+            </Grid.Column>
+        </Grid>
+    )
 };
 
 export default observer(ActivityForm);
