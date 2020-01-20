@@ -19,6 +19,7 @@ namespace Application.Activities
             public string City { get; set; }
             public string Venue { get; set; }
         }
+
         public class Handler : IRequestHandler<Command>
         {
             private readonly DataContext _context;
@@ -27,6 +28,7 @@ namespace Application.Activities
             {
                 _context = context;
             }
+
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
                 var activity = new Activity
@@ -41,7 +43,7 @@ namespace Application.Activities
                 };
                 _context.Activities.Add(activity);
 
-                var success = await _context.SaveChangesAsync() > 0;
+                var success = await _context.SaveChangesAsync(cancellationToken) > 0;
                 if (success) return Unit.Value;
                 throw new Exception("Problem saving changes.");
             }
