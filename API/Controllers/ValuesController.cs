@@ -24,6 +24,9 @@ namespace API.Controllers
         {
             var values = await _context.Values.ToListAsync();
 
+            if (values == null)
+                return NotFound();
+
             return Ok(values);
         }
 
