@@ -15,6 +15,8 @@ const ActivityDashboard = () => {
         loadActivities()
     }, [loadActivities]);
 
+    // if (!activityRegistry) return <h2>Activity not found</h2>;
+
     return (
         <Segment>
             <Grid>

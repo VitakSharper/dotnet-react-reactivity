@@ -10,15 +10,17 @@ interface DetailParams {
     id: string;
 }
 
-const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({match}) => {
+const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({match, history}) => {
     const ActivityStore = useContext(activityStore);
-    const {loading, getActivityById} = ActivityStore;
+    const {loading, getActivityById, activity} = ActivityStore;
 
     useEffect(() => {
-        getActivityById(match.params.id)
+        getActivityById(match.params.id);
     }, [getActivityById, match.params.id]);
 
     if (loading) return <LoadingSpinner content={'Loading activity...'} inverted={true}/>;
+
+    if (!activity) return <h2>Activity not found</h2>;
 
     // return (<ActivityDetailCard activity={activity}/>)
     return (<ActivityDetailGrid/>)

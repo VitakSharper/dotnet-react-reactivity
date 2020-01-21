@@ -99,7 +99,7 @@ class ActivityStore {
                 this.activity = response;
             });
         } catch (e) {
-            console.log(e)
+            console.log(e);
         } finally {
             runInAction(() => {
                 this.loading = false;
