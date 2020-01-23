@@ -3,6 +3,8 @@ import {createContext, SyntheticEvent} from "react";
 import {IActivity} from "../models/activity";
 import Activities from "../api/agent";
 
+import {toast} from "react-toastify";
+
 configure({enforceActions: 'always'});
 
 class ActivityStore {
@@ -90,7 +92,6 @@ class ActivityStore {
         }
     };
 
-
     @action getActivityById = async (id: string) => {
         this.loading = true;
         try {
@@ -118,6 +119,7 @@ class ActivityStore {
             runInAction('Create new activity', () => {
                 this.activityRegistry.set(activity.id, activity);
                 this.activity = activity;
+                toast.info(`New activity added: ${activity.title}`);
             });
         } catch (e) {
             console.log(e);
@@ -135,6 +137,7 @@ class ActivityStore {
             runInAction('Update existing activity', () => {
                 this.activityRegistry.set(activity.id, activity);
                 this.selectActivity(activity.id);
+                toast.info(`Update ${activity.title} success `);
             })
         } catch (e) {
             console.log(e);

@@ -65,14 +65,16 @@ const ActivityDetailedHeader: React.FC<someProps> = ({activity}) => {
                         </Button.Content>
                     </Button>
                     <Button.Or/>
-                    <Button animated type={"button"} basic negative>
+                    <Button animated type={"button"} basic negative
+                            as={Link} to={'/activities'}>
                         <Button.Content hidden>Cancel</Button.Content>
                         <Button.Content visible>
                             <Icon name={"cancel"}/>
                         </Button.Content>
                     </Button>
                 </Button.Group>
-                <Button animated type={"button"} basic color={"blue"} floated={"right"}>
+                <Button animated type={"button"} basic color={"blue"} floated={"right"}
+                        as={Link} to={`/manageActivity/${activity?.id}`}>
                     <Button.Content hidden>Manage</Button.Content>
                     <Button.Content visible>
                         <Icon name={"folder outline"}/>

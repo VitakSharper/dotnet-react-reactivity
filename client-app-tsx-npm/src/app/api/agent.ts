@@ -14,7 +14,7 @@ axios.interceptors.response.use(undefined, err => {
         history.push('/notFound');
     }
     if (status === 400 && config.method === 'get' && data.errors.hasOwnProperty('id')) {
-        history.push('/notFound')
+        history.push('/notFound');
         toast.error(`💥 ${data.errors.id[0]}`);
     }
     if (status === 500) {
