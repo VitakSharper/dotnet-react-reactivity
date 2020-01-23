@@ -1,0 +1,20 @@
+install:
+ -- npm i react-widgets react-widgets-date-fns
+ -- npm i date-fns@2.0.0-alpha.13
+
+add this to index.tsx:
+ -- import 'react-widgets/lib/scss/react-widgets.scss';
+
+add this to index.tsx:
+ -- import dateFnsLocalizer from 'react-widgets-date-fns';
+ -- dateFnsLocalizer();
+
+ must declare a new declaration;
+ add in typings-custom folder a new ts file react-widgets-date-fns.d.ts;
+ and add  this in tsconfig.json file :   "include": [
+                                           "src",
+                                           "./typings-custom/**/*.ts"
+                                         ]
+For DatePicket:
+ -- import {DateTimePicker}from 'react-widgets';
+ -- npm install @types/react-widgets;

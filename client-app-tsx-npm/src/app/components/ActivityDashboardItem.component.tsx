@@ -1,6 +1,8 @@
 import React, {SyntheticEvent} from 'react'
 import {Item, Button, Label, Icon, Segment} from 'semantic-ui-react'
 import {IActivity} from "../models/activity";
+import {format} from 'date-fns';
+
 
 type IProps = {
     activity: IActivity;
@@ -16,8 +18,8 @@ const ActivityDashboardItem: React.FC<IProps> = ({activity, submitting, target, 
         <Segment.Group>
             <Segment>
                 <Label attached={"top"}>
-                    <Icon name={'clock'}/> {activity.date}
-                    <Icon name={'marker'}/> {activity.venue}, {activity.city}
+                    <Icon name={'clock'}/> {format(date!, 'h:mm a')}
+                    <Icon name={'marker'} style={{marginLeft: '1rem'}}/> {venue}, {city}
                 </Label>
                 <Item.Group>
                     <Item>
@@ -37,9 +39,9 @@ const ActivityDashboardItem: React.FC<IProps> = ({activity, submitting, target, 
                     Attendees will go here
                 </Segment>
                 <Segment clearing>
-                    <span>{activity.description}</span>
+                    <span>{description}</span>
                     <Button.Group floated={"right"}>
-                        <Button animated basic positive onClick={() => handleView(activity.id)}>
+                        <Button animated basic positive onClick={() => handleView(id)}>
                             <Button.Content hidden>View</Button.Content>
                             <Button.Content visible>
                                 <Icon name={'eye'}/>

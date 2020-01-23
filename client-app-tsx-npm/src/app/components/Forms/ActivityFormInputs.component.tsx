@@ -1,15 +1,18 @@
 import React from "react";
 import {Field} from "react-final-form";
 
+import {Form} from "semantic-ui-react";
+
 import TextInput from "./reusable/TextInput.component";
 import TextareaAutosize from "react-textarea-autosize";
 import TextAreaInput from "./reusable/TextAreaInput.component";
-import {IActivity} from "../../models/activity";
+import {IActivityFormValues} from "../../models/activity";
 import SelectInput from "./reusable/SelectInput.component";
 import {category} from "./reusable/selectOptions/categoryOptions";
+import DateInput from "./reusable/DateInput.component";
 
 interface IProps {
-    initForm: IActivity
+    initForm: IActivityFormValues
 }
 
 const ActivityFormInputs: React.FC<IProps> = ({initForm}) => {
@@ -51,14 +54,23 @@ const ActivityFormInputs: React.FC<IProps> = ({initForm}) => {
                 value={initForm.city}
                 component={TextInput}
             />
-            <Field
-                type={'datetime-local'}
-                name={'date'}
-                label='Date'
-                placeholder='Date'
-                value={initForm.date}
-                component={TextInput}
-            />
+            <Form.Group widths={'equal'}>
+                <Field
+                    name={'date'}
+                    placeholder='Date'
+                    date={true}
+                    value={initForm.date}
+                    component={DateInput}
+                />
+                <Field
+                    name={'time'}
+                    placeholder='Time'
+                    time={true}
+                    value={initForm.time}
+                    component={DateInput}
+                />
+            </Form.Group>
+
         </>
     )
 };

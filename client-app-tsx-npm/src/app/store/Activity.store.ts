@@ -22,7 +22,7 @@ class ActivityStore {
 
     groupActivitiesByDate(activities: IActivity[]) {
         const sortedActivities = activities.slice().sort(
-            (a, b) => Date.parse(a.date) - Date.parse(b.date)
+            (a, b) => a.date.getTime() - b.date.getTime()
         );
 
         // const transformedDate = (date: string) => {
@@ -43,7 +43,7 @@ class ActivityStore {
 
         return Object.entries(
             sortedActivities.reduce((acc, v) => {
-                const date = v.date.split('T')[0];
+                const date = v.date.toISOString().split('T')[0];
                 acc[date] = acc[date] ? [...acc[date], v] : [v];
                 return acc;
             }, {} as { [key: string]: IActivity[] })
@@ -57,7 +57,7 @@ class ActivityStore {
             runInAction('Loading Activities', () => {
                 this.activityRegistry = response
                     .map(a => {
-                        a.date = a.date.split('.')[0];
+                        a.date = new Date(a.date);
                         return a;
                     })
                     .reduce((acc, v) => acc.set(v.id, v), new Map<string, IActivity>());
@@ -80,6 +80,7 @@ class ActivityStore {
             try {
                 activity = await Activities.details(id);
                 runInAction('Getting activity', () => {
+                    // activity!.date = new Date(activity!.date);
                     this.activity = activity;
                 })
             } catch (e) {
@@ -97,6 +98,7 @@ class ActivityStore {
         try {
             const response = await Activities.details(id);
             runInAction('Getting activity', () => {
+                response.date = new Date(response.date);
                 this.activity = response;
             });
         } catch (e) {

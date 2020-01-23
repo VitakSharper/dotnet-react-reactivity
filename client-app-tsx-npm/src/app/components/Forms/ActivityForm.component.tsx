@@ -6,9 +6,10 @@ import {Form, Segment, Grid, Button, Icon} from "semantic-ui-react";
 import {Form as FinalForm, Field} from 'react-final-form';
 
 import activityStore from "../../store/Activity.store";
-import {IActivity} from "../../models/activity";
+import {IActivity, IActivityFormValues} from "../../models/activity";
 import {observer} from "mobx-react-lite";
 import ActivityFormInputs from "./ActivityFormInputs.component";
+import {combineDateAndTime} from "./util";
 
 const ActivityForm = () => {
     const ActivityStore = useContext(activityStore);
@@ -24,15 +25,17 @@ const ActivityForm = () => {
 
     // return (({id, ...o}) => o)(selectedActivity) // return object elements without id ;
 
-    const [initForm, setInitForm] = useState<IActivity>({
-        id: '',
+    const [initForm, setInitForm] = useState<IActivityFormValues>({
+        id: undefined,
         title: '',
         category: '',
         description: '',
-        date: '',
+        date: undefined,
+        time: undefined,
         city: '',
         venue: ''
     });
+
     const history = useHistory();
 
     useEffect(() => {
@@ -70,7 +73,9 @@ const ActivityForm = () => {
     };
 
     const handleFinalFormSubmit = (values: any) => {
-        console.log('Final Form: ', values)
+        const dateAndTime = combineDateAndTime(values.date, values.time);
+        const activity = (({date, time, ...activity}) => ({...activity, dateAndTime}))(values);
+        console.log('Final Form: ', activity)
     };
 
     return (

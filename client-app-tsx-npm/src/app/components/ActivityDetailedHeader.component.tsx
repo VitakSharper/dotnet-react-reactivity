@@ -2,6 +2,7 @@ import React from "react";
 import {observer} from "mobx-react-lite";
 
 import {Link} from "react-router-dom";
+import {format} from 'date-fns'
 
 import {Segment, Item, Header, Button, Image, Icon} from "semantic-ui-react";
 
@@ -47,7 +48,7 @@ const ActivityDetailedHeader: React.FC<someProps> = ({activity}) => {
                                     content={activity?.title}
                                     style={styles.header}
                                 />
-                                <p>{activity?.date}</p>
+                                <p>{format(activity?.date!, 'eeee do MMMM')}</p>
                                 <p>
                                     Hosted by <strong>Bob</strong>
                                 </p>
