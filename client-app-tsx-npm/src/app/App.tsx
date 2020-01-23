@@ -9,7 +9,7 @@ import HomePage from "./pages/home/HomePage";
 import NotFound from "./components/NotFound.component";
 import ActivityDashboard from "./pages/activities/dashboard/AcivityDashboard.page";
 import ActivityDetails from "./pages/activities/activityDetail/ActivityDetails.page";
-import ActivityFormModal from "./components/ActivityFormModal.component";
+import ActivityFormModal from "./components/Forms/ActivityFormModal.component";
 import {ToastContainer} from "react-toastify";
 
 const App: React.FC<RouteComponentProps> = ({location}) => {

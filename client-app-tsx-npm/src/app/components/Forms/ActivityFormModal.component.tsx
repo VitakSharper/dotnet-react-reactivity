@@ -4,8 +4,8 @@ import {Header, Modal} from 'semantic-ui-react'
 
 import ActivityForm from "./ActivityForm.component";
 import {observer} from "mobx-react-lite";
-import activityStore from "../store/Activity.store";
-import LoadingSpinner from "./LoadingSpinner.component";
+import activityStore from "../../store/Activity.store";
+import LoadingSpinner from "../LoadingSpinner.component";
 
 interface DetailParams {
     id: string;
