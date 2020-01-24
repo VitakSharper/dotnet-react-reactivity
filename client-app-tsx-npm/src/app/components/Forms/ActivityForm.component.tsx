@@ -6,7 +6,7 @@ import {Form, Segment, Grid, Button, Icon} from "semantic-ui-react";
 import {Form as FinalForm, Field} from 'react-final-form';
 
 import activityStore from "../../store/Activity.store";
-import {IActivity, IActivityFormValues} from "../../models/activity";
+import {ActivityFormValues, IActivity, IActivityFormValues} from "../../models/activity";
 import {observer} from "mobx-react-lite";
 import ActivityFormInputs from "./ActivityFormInputs.component";
 import {combineDateAndTime} from "./util";
@@ -16,33 +16,22 @@ const ActivityForm = () => {
     const {
         editMode,
         submitting,
+        loading,
         setOpenForm,
         editActivity,
         createActivity,
         activity,
-        setActivityNull
+        setActivityNull,
     } = ActivityStore;
 
     // return (({id, ...o}) => o)(selectedActivity) // return object elements without id ;
 
-    const [initForm, setInitForm] = useState<IActivityFormValues>({
-        id: undefined,
-        title: '',
-        category: '',
-        description: '',
-        date: undefined,
-        time: undefined,
-        city: '',
-        venue: ''
-    });
+    const [initForm, setInitForm] = useState(new ActivityFormValues());
 
     const history = useHistory();
 
     useEffect(() => {
-        activity && setInitForm(activity);
-        return () => {
-            setActivityNull()
-        }
+        activity && setInitForm(new ActivityFormValues(activity));
     }, [setActivityNull, activity]);
 
     // const handleSubmit = async () => {
@@ -67,15 +56,21 @@ const ActivityForm = () => {
         }
     };
 
-    const closeForm = (url: string) => {
+    const closeForm = (url?: string) => {
         setOpenForm(false);
-        history.push(url)
+        url && history.push(url)
     };
 
-    const handleFinalFormSubmit = (values: any) => {
+    const handleFinalFormSubmit = async (values: any) => {
         const dateAndTime = combineDateAndTime(values.date, values.time);
-        const activity = (({date, time, ...activity}) => ({...activity, dateAndTime}))(values);
-        console.log('Final Form: ', activity)
+        const activity = (({date, time, ...activity}) => ({...activity, date: dateAndTime}))(values);
+
+        if (editMode && activity) {
+            await editActivity(activity).then(() => closeForm());
+        } else {
+            const id = uuid();
+            await createActivity({...activity, id}).then(() => closeForm());
+        }
     };
 
     return (
@@ -83,12 +78,11 @@ const ActivityForm = () => {
             <Grid.Column width={10}>
                 <Segment clearing>
                     <FinalForm
+                        initialValues={initForm}
                         onSubmit={handleFinalFormSubmit}
                         render={({handleSubmit}) => (
                             <Form onSubmit={handleSubmit}>
-
                                 <ActivityFormInputs initForm={initForm}/>
-
                                 <Button.Group floated={"right"}>
                                     <Button animated basic positive loading={submitting} type={'submit'}>
                                         <Button.Content hidden>Submit</Button.Content>
@@ -104,7 +98,6 @@ const ActivityForm = () => {
                                         </Button.Content>
                                     </Button>
                                 </Button.Group>
-
                             </Form>
                         )}/>
                 </Segment>

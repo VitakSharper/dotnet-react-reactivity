@@ -12,11 +12,13 @@ interface DetailParams {
 
 const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({match, history}) => {
     const ActivityStore = useContext(activityStore);
-    const {loading, getActivityById, activity} = ActivityStore;
+    const {loading, getActivityById, activity, setActivity} = ActivityStore;
 
     useEffect(() => {
-        getActivityById(match.params.id);
-    }, [getActivityById, match.params.id]);
+        getActivityById(match.params.id).then(activity => {
+            setActivity(activity);
+        });
+    }, [getActivityById, match.params.id, setActivity]);
 
     if (loading) return <LoadingSpinner content={'Loading activity...'} inverted={true}/>;
 

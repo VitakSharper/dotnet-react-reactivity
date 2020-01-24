@@ -1,6 +1,6 @@
 import React, {useContext, useEffect} from 'react'
 import {RouteComponentProps} from 'react-router';
-import {Header, Modal} from 'semantic-ui-react'
+import {Header, Modal, Segment} from 'semantic-ui-react'
 
 import ActivityForm from "./ActivityForm.component";
 import {observer} from "mobx-react-lite";
@@ -13,11 +13,12 @@ interface DetailParams {
 
 const ActivityFormModal: React.FC<RouteComponentProps<DetailParams>> = ({match}) => {
     const ActivityStore = useContext(activityStore);
-    const {openForm, loading, editMode, activity, setEditMode, setOpenForm, setActivityNull, getActivityById} = ActivityStore;
+    const {openForm, loading, editMode, activity, setEditMode, setOpenForm, setActivityNull, getActivityById, setActivity} = ActivityStore;
 
     useEffect(() => {
         if (match.params.id) {
-            getActivityById(match.params.id).then(() => {
+            getActivityById(match.params.id).then((activity) => {
+                setActivity(activity);
                 setEditMode(true);
                 setOpenForm(true);
             });
@@ -26,21 +27,21 @@ const ActivityFormModal: React.FC<RouteComponentProps<DetailParams>> = ({match})
             setEditMode(false);
             setOpenForm(true);
         }
-    }, [setEditMode, setOpenForm, setActivityNull, getActivityById, match.params.id]);
+    }, [setEditMode, setOpenForm, setActivityNull, getActivityById, match.params.id, setActivity]);
 
     if (loading)
         return (<LoadingSpinner content={'Loading activities...'} inverted={true}/>);
 
     return (
         <Modal open={openForm} basic size='small'>
-            <Header icon={editMode ? 'edit' : 'add'}
-                    content={editMode ? `EDIT ${activity?.title}` : 'CREATE A NEW ACTIVITY'}/>
-            <Modal.Content>
-            </Modal.Content>
-            <Modal.Actions>
-                <ActivityForm/>
-            </Modal.Actions>
-        </Modal>)
+                <Header icon={editMode ? 'edit' : 'add'}
+                        content={editMode ? `EDIT ${activity?.title}` : 'CREATE A NEW ACTIVITY'}/>
+                <Modal.Content>
+                    <ActivityForm/>
+                </Modal.Content>
+
+        </Modal>
+    )
 };
 
 export default observer(ActivityFormModal)

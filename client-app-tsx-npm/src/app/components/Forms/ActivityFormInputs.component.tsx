@@ -27,7 +27,7 @@ const ActivityFormInputs: React.FC<IProps> = ({initForm}) => {
             <Field
                 name={'description'}
                 placeholder='Description'
-                value={initForm.description}
+                value={initForm!.description}
                 useCacheForDOMMeasurements
                 control={TextareaAutosize}
                 component={TextAreaInput}

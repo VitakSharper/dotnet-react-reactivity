@@ -2,6 +2,7 @@ import {observable, action, computed, configure, runInAction} from "mobx";
 import {createContext, SyntheticEvent} from "react";
 import {IActivity} from "../models/activity";
 import Activities from "../api/agent";
+import {history} from "../../index";
 
 import {toast} from "react-toastify";
 
@@ -94,24 +95,28 @@ class ActivityStore {
     };
 
     @action getActivityById = async (id: string) => {
-        this.loading = true;
-        try {
-            const response = await Activities.details(id);
-            runInAction('Getting activity', () => {
-                response.date = new Date(response.date);
-                this.activity = response;
-            });
-        } catch (e) {
-            console.log(e);
-        } finally {
-            runInAction(() => {
-                this.loading = false;
-            })
+        const activity = this.activityRegistry.get(id);
+        if (activity) {
+            this.activity = activity;
+            return activity;
+        } else {
+            this.loading = true;
+            try {
+                const response = await Activities.details(id);
+                runInAction('Getting activity', () => {
+                    response.date = new Date(response.date);
+                    this.activity = response;
+                    this.activityRegistry.set(response.id, response);
+                });
+                return response;
+            } catch (e) {
+                console.log(e);
+            } finally {
+                runInAction(() => {
+                    this.loading = false;
+                })
+            }
         }
-    };
-
-    @action selectActivity = (id: string) => {
-        // this.activity = this.activityRegistry.get(id);
     };
 
     @action createActivity = async (activity: IActivity) => {
@@ -120,11 +125,13 @@ class ActivityStore {
             await Activities.create(activity);
             runInAction('Create new activity', () => {
                 this.activityRegistry.set(activity.id, activity);
-                this.activity = activity;
+                // this.activity = activity;
                 toast.info(`New activity added: ${activity.title}`);
             });
+            history.push(`/activities/${activity.id}`)
         } catch (e) {
-            console.log(e);
+            console.log(e.response);
+            toast.error(e.response.data.title)
         } finally {
             runInAction(() => {
                 this.submitting = false
@@ -138,11 +145,13 @@ class ActivityStore {
             await Activities.update(activity);
             runInAction('Update existing activity', () => {
                 this.activityRegistry.set(activity.id, activity);
-                this.selectActivity(activity.id);
+                // this.selectActivity(activity.id);
                 toast.info(`Update ${activity.title} success `);
-            })
+            });
+            history.push(`/activities/${activity.id}`)
         } catch (e) {
             console.log(e);
+            toast.error(e.response.data.title)
         } finally {
             runInAction(() => {
                 this.submitting = false
@@ -167,6 +176,10 @@ class ActivityStore {
                 this.target = '';
             })
         }
+    };
+
+    @action setActivity = (activity: IActivity) => {
+        this.activity = activity
     };
 
     @action setEditMode = (mode: boolean) => {
