@@ -3,23 +3,39 @@ import {useHistory} from 'react-router-dom';
 import {v4 as uuid} from 'uuid';
 
 import {Form, Segment, Grid, Button, Icon} from "semantic-ui-react";
-import {Form as FinalForm, Field} from 'react-final-form';
+import {Form as FinalForm} from 'react-final-form';
+
+import {combineValidators, composeValidators, hasLengthGreaterThan, isRequired} from 'revalidate';
 
 import activityStore from "../../store/Activity.store";
-import {ActivityFormValues, IActivity, IActivityFormValues} from "../../models/activity";
+import {ActivityFormValues} from "../../models/activity";
 import {observer} from "mobx-react-lite";
 import ActivityFormInputs from "./ActivityFormInputs.component";
 import {combineDateAndTime} from "./util";
+
+
+const validate = combineValidators({
+    title: isRequired({message: 'The title is required.'}),
+    category: isRequired({message: 'The category is required.'}),
+    description: composeValidators(
+        isRequired('Description'),
+        hasLengthGreaterThan(4)({message: 'Description needs to be at least 5 characters.'})
+    )(),
+    city: isRequired('City'),
+    venue: isRequired('Venue'),
+    date: isRequired('Date'),
+    time: isRequired('Time')
+});
 
 const ActivityForm = () => {
     const ActivityStore = useContext(activityStore);
     const {
         editMode,
         submitting,
-        loading,
         setOpenForm,
         editActivity,
         createActivity,
+        loading,
         activity,
         setActivityNull,
     } = ActivityStore;
@@ -79,12 +95,16 @@ const ActivityForm = () => {
                 <Segment clearing>
                     <FinalForm
                         initialValues={initForm}
+                        validate={validate}
                         onSubmit={handleFinalFormSubmit}
-                        render={({handleSubmit}) => (
+                        render={({handleSubmit, invalid, pristine}) => (
                             <Form onSubmit={handleSubmit}>
                                 <ActivityFormInputs initForm={initForm}/>
                                 <Button.Group floated={"right"}>
-                                    <Button animated basic positive loading={submitting} type={'submit'}>
+                                    <Button animated basic positive
+                                            loading={submitting}
+                                            disabled={loading || invalid || pristine}
+                                            type={'submit'}>
                                         <Button.Content hidden>Submit</Button.Content>
                                         <Button.Content visible>
                                             <Icon name={'send'}/>

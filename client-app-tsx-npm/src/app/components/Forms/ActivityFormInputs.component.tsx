@@ -11,13 +11,16 @@ import SelectInput from "./reusable/SelectInput.component";
 import {category} from "./reusable/selectOptions/categoryOptions";
 import DateInput from "./reusable/DateInput.component";
 
+import './formInputs.scss';
+
 interface IProps {
     initForm: IActivityFormValues
 }
 
+
 const ActivityFormInputs: React.FC<IProps> = ({initForm}) => {
     return (
-        <>
+        <div>
             <Field
                 placeholder='Title'
                 value={initForm.title}
@@ -71,7 +74,7 @@ const ActivityFormInputs: React.FC<IProps> = ({initForm}) => {
                 />
             </Form.Group>
 
-        </>
+        </div>
     )
 };
 

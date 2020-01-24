@@ -1,6 +1,6 @@
 import React, {useContext, useEffect} from 'react'
 import {RouteComponentProps} from 'react-router';
-import {Header, Modal, Segment} from 'semantic-ui-react'
+import {Header, Modal} from 'semantic-ui-react'
 
 import ActivityForm from "./ActivityForm.component";
 import {observer} from "mobx-react-lite";
@@ -34,11 +34,11 @@ const ActivityFormModal: React.FC<RouteComponentProps<DetailParams>> = ({match})
 
     return (
         <Modal open={openForm} basic size='small'>
-                <Header icon={editMode ? 'edit' : 'add'}
-                        content={editMode ? `EDIT ${activity?.title}` : 'CREATE A NEW ACTIVITY'}/>
-                <Modal.Content>
-                    <ActivityForm/>
-                </Modal.Content>
+            <Header icon={editMode ? 'edit' : 'add'}
+                    content={editMode ? `EDIT ${activity?.title}` : 'CREATE A NEW ACTIVITY'}/>
+            <Modal.Content>
+                <ActivityForm/>
+            </Modal.Content>
 
         </Modal>
     )
