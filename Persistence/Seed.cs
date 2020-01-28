@@ -37,7 +37,7 @@ namespace Persistence
                 };
                 foreach (var user in users)
                 {
-                    await userManager.CreateAsync(user, "4ERy3Kf2x"); // 4ERy3Kf2x
+                    await userManager.CreateAsync(user, "$%25Zh7Ph"); // $%25Zh7Ph
                 }
             }
 
