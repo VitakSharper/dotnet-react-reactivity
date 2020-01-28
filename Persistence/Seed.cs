@@ -1,14 +1,46 @@
-﻿using Microsoft.EntityFrameworkCore.Internal;
+﻿using Domain;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Activity = Domain.Activity;
 
 namespace Persistence
 {
     public class Seed
     {
-        public static void SeedData(DataContext context)
+        public static async Task SeedData(DataContext context, UserManager<AppUser> userManager)
         {
+            if (!userManager.Users.Any())
+            {
+                var users = new List<AppUser>
+                {
+                    new AppUser
+                    {
+                        DisplayName = "Vitax",
+                        UserName = "vitax",
+                        Email = "vitax@dot.net"
+                    },
+                    new AppUser
+                    {
+                        DisplayName = "Tom",
+                        UserName = "tom",
+                        Email = "tom@dot.net"
+                    },
+                    new AppUser
+                    {
+                        DisplayName = "Jane",
+                        UserName = "jane",
+                        Email = "jane@dot.net"
+                    }
+                };
+                foreach (var user in users)
+                {
+                    await userManager.CreateAsync(user, "4ERy3Kf2x"); // 4ERy3Kf2x
+                }
+            }
+
             if (!context.Activities.Any())
             {
                 var activities = new List<Activity>
