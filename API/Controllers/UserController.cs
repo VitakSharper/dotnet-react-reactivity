@@ -13,5 +13,12 @@ namespace API.Controllers
         {
             return await Mediator.Send(query);
         }
+
+        [HttpPost("register")]
+        [AllowAnonymous]
+        public async Task<ActionResult<User>> Register(Register.Command command)
+        {
+            return await Mediator.Send(command);
+        }
     }
 }
