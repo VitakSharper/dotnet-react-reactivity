@@ -1,16 +1,24 @@
 ﻿using Application.Interfaces;
 using Domain;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using SymmetricSecurityKey = Microsoft.IdentityModel.Tokens.SymmetricSecurityKey;
 
 namespace Infrastructure.Security
 {
     public class JwtGenerator : IJwtGenerator
     {
+        private readonly SymmetricSecurityKey _key;
+
+        public JwtGenerator(IConfiguration configuration)
+        {
+            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["tokenKey"]));
+        }
         public string CreateToken(AppUser user)
         {
             var claims = new List<Claim>
@@ -19,10 +27,7 @@ namespace Infrastructure.Security
             };
 
             // generate signing credentials;
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Constants.JwtKey));
-
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

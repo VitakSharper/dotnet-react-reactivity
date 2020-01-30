@@ -64,7 +64,7 @@ namespace API
             identityBuilder.AddEntityFrameworkStores<DataContext>();
             identityBuilder.AddSignInManager<SignInManager<AppUser>>();
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Constants.JwtKey));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["tokenKey"]));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(opt =>
@@ -95,14 +95,15 @@ namespace API
                 //app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors("CorsPolicy");
 
             // app.UseHttpsRedirection();
 
 
 
             app.UseRouting();
+            app.UseCors("CorsPolicy");
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
