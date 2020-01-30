@@ -39,10 +39,9 @@ namespace API
                 opt.AddPolicy("CorsPolicy", policy =>
                 {
                     policy
-                    .WithOrigins("http://localhost:3000")
-                    .WithHeaders("authorization", "accept", "content-type", "origin")
-                    .AllowAnyMethod();
-
+                        .WithOrigins("http://localhost:3000")
+                        .WithHeaders("authorization", "accept", "content-type", "origin")
+                        .AllowAnyMethod();
                 });
             });
 
@@ -85,6 +84,7 @@ namespace API
                 });
 
             services.AddScoped<IJwtGenerator, JwtGenerator>();
+            services.AddScoped<IUserAccessor, UserAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -103,7 +103,6 @@ namespace API
 
 
             // app.UseHttpsRedirection();
-
 
 
             app.UseRouting();
