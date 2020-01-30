@@ -1,5 +1,6 @@
 ﻿using Application.Errors;
 using Application.Interfaces;
+using Application.Validators;
 using Domain;
 using FluentValidation;
 using MediatR;
@@ -29,10 +30,11 @@ namespace Application.User
             {
                 RuleFor(x => x.DisplayName).NotEmpty();
                 RuleFor(x => x.UserName).NotEmpty();
-                RuleFor(x => x.Email).NotEmpty();
-                RuleFor(x => x.Password).NotEmpty();
+                RuleFor(x => x.Email).NotEmpty().EmailAddress();
+                RuleFor(x => x.Password).Password();
             }
         }
+
         public class Handler : IRequestHandler<Command, User>
         {
             private readonly DataContext _context;
@@ -49,10 +51,10 @@ namespace Application.User
             public async Task<User> Handle(Command request, CancellationToken cancellationToken)
             {
                 if (await _context.Users.AnyAsync(u => u.Email == request.Email))
-                    throw new RestException(HttpStatusCode.BadRequest, new { Email = "Email already exists." });
+                    throw new RestException(HttpStatusCode.BadRequest, new {Email = "Email already exists."});
 
                 if (await _context.Users.AnyAsync(u => u.UserName == request.UserName))
-                    throw new RestException(HttpStatusCode.BadRequest, new { UserName = "Username already exists." });
+                    throw new RestException(HttpStatusCode.BadRequest, new {UserName = "Username already exists."});
 
                 var user = new AppUser
                 {
@@ -73,6 +75,7 @@ namespace Application.User
                         Image = null
                     };
                 }
+
                 throw new Exception("Problem creating user.");
             }
         }
