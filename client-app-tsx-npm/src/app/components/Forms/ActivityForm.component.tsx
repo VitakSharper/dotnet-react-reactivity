@@ -113,7 +113,8 @@ const ActivityForm = () => {
                                         </Button.Content>
                                     </Button>
                                     <Button.Or/>
-                                    <Button animated type={'button'} basic negative onClick={handleCancel}>
+                                    <Button animated type={'button'} basic negative
+                                            onClick={handleCancel}>
                                         <Button.Content hidden>Cancel</Button.Content>
                                         <Button.Content visible>
                                             <Icon name={'cancel'}/>

@@ -1,8 +1,12 @@
-import React from "react";
+import React, {useContext} from "react";
 import {Link} from "react-router-dom";
-import {Segment, Container, Header, Button, Image} from "semantic-ui-react";
+import {Segment, Container, Header, Button, Image, Icon} from "semantic-ui-react";
+import {RootStoreContext} from "../../store/Root.store";
 
 const HomePage = () => {
+    const rootStore = useContext(RootStoreContext);
+    const {isLoggedIn, user} = rootStore.userStore;
+
     return (
         <Segment inverted textAlign="center" vertical className="masthead">
             <Container text>
@@ -14,10 +18,38 @@ const HomePage = () => {
                     />
                     Reactivities
                 </Header>
-                <Header as="h2" inverted content="Welcome to Reactivities"/>
-                <Button as={Link} to="/login" size="huge" inverted>
-                    Login
-                </Button>
+                {
+                    isLoggedIn && user ? <>
+                            <Header as="h2" inverted content={`Welcome back ${user?.displayName}`}/>
+                            <Button as={Link} to="/activities" size="huge" inverted>
+                                Go to activities!
+                            </Button>
+                        </>
+                        :
+                        <>
+                            <Header as="h2" inverted content="Welcome to Reactivities"/>
+                            <Button.Group>
+                                <Button animated inverted size="huge"
+                                        as={Link} to="/login"
+                                    // loading={submitting}
+                                    // disabled={invalid && !dirtySinceLastSubmit || pristine}
+                                        type={'button'}>
+                                    <Button.Content hidden><Icon name={'sign-in'}/></Button.Content>
+                                    <Button.Content visible>
+                                        Login
+                                    </Button.Content>
+                                </Button>
+                                <Button.Or/>
+                                <Button animated type={'button'} inverted size="huge" as={Link} to="/">
+                                    <Button.Content hidden> <Icon name={'edit'}/></Button.Content>
+                                    <Button.Content visible>
+                                        Register
+                                    </Button.Content>
+                                </Button>
+                            </Button.Group>
+                        </>
+                }
+
             </Container>
         </Segment>
     );
