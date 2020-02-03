@@ -4,12 +4,12 @@ import {Grid, Segment} from "semantic-ui-react";
 import ActivityDashboardList from "./ActivityDashboardList.component";
 import LoadingSpinner from "../../../components/LoadingSpinner.component";
 
-import activityStore from "../../../store/Activity.store";
 import {observer} from "mobx-react-lite";
+import {RootStoreContext} from "../../../store/Root.store";
 
 const ActivityDashboard = () => {
-    const ActivityStore = useContext(activityStore);
-    const {loadActivities, loading} = ActivityStore;
+    const rootStore = useContext(RootStoreContext);
+    const {activityStore: {loadActivities, loading}} = rootStore;
 
     useEffect(() => {
         loadActivities()

@@ -4,16 +4,16 @@ import {Header, Modal} from 'semantic-ui-react'
 
 import ActivityForm from "./ActivityForm.component";
 import {observer} from "mobx-react-lite";
-import activityStore from "../../store/Activity.store";
 import LoadingSpinner from "../LoadingSpinner.component";
+import {RootStoreContext} from "../../store/Root.store";
 
 interface DetailParams {
     id: string;
 }
 
 const ActivityFormModal: React.FC<RouteComponentProps<DetailParams>> = ({match}) => {
-    const ActivityStore = useContext(activityStore);
-    const {openForm, loading, editMode, activity, setEditMode, setOpenForm, setActivityNull, getActivityById, setActivity} = ActivityStore;
+    const rootStore = useContext(RootStoreContext);
+    const {activityStore: {openForm, loading, editMode, activity, setEditMode, setOpenForm, setActivityNull, getActivityById, setActivity}} = rootStore;
 
     useEffect(() => {
         if (match.params.id) {

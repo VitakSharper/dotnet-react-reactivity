@@ -11,6 +11,7 @@ import ActivityDashboard from "./pages/activities/dashboard/AcivityDashboard.pag
 import ActivityDetails from "./pages/activities/activityDetail/ActivityDetails.page";
 import ActivityFormModal from "./components/Forms/ActivityFormModal.component";
 import {ToastContainer} from "react-toastify";
+import LoginForm from "./components/Forms/LoginForm.component";
 
 const App: React.FC<RouteComponentProps> = ({location}) => {
 
@@ -26,6 +27,7 @@ const App: React.FC<RouteComponentProps> = ({location}) => {
                         <Route path={'/activities/:id'} component={ActivityDetails}/>
                         <Route key={location.key} path={['/createActivity', '/manageActivity/:id']}
                                component={ActivityFormModal}/>
+                        <Route path={'/login'} component={LoginForm}/>
                         <Route component={NotFound}/>
                     </Switch>
                 </Container>

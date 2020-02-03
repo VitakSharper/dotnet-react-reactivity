@@ -6,7 +6,7 @@ import ActivityDetailedHeader from "./ActivityDetailedHeader.component";
 import ActivityDetailedInfo from "./ActivityDetailedInfo.component";
 import ActivityDetailedChat from "./ActivityDetailedChat.component";
 import ActivityDetailedSidebar from "./ActivityDetailedSidebar.component";
-import activityStore from "../store/Activity.store";
+import {RootStoreContext} from "../store/Root.store";
 
 const styles = {
     groupSegment: {
@@ -15,8 +15,8 @@ const styles = {
 };
 
 const ActivityDetailGrid = () => {
-    const ActivityStore = useContext(activityStore);
-    const {activity} = ActivityStore;
+    const rootStore = useContext(RootStoreContext);
+    const {activity} = rootStore.activityStore;
 
 
     return (

@@ -1,18 +1,18 @@
 import React, {useContext, useEffect} from "react";
 import {RouteComponentProps} from 'react-router';
 
-import activityStore from "../../../store/Activity.store";
 import {observer} from "mobx-react-lite";
 import LoadingSpinner from "../../../components/LoadingSpinner.component";
 import ActivityDetailGrid from "../../../components/ActivityDetailGrid.component";
+import {RootStoreContext} from "../../../store/Root.store";
 
 interface DetailParams {
     id: string;
 }
 
 const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({match, history}) => {
-    const ActivityStore = useContext(activityStore);
-    const {loading, getActivityById, activity, setActivity} = ActivityStore;
+    const rootStore = useContext(RootStoreContext);
+    const {activityStore: {loading, getActivityById, activity, setActivity}} = rootStore;
 
     useEffect(() => {
         getActivityById(match.params.id).then(activity => {

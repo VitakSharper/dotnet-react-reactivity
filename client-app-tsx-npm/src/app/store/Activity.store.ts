@@ -1,14 +1,21 @@
 import {observable, action, computed, configure, runInAction} from "mobx";
-import {createContext, SyntheticEvent} from "react";
+import {SyntheticEvent} from "react";
 import {IActivity} from "../models/activity";
-import Activities from "../api/agent";
+import {Activities} from "../api/agent";
 import {history} from "../../index";
 
 import {toast} from "react-toastify";
+import {RootStore} from "./Root.store";
 
 configure({enforceActions: 'always'});
 
-class ActivityStore {
+export default class ActivityStore {
+    rootStore: RootStore;
+
+    constructor(rootStore: RootStore) {
+        this.rootStore = rootStore;
+    }
+
     @observable activityRegistry = new Map<string, IActivity>();
     @observable activity: IActivity | undefined;
     @observable loading = false;
@@ -71,6 +78,7 @@ class ActivityStore {
             })
         }
     };
+
 
     @action loadActivity = async (id: string) => {
         let activity = this.activityRegistry.get(id);
@@ -194,7 +202,3 @@ class ActivityStore {
         this.activity = undefined;
     };
 }
-
-const activityStore = createContext(new ActivityStore());
-
-export default activityStore;

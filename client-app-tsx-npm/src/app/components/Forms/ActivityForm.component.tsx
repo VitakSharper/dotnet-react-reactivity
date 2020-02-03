@@ -7,11 +7,11 @@ import {Form as FinalForm} from 'react-final-form';
 
 import {combineValidators, composeValidators, hasLengthGreaterThan, isRequired} from 'revalidate';
 
-import activityStore from "../../store/Activity.store";
 import {ActivityFormValues} from "../../models/activity";
 import {observer} from "mobx-react-lite";
 import ActivityFormInputs from "./ActivityFormInputs.component";
 import {combineDateAndTime} from "./util";
+import {RootStoreContext} from "../../store/Root.store";
 
 
 const validate = combineValidators({
@@ -28,17 +28,19 @@ const validate = combineValidators({
 });
 
 const ActivityForm = () => {
-    const ActivityStore = useContext(activityStore);
+    const rootStore = useContext(RootStoreContext);
     const {
-        editMode,
-        submitting,
-        setOpenForm,
-        editActivity,
-        createActivity,
-        loading,
-        activity,
-        setActivityNull,
-    } = ActivityStore;
+        activityStore: {
+            editMode,
+            submitting,
+            setOpenForm,
+            editActivity,
+            createActivity,
+            loading,
+            activity,
+            setActivityNull
+        }
+    } = rootStore;
 
     // return (({id, ...o}) => o)(selectedActivity) // return object elements without id ;
 

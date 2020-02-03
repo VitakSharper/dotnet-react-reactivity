@@ -3,8 +3,8 @@ import {Item, Segment, Label} from "semantic-ui-react";
 import {useHistory} from 'react-router-dom';
 
 import ActivityDashboardItem from "../../../components/ActivityDashboardItem.component";
-import activityStore from "../../../store/Activity.store";
 import {observer} from "mobx-react-lite";
+import {RootStoreContext} from "../../../store/Root.store";
 
 const styles = {
     activityListSegment: {
@@ -14,8 +14,8 @@ const styles = {
 };
 
 const ActivityDashboardList = () => {
-    const ActivityStore = useContext(activityStore);
-    const {target, submitting, deleteActivity, activitiesByDate} = ActivityStore;
+    const rootStore = useContext(RootStoreContext);
+    const {activityStore: {target, submitting, deleteActivity, activitiesByDate}} = rootStore;
 
     const history = useHistory();
 
