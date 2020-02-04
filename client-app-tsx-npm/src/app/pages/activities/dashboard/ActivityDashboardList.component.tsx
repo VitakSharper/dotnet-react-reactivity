@@ -5,6 +5,7 @@ import {useHistory} from 'react-router-dom';
 import ActivityDashboardItem from "../../../components/ActivityDashboardItem.component";
 import {observer} from "mobx-react-lite";
 import {RootStoreContext} from "../../../store/Root.store";
+import {format} from "date-fns";
 
 const styles = {
     activityListSegment: {
@@ -29,7 +30,8 @@ const ActivityDashboardList = () => {
                 <Fragment key={group}>
                     <Segment.Group>
                         <Segment clearing style={styles.activityListSegment}>
-                            <Label size={'large'} color={'blue'} ribbon>{group}</Label>
+                            <Label size={'large'} color={'blue'} ribbon>
+                                {format(group, 'eeee do MMM')}</Label>
                             <Item.Group>
                                 {activities.map((activity) => (
                                     <ActivityDashboardItem

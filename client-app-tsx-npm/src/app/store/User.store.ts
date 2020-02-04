@@ -32,6 +32,17 @@ export default class UserStore {
         }
     };
 
+    @action Register = async (values: IUserFormValues) => {
+        try {
+            const user = await Users.register(values);
+            this.rootStore.commonStore.setToken(user.token);
+            this.rootStore.modalStore.modalState(null, false);
+            history.push('/activities');
+        } catch (e) {
+            throw e;
+        }
+    };
+
     @action logout = () => {
         this.rootStore.commonStore.setToken(null);
         this.user = null;

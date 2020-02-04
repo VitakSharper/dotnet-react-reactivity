@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import {Segment, Container, Header, Button, Image, Icon} from "semantic-ui-react";
 import {RootStoreContext} from "../../store/Root.store";
 import LoginForm from "../../components/Forms/LoginForm.component";
+import RegisterForm from "../../components/Forms/RegisterForm.component";
 
 const HomePage = () => {
     const rootStore = useContext(RootStoreContext);
@@ -43,7 +44,9 @@ const HomePage = () => {
                                     </Button.Content>
                                 </Button>
                                 <Button.Or/>
-                                <Button animated type={'button'} inverted size="huge" as={Link} to="/">
+                                <Button animated type={'button'} inverted size="huge"
+                                        onClick={() => modalState(<RegisterForm/>, true)}
+                                >
                                     <Button.Content hidden> <Icon name={'edit'}/></Button.Content>
                                     <Button.Content visible>
                                         Register
@@ -52,7 +55,6 @@ const HomePage = () => {
                             </Button.Group>
                         </>
                 }
-
             </Container>
         </Segment>
     );
