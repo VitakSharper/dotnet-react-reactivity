@@ -13,7 +13,7 @@ const menuBar = {
 
 const NavBar = () => {
     const rootStore = useContext(RootStoreContext);
-    const {user, isLoggedIn} = rootStore.userStore;
+    const {user, isLoggedIn, logout} = rootStore.userStore;
     const [activeItem, setActiveItem] = useState('');
 
     const history = useHistory();
@@ -28,8 +28,9 @@ const NavBar = () => {
         history.push('/');
     };
 
-    const logout = () => {
-
+    const handleLogout = () => {
+        logout();
+        history.push('/');
     };
 
     return (
@@ -65,7 +66,7 @@ const NavBar = () => {
                         <Dropdown pointing={'top left'} text={user?.displayName}>
                             <Dropdown.Menu>
                                 <Dropdown.Item as={Link} to={`/profile/username`} text={'My profile'} icon={'user'}/>
-                                <Dropdown.Item onClick={logout} text={'Logout'} icon={'power'}/>
+                                <Dropdown.Item onClick={handleLogout} text={'Logout'} icon={'power'}/>
                             </Dropdown.Menu>
                         </Dropdown>
                     </Menu.Item>

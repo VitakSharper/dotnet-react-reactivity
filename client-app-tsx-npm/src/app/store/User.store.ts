@@ -24,9 +24,26 @@ export default class UserStore {
             runInAction(() => {
                 this.user = user;
             });
+            this.rootStore.commonStore.setToken(user.token);
             history.push('/activities');
         } catch (e) {
             throw e;
+        }
+    };
+
+    @action logout = () => {
+        this.rootStore.commonStore.setToken(null);
+        this.user = null;
+    };
+
+    @action getUser = async () => {
+        try {
+            const user = await Users.current();
+            runInAction(() => {
+                this.user = user;
+            })
+        } catch (e) {
+            console.log(e);
         }
     }
 }
