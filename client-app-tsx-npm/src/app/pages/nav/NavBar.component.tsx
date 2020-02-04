@@ -13,7 +13,7 @@ const menuBar = {
 
 const NavBar = () => {
     const rootStore = useContext(RootStoreContext);
-    const {user, isLoggedIn, logout} = rootStore.userStore;
+    const {user, logout} = rootStore.userStore;
     const [activeItem, setActiveItem] = useState('');
 
     const history = useHistory();

@@ -1,10 +1,10 @@
 import React, {useContext} from "react";
 import {Form as FinalForm, Field} from "react-final-form";
-import {Link} from "react-router-dom";
-import {Button, Form, Icon, Label} from "semantic-ui-react";
+import {Form, Header, Button, Icon} from "semantic-ui-react";
 import TextInput from "./reusable/TextInput.component";
 import {RootStoreContext} from "../../store/Root.store";
 import {IUserFormValues} from "../../models/user";
+import ErrorMessage from "./ErrorMessage.component";
 import {FORM_ERROR} from "final-form";
 import {combineValidators, isRequired} from "revalidate";
 
@@ -15,6 +15,7 @@ const validate = combineValidators({
 
 const LoginForm = () => {
     const rootStore = useContext(RootStoreContext);
+    const {modalState} = rootStore.modalStore;
     const {login} = rootStore.userStore;
 
     return (
@@ -26,8 +27,11 @@ const LoginForm = () => {
                 }))}
             validate={validate}
             render={({handleSubmit, submitting, form, submitError, invalid, pristine, dirtySinceLastSubmit}) => (
-                <Form onSubmit={handleSubmit}>
-
+                <Form onSubmit={handleSubmit} style={{paddingBottom: '3rem'}} error>
+                    <Header
+                        as={'h2'}
+                        content={'Login to you account'}
+                        color={'teal'} textAlign={"center"}/>
                     <Field name={'email'}
                            component={TextInput}
                            placeholder={'Email'}
@@ -38,9 +42,12 @@ const LoginForm = () => {
                            placeholder={'Password'}
                            type={'password'}
                     />
-                    {submitError && !dirtySinceLastSubmit &&
-                    < Label color={'red'} basic content={submitError.statusText}/>}
-                    <Button.Group floated={"right"}>
+                    {
+                        submitError
+                        && !dirtySinceLastSubmit
+                        && <ErrorMessage error={submitError} text={'Invalid username or password.'}/>
+                    }
+                    <Button.Group floated={"right"} fluid>
                         <Button animated basic positive
                                 loading={submitting}
                                 disabled={invalid && !dirtySinceLastSubmit || pristine}
@@ -51,14 +58,14 @@ const LoginForm = () => {
                             </Button.Content>
                         </Button>
                         <Button.Or/>
-                        <Button animated type={'button'} basic negative as={Link} to="/">
+                        <Button animated type={'button'} basic negative onClick={() => modalState(null, false)}>
                             <Button.Content hidden>Cancel</Button.Content>
                             <Button.Content visible>
                                 <Icon name={'cancel'}/>
                             </Button.Content>
                         </Button>
                     </Button.Group>
-                    <pre>{JSON.stringify(form.getState(), null, 2)}</pre>
+                    {/*<pre>{JSON.stringify(form.getState(), null, 2)}</pre>*/}
                 </Form>
             )}
         />

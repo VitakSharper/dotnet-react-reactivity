@@ -2,7 +2,7 @@ import React, {useContext, useEffect} from 'react'
 import {RouteComponentProps} from 'react-router';
 import {Header, Modal} from 'semantic-ui-react'
 
-import ActivityForm from "./ActivityForm.component";
+import ActivityForm from "../Forms/ActivityForm.component";
 import {observer} from "mobx-react-lite";
 import LoadingSpinner from "../LoadingSpinner.component";
 import {RootStoreContext} from "../../store/Root.store";
@@ -39,7 +39,6 @@ const ActivityFormModal: React.FC<RouteComponentProps<DetailParams>> = ({match})
             <Modal.Content>
                 <ActivityForm/>
             </Modal.Content>
-
         </Modal>
     )
 };

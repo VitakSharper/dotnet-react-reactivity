@@ -2,10 +2,12 @@ import React, {useContext} from "react";
 import {Link} from "react-router-dom";
 import {Segment, Container, Header, Button, Image, Icon} from "semantic-ui-react";
 import {RootStoreContext} from "../../store/Root.store";
+import LoginForm from "../../components/Forms/LoginForm.component";
 
 const HomePage = () => {
     const rootStore = useContext(RootStoreContext);
     const {isLoggedIn, user} = rootStore.userStore;
+    const {modalState} = rootStore.modalStore;
 
     return (
         <Segment inverted textAlign="center" vertical className="masthead">
@@ -30,7 +32,8 @@ const HomePage = () => {
                             <Header as="h2" inverted content="Welcome to Reactivities"/>
                             <Button.Group>
                                 <Button animated inverted size="huge"
-                                        as={Link} to="/login"
+                                        onClick={() => modalState(<LoginForm/>, true)}
+                                    //as={Link} to="/login"
                                     // loading={submitting}
                                     // disabled={invalid && !dirtySinceLastSubmit || pristine}
                                         type={'button'}>

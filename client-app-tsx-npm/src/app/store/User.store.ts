@@ -26,6 +26,7 @@ export default class UserStore {
             });
             this.rootStore.commonStore.setToken(user.token);
             history.push('/activities');
+            this.rootStore.modalStore.modalState(null, false);
         } catch (e) {
             throw e;
         }

@@ -7,9 +7,12 @@ import {Container} from "semantic-ui-react";
 import NavBar from "./pages/nav/NavBar.component";
 import HomePage from "./pages/home/HomePage";
 import NotFound from "./components/NotFound.component";
+
 import ActivityDashboard from "./pages/activities/dashboard/AcivityDashboard.page";
 import ActivityDetails from "./pages/activities/activityDetail/ActivityDetails.page";
-import ActivityFormModal from "./components/Forms/ActivityFormModal.component";
+import ActivityFormModal from "./components/Modals/ActivityFormModal.component";
+import ModalContainer from "./components/Modals/ModalContainer.component";
+
 import {ToastContainer} from "react-toastify";
 import LoginForm from "./components/Forms/LoginForm.component";
 import {RootStoreContext} from "./store/Root.store";
@@ -31,6 +34,7 @@ const App: React.FC<RouteComponentProps> = ({location}) => {
 
     return (
         <>
+            <ModalContainer/>
             <ToastContainer position={"bottom-right"}/>
             <Route exact path={'/'} component={HomePage}/>
             <Route path={'/(.+)'} render={() => (
