@@ -2,7 +2,6 @@
 using AutoMapper;
 using Domain;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Persistence;
 using System;
 using System.Net;
@@ -31,9 +30,7 @@ namespace Application.Activities
             public async Task<ActivityDto> Handle(Query request, CancellationToken cancellationToken)
             {
                 var activity = await _context.Activities
-                    .Include(u => u.UserActivities)
-                    .ThenInclude(u => u.AppUser)
-                    .SingleOrDefaultAsync(u => u.Id == request.Id, cancellationToken: cancellationToken);
+                    .FindAsync(request.Id);
 
                 if (activity == null) throw new RestException(HttpStatusCode.NotFound, new { activity = "Not Found" });
 
