@@ -1,6 +1,5 @@
 ﻿using Application.Errors;
 using Application.Interfaces;
-using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -9,10 +8,9 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
-
 namespace Application.Activities
 {
-    public class Attend
+    public class UnAttend
     {
         public class Command : IRequest
         {
@@ -45,25 +43,20 @@ namespace Application.Activities
                     await _context.UserActivities.SingleOrDefaultAsync(a =>
                         a.ActivityId == activity.Id && a.AppUserId == user.Id, cancellationToken: cancellationToken);
 
-                if (attendance != null)
+                if (attendance == null)
+                    return Unit.Value;
+
+                if (attendance.IsHost)
                     throw new RestException(HttpStatusCode.BadRequest,
-                        new { Attendence = "Already attending this activity." });
+                        new { Attendance = "You cannot remove yourself as host." });
 
-                attendance = new UserActivity
-                {
-                    Activity = activity,
-                    AppUser = user,
-                    IsHost = false,
-                    DateJoined = DateTime.Now
-                };
-
-                await _context.UserActivities.AddAsync(attendance, cancellationToken);
+                _context.UserActivities.Remove(attendance);
 
                 var success = await _context.SaveChangesAsync(cancellationToken) > 0;
 
                 if (success) return Unit.Value;
 
-                throw new Exception("Problem saving changes.");
+                throw new Exception("Problem remove attendance.");
             }
         }
     }
