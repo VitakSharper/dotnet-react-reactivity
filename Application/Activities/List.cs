@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Persistence;
 using System.Collections.Generic;
 using System.Threading;
@@ -19,13 +18,11 @@ namespace Application.Activities
         public class Handler : IRequestHandler<Query, List<ActivityDto>>
         {
             private readonly DataContext _context;
-            private readonly ILogger<List> _logger;
             private readonly IMapper _mapper;
 
-            public Handler(DataContext context, ILogger<List> logger, IMapper mapper)
+            public Handler(DataContext context, IMapper mapper)
             {
                 _context = context;
-                _logger = logger;
                 _mapper = mapper;
             }
 
