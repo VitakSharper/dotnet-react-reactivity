@@ -3,6 +3,9 @@ import {Item, Button, Label, Icon, Segment} from 'semantic-ui-react'
 import {IActivity} from "../models/activity";
 import {format} from 'date-fns';
 
+import ActivityListItemAttendees from "../pages/activities/dashboard/ActivityListItemAttendees.component";
+import {observe} from "mobx";
+import {observer} from "mobx-react-lite";
 
 type IProps = {
     activity: IActivity;
@@ -13,7 +16,8 @@ type IProps = {
 }
 
 const ActivityDashboardItem: React.FC<IProps> = ({activity, submitting, target, deleteActivity, handleView}) => {
-    const {date, category, city, description, title, venue, id} = activity;
+    const {date, category, city, description, title, venue, id, attendees} = activity;
+    console.log('Activity: ', activity);
     return (
         <Segment.Group>
             <Segment>
@@ -21,6 +25,7 @@ const ActivityDashboardItem: React.FC<IProps> = ({activity, submitting, target, 
                     <Icon name={'clock'}/> {format(date!, 'h:mm a')}
                     <Icon name={'marker'} style={{marginLeft: '1rem'}}/> {venue}, {city}
                 </Label>
+
                 <Item.Group>
                     <Item>
                         <Item.Image size='tiny' circular src={`/assets/user.png`}/>
@@ -36,8 +41,9 @@ const ActivityDashboardItem: React.FC<IProps> = ({activity, submitting, target, 
                 </Item.Group>
 
                 <Segment secondary>
-                    Attendees will go here
+                    <ActivityListItemAttendees attendees={attendees}/>
                 </Segment>
+
                 <Segment clearing>
                     <span>{description}</span>
                     <Button.Group floated={"right"}>
@@ -65,4 +71,4 @@ const ActivityDashboardItem: React.FC<IProps> = ({activity, submitting, target, 
     )
 };
 
-export default ActivityDashboardItem;
+export default observer(ActivityDashboardItem);

@@ -19,7 +19,6 @@ const ActivityDashboardList = () => {
     const {activityStore: {target, submitting, deleteActivity, activitiesByDate}} = rootStore;
 
     const history = useHistory();
-
     const handleView = (activityId: string) => {
         // selectActivity(activityId);
         history.push(`/activities/${activityId}`)
