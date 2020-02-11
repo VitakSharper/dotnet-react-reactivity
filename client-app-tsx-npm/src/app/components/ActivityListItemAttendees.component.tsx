@@ -1,6 +1,6 @@
 import React from "react";
 import {List, Image, Popup} from "semantic-ui-react";
-import {IAttendee} from "../../../models/activity";
+import {IAttendee} from "../models/activity";
 import {observer} from "mobx-react-lite";
 
 interface IProps {

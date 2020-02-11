@@ -50,7 +50,7 @@ const LoginForm = () => {
                     <Button.Group floated={"right"} fluid>
                         <Button animated basic positive
                                 loading={submitting}
-                                disabled={invalid && !dirtySinceLastSubmit || pristine}
+                                disabled={(invalid && !dirtySinceLastSubmit) || pristine}
                                 type={'submit'}>
                             <Button.Content hidden>Login</Button.Content>
                             <Button.Content visible>

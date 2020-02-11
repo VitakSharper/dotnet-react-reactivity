@@ -12,20 +12,16 @@ const ActivityDashboard = () => {
     const {activityStore: {loadActivities, loading}} = rootStore;
 
     useEffect(() => {
-        loadActivities()
+        loadActivities();
     }, [loadActivities]);
 
-    // if (!activityRegistry) return <h2>Activity not found</h2>;
+    if (loading) return <LoadingSpinner content={'Loading activities...'} inverted={true}/>;
 
     return (
         <Segment>
             <Grid>
                 <Grid.Column width={10}>
-                    {
-                        loading
-                            ? (<LoadingSpinner content={'Loading activities...'} inverted={true}/>)
-                            : (<ActivityDashboardList/>)
-                    }
+                    <ActivityDashboardList/>
                 </Grid.Column>
                 <Grid.Column width={6}>
                     <h2>Activity Filters</h2>

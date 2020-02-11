@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import {observer} from "mobx-react-lite";
 
 import {Link} from "react-router-dom";
@@ -7,6 +7,7 @@ import {format} from 'date-fns'
 import {Segment, Item, Header, Button, Image, Icon} from "semantic-ui-react";
 
 import {IActivity} from "../models/activity";
+import {RootStoreContext} from "../store/Root.store";
 
 const styles = {
     activityTopSegment: {
@@ -34,6 +35,9 @@ type someProps = {
 }
 
 const ActivityDetailedHeader: React.FC<someProps> = ({activity}) => {
+    const rootStore = useContext(RootStoreContext);
+    const {attendActivity, cancelAttendance, submitting} = rootStore.activityStore;
+
     return (
         <Segment.Group>
             <Segment basic attached="top" style={styles.activityTopSegment}>
@@ -58,29 +62,34 @@ const ActivityDetailedHeader: React.FC<someProps> = ({activity}) => {
                 </Segment>
             </Segment>
             <Segment clearing attached="bottom">
-                <Button.Group>
-                    <Button animated basic positive type={"button"}>
-                        <Button.Content hidden>Join</Button.Content>
-                        <Button.Content visible>
-                            <Icon name={"exchange"}/>
-                        </Button.Content>
-                    </Button>
-                    <Button.Or/>
-                    <Button animated type={"button"} basic negative
-                            as={Link} to={'/activities'}>
-                        <Button.Content hidden>Cancel</Button.Content>
-                        <Button.Content visible>
-                            <Icon name={"cancel"}/>
-                        </Button.Content>
-                    </Button>
-                </Button.Group>
-                <Button animated type={"button"} basic color={"blue"} floated={"right"}
-                        as={Link} to={`/manageActivity/${activity?.id}`}>
-                    <Button.Content hidden>Manage</Button.Content>
-                    <Button.Content visible>
-                        <Icon name={"folder outline"}/>
-                    </Button.Content>
-                </Button>
+                {
+                    activity?.isHost
+                        ? (<Button animated type={"button"} basic color={"blue"} floated={"right"}
+                                   loading={submitting}
+                                   as={Link} to={`/manageActivity/${activity?.id}`}>
+                            <Button.Content hidden>Manage</Button.Content>
+                            <Button.Content visible>
+                                <Icon name={"folder outline"}/>
+                            </Button.Content>
+                        </Button>)
+                        : activity?.isGoing
+                        ? (<Button animated type={"button"} basic negative
+                                   loading={submitting}
+                                   onClick={cancelAttendance}>
+                            <Button.Content hidden>Cancel</Button.Content>
+                            <Button.Content visible>
+                                <Icon name={"cancel"}/>
+                            </Button.Content>
+                        </Button>)
+                        : (<Button animated basic positive type={"button"}
+                                   loading={submitting}
+                                   onClick={attendActivity}>
+                            <Button.Content hidden>Join</Button.Content>
+                            <Button.Content visible>
+                                <Icon name={"exchange"}/>
+                            </Button.Content>
+                        </Button>)
+                }
             </Segment>
         </Segment.Group>
     );
