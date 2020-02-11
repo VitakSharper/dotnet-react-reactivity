@@ -42,17 +42,19 @@ const ActivityDetailedSidebar: React.FC<IProps> = ({attendees}) => {
                         attendees.map((a, idx) => (
                             <Item style={styles.item} key={idx}>
                                 <Image size="tiny" src={a.image || "/assets/user.png"}/>
+
                                 <Item.Content verticalAlign="middle">
+                                    {a.isHost && <Label
+                                        style={styles.item.listLabel}
+                                        color="orange"
+                                        floating
+                                        size={"mini"}
+                                    >
+                                        Host
+                                    </Label>}
                                     <Item.Header as="h3">
                                         <Link to={`/profile/${a.username}`}>{a.displayName}</Link>
-                                        {a.isHost && <Label
-                                            style={styles.item.listLabel}
-                                            color="orange"
-                                            tag
-                                            size={"mini"}
-                                        >
-                                            Host
-                                        </Label>}
+
                                     </Item.Header>
                                     <Item.Extra style={styles.item.itemContentExtra}>Following</Item.Extra>
                                 </Item.Content>

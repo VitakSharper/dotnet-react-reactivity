@@ -4,6 +4,8 @@ import {IActivity} from "../models/activity";
 import {Activities} from "../api/agent";
 import {history} from "../../index";
 
+import {setActivityProps} from "../components/Forms/util";
+
 import {toast} from "react-toastify";
 import {RootStore} from "./Root.store";
 
@@ -59,18 +61,11 @@ export default class ActivityStore {
 
     @action loadActivities = async () => {
         this.loading = true;
-
-        const user = this.rootStore.userStore.user!;
-
         try {
             const response = await Activities.list();
             runInAction('Loading Activities', () => {
                 this.activityRegistry = response
-                    .map(a => {
-                        a.date = new Date(a.date);
-                        a.isGoing = a.attendees.some(a => a.username === user?.username);
-                        return a;
-                    })
+                    .map(a => setActivityProps(a, this.rootStore.userStore.user!))
                     .reduce((acc, v) => acc.set(v.id, v), new Map<string, IActivity>());
             });
         } catch (e) {
@@ -115,7 +110,7 @@ export default class ActivityStore {
             try {
                 const response = await Activities.details(id);
                 runInAction('Getting activity', () => {
-                    response.date = new Date(response.date);
+                    setActivityProps(response, this.rootStore.userStore.user!);
                     this.activity = response;
                     this.activityRegistry.set(response.id, response);
                 });

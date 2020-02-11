@@ -15,7 +15,8 @@ type IProps = {
 }
 
 const ActivityDashboardItem: React.FC<IProps> = ({activity, submitting, target, deleteActivity, handleView}) => {
-    const {date, category, city, description, title, venue, id, attendees} = activity;
+    const {date, category, city, description, title, venue, id, attendees, isGoing, isHost} = activity;
+    const host=attendees.filter(a=>a.isHost)[0];
     return (
         <Segment.Group>
             <Segment>
@@ -30,7 +31,16 @@ const ActivityDashboardItem: React.FC<IProps> = ({activity, submitting, target, 
                         <Item.Content>
                             <Item.Header as='a'>{title}</Item.Header>
                             <Item.Description>
-                                Hosted by Him
+                                {
+                                    isHost && <Label tag style={{marginBottom: '1rem'}} color={'orange'}
+                                                     content={'You are hosting this activity'}/>
+                                }
+                                {
+                                    isGoing && !isHost && <Label tag style={{marginBottom: '1rem'}} color={'green'}
+                                                                 content={'You are going to this activity'}/>
+                                }
+
+
                             </Item.Description>
                             <Label basic content={category}/>
                         </Item.Content>
