@@ -4,7 +4,6 @@ import {IActivity} from "../models/activity";
 import {format} from 'date-fns';
 
 import ActivityListItemAttendees from "../pages/activities/dashboard/ActivityListItemAttendees.component";
-import {observe} from "mobx";
 import {observer} from "mobx-react-lite";
 
 type IProps = {
@@ -17,7 +16,6 @@ type IProps = {
 
 const ActivityDashboardItem: React.FC<IProps> = ({activity, submitting, target, deleteActivity, handleView}) => {
     const {date, category, city, description, title, venue, id, attendees} = activity;
-    console.log('Activity: ', activity);
     return (
         <Segment.Group>
             <Segment>

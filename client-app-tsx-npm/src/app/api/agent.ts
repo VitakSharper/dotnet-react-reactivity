@@ -8,7 +8,6 @@ axios.defaults.baseURL = 'http://localhost:5000/api/';
 
 axios.interceptors.request.use((config) => {
     const token = window.localStorage.getItem('jwt');
-    console.log('Interceptor: ', token);
     if (token) config.headers.Authorization = `Bearer ${token}`;
     return config;
 }, error => Promise.reject(error));

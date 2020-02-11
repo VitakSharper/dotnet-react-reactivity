@@ -1,32 +1,29 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import {Segment, List, Item, Label, Image} from "semantic-ui-react";
+import {IAttendee} from "../models/activity";
 
 const styles = {
     detailSegment: {
         border: "none"
     },
-    item1: {
+    item: {
         position: "relative",
         listLabel: {
-            position: "absolute"
+            position: "absolute",
+            marginLeft: "1rem"
         },
         itemContentExtra: {
             color: "orange"
         }
-    },
-    item2: {
-        position: "relative",
-        extra: {
-            color: "orange"
-        }
-    },
-    item3: {
-        position: "relative"
     }
 };
 
-const ActivityDetailedSidebar = () => {
+interface IProps {
+    attendees: IAttendee[]
+}
+
+const ActivityDetailedSidebar: React.FC<IProps> = ({attendees}) => {
     return (
         <>
             <Segment
@@ -37,45 +34,31 @@ const ActivityDetailedSidebar = () => {
                 inverted
                 color="teal"
             >
-                3 People Going
+                {attendees.length} {attendees.length === 1 ? 'Person' : 'People'}
             </Segment>
             <Segment attached>
                 <List relaxed divided>
-                    <Item style={styles.item1}>
-                        <Label
-                            style={styles.item1.listLabel}
-                            color="orange"
-                            ribbon="right"
-                        >
-                            Host
-                        </Label>
-                        <Image size="tiny" src={"/assets/user.png"}/>
-                        <Item.Content verticalAlign="middle">
-                            <Item.Header as="h3">
-                                <Link to={`#`}>Bob</Link>
-                            </Item.Header>
-                            <Item.Extra style={styles.item1.itemContentExtra}>Following</Item.Extra>
-                        </Item.Content>
-                    </Item>
-
-                    <Item style={styles.item2}>
-                        <Image size="tiny" src={"/assets/user.png"}/>
-                        <Item.Content verticalAlign="middle">
-                            <Item.Header as="h3">
-                                <Link to={`#`}>Tom</Link>
-                            </Item.Header>
-                            <Item.Extra style={styles.item2.extra}>Following</Item.Extra>
-                        </Item.Content>
-                    </Item>
-
-                    <Item style={styles.item3}>
-                        <Image size="tiny" src={"/assets/user.png"}/>
-                        <Item.Content verticalAlign="middle">
-                            <Item.Header as="h3">
-                                <Link to={`#`}>Sally</Link>
-                            </Item.Header>
-                        </Item.Content>
-                    </Item>
+                    {
+                        attendees.map((a, idx) => (
+                            <Item style={styles.item} key={idx}>
+                                <Image size="tiny" src={a.image || "/assets/user.png"}/>
+                                <Item.Content verticalAlign="middle">
+                                    <Item.Header as="h3">
+                                        <Link to={`/profile/${a.username}`}>{a.displayName}</Link>
+                                        {a.isHost && <Label
+                                            style={styles.item.listLabel}
+                                            color="orange"
+                                            tag
+                                            size={"mini"}
+                                        >
+                                            Host
+                                        </Label>}
+                                    </Item.Header>
+                                    <Item.Extra style={styles.item.itemContentExtra}>Following</Item.Extra>
+                                </Item.Content>
+                            </Item>
+                        ))
+                    }
                 </List>
             </Segment>
         </>

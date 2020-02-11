@@ -59,12 +59,16 @@ export default class ActivityStore {
 
     @action loadActivities = async () => {
         this.loading = true;
+
+        const user = this.rootStore.userStore.user!;
+
         try {
             const response = await Activities.list();
             runInAction('Loading Activities', () => {
                 this.activityRegistry = response
                     .map(a => {
                         a.date = new Date(a.date);
+                        a.isGoing = a.attendees.some(a => a.username === user?.username);
                         return a;
                     })
                     .reduce((acc, v) => acc.set(v.id, v), new Map<string, IActivity>());

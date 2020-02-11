@@ -18,7 +18,6 @@ const ActivityDetailGrid = () => {
     const rootStore = useContext(RootStoreContext);
     const {activity} = rootStore.activityStore;
 
-
     return (
         <Grid>
             <Grid.Column width={10}>
@@ -30,7 +29,7 @@ const ActivityDetailGrid = () => {
             </Grid.Column>
 
             <Grid.Column width={6}>
-                <ActivityDetailedSidebar/>
+                <ActivityDetailedSidebar attendees={activity!.attendees}/>
             </Grid.Column>
         </Grid>
     )

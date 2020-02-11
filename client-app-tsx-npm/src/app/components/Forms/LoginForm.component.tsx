@@ -30,7 +30,7 @@ const LoginForm = () => {
                 <Form onSubmit={handleSubmit} style={{paddingBottom: '3rem'}} error>
                     <Header
                         as={'h2'}
-                        content={'Login to you account'}
+                        content={'Sign In'}
                         color={'teal'} textAlign={"center"}/>
                     <Field name={'email'}
                            component={TextInput}
