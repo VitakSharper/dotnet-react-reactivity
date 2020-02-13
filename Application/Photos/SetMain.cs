@@ -1,13 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
-using Application.Errors;
+﻿using Application.Errors;
 using Application.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
+using System;
+using System.Linq;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Application.Photos
 {
@@ -37,20 +37,18 @@ namespace Application.Photos
 
                 var photo = currentUser.Photos.FirstOrDefault(p => p.Id == request.ImageId);
 
-                foreach (var item in currentUser.Photos)
-                {
-                    Console.WriteLine($"\n {item.Id}");
-                }
-
-                Console.WriteLine(
-                    $"\nPhoto requested from current user: {photo?.Url}: {currentUser.UserName}: {request.ImageId}\n");
-                
                 if (photo == null)
                     throw new RestException(HttpStatusCode.NotFound,
-                        new {Photo = "Photo not found."});
-                photo.IsMain = true;
+                        new { Photo = "Photo not found." });
+
 
                 var currentMain = currentUser.Photos.FirstOrDefault(f => f.IsMain);
+
+                if (currentMain != null && currentMain.Id == photo.Id)
+                    throw new RestException(HttpStatusCode.AlreadyReported,
+                        new { Photo = "Photo already set as main." });
+
+                photo.IsMain = true;
                 if (currentMain != null) currentMain.IsMain = false;
 
                 if (await _context.SaveChangesAsync(cancellationToken) > 0) return Unit.Value;

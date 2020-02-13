@@ -4,6 +4,7 @@ using Domain;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -52,8 +53,13 @@ namespace Application.User
 
                 if (result.Succeeded)
                 {
-                    // TODO: generate token
-                    return new User { DisplayName = user.DisplayName, Username = user.UserName, Token = _jwtGenerator.CreateToken(user), Image = null };
+                    return new User
+                    {
+                        DisplayName = user.DisplayName,
+                        Username = user.UserName,
+                        Token = _jwtGenerator.CreateToken(user),
+                        Image = user.Photos.FirstOrDefault(p => p.IsMain)?.Url
+                    };
                 }
                 throw new RestException(HttpStatusCode.Unauthorized);
             }

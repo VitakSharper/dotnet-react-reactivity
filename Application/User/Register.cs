@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using System;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -50,11 +51,13 @@ namespace Application.User
 
             public async Task<User> Handle(Command request, CancellationToken cancellationToken)
             {
-                if (await _context.Users.AnyAsync(u => u.Email == request.Email))
-                    throw new RestException(HttpStatusCode.BadRequest, new {Email = "Email already exists."});
+                if (await _context.Users.AnyAsync(u => u.Email == request.Email, cancellationToken: cancellationToken))
+                    throw new RestException(HttpStatusCode.BadRequest, 
+                        new {Email = "Email already exists."});
 
-                if (await _context.Users.AnyAsync(u => u.UserName == request.UserName))
-                    throw new RestException(HttpStatusCode.BadRequest, new {UserName = "Username already exists."});
+                if (await _context.Users.AnyAsync(u => u.UserName == request.UserName, cancellationToken: cancellationToken))
+                    throw new RestException(HttpStatusCode.BadRequest, 
+                        new {UserName = "Username already exists."});
 
                 var user = new AppUser
                 {
@@ -72,7 +75,7 @@ namespace Application.User
                         DisplayName = user.DisplayName,
                         Token = _jwtGenerator.CreateToken(user),
                         Username = user.UserName,
-                        Image = null
+                        Image = user.Photos.FirstOrDefault(p => p.IsMain)?.Url
                     };
                 }
 
