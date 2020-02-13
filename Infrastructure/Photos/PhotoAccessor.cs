@@ -18,7 +18,7 @@ namespace Infrastructure.Photos
             _cloudinary = new Cloudinary(account);
         }
 
-        public PhotoUploadResult AddPhoto(IFormFile file)
+        public (string PublicId, string Url) AddPhoto(IFormFile file)
         {
             var uploadResult = new ImageUploadResult();
             if (file.Length > 0)
@@ -38,11 +38,7 @@ namespace Infrastructure.Photos
 
             if (uploadResult.Error != null) throw new Exception(uploadResult.Error.Message);
 
-            return new PhotoUploadResult
-            {
-                PublicId = uploadResult.PublicId,
-                Url = uploadResult.SecureUri.AbsoluteUri
-            };
+            return (uploadResult.PublicId, uploadResult.SecureUri.AbsoluteUri);
         }
 
         public string DeletePhoto(string publicId)

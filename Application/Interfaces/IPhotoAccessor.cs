@@ -5,7 +5,7 @@ namespace Application.Interfaces
 {
     public interface IPhotoAccessor
     {
-        PhotoUploadResult AddPhoto(IFormFile file);
+        (string PublicId, string Url) AddPhoto(IFormFile file);
         string DeletePhoto(string publicId);
     }
 }
