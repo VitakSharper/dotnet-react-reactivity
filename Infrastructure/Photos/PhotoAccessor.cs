@@ -1,6 +1,5 @@
 ﻿using System;
 using Application.Interfaces;
-using Application.Photos;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Http;
@@ -41,9 +40,10 @@ namespace Infrastructure.Photos
             return (uploadResult.PublicId, uploadResult.SecureUri.AbsoluteUri);
         }
 
-        public string DeletePhoto(string publicId)
-        {
-            throw new System.NotImplementedException();
-        }
+        public string DeletePhoto(string publicId) =>
+            _cloudinary
+                .Destroy(new DeletionParams(publicId)).Result == "ok"
+                ? "ok"
+                : null;
     }
 }
