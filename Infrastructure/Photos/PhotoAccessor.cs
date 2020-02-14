@@ -17,7 +17,7 @@ namespace Infrastructure.Photos
             _cloudinary = new Cloudinary(account);
         }
 
-        public (string PublicId, string Url) AddPhoto(IFormFile file)
+        public (string, string) AddPhoto(IFormFile file)
         {
             var uploadResult = new ImageUploadResult();
             if (file.Length > 0)
