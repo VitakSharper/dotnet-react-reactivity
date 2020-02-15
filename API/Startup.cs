@@ -4,6 +4,7 @@ using Application.Interfaces;
 using AutoMapper;
 using Domain;
 using FluentValidation.AspNetCore;
+using Infrastructure.Photos;
 using Infrastructure.Security;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -17,11 +18,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Serialization;
 using Persistence;
 using System.Text;
-using Infrastructure.Photos;
-using Newtonsoft.Json.Serialization;
 
 namespace API
 {
@@ -54,10 +53,7 @@ namespace API
                 });
             });
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo {Title = "Reactivity API", Version = "v1"});
-            });
+
 
             services.AddMediatR(typeof(List.Handler).Assembly);
 
@@ -105,16 +101,19 @@ namespace API
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
-            
+
             services.Configure<CloudinarySettings>(Configuration.GetSection("Cloudinary"));
+
+            //services.AddSwaggerGen(setup =>
+            //{
+            //    setup.SwaggerDoc("v1", new OpenApiInfo {Title = "Reactivity API", Version = "v1"});
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseSwagger();
 
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Reactivity API v1"); });
 
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
@@ -128,6 +127,9 @@ namespace API
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            //app.UseSwagger();
+            //app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Reactivity API v1"); });
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
