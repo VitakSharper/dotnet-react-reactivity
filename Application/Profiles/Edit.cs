@@ -1,17 +1,15 @@
-﻿using System;
-using System.ComponentModel;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
-using Application.Errors;
+﻿using Application.Errors;
 using Application.Interfaces;
 using Domain;
-using Application.User;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
+using System;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Application.Profiles
 {
@@ -23,7 +21,7 @@ namespace Application.Profiles
             public string Bio { get; set; }
         }
 
-        public class CommandValidator : AbstractValidator<Edit.Command>
+        public class CommandValidator : AbstractValidator<Command>
         {
             public CommandValidator()
             {
@@ -51,7 +49,7 @@ namespace Application.Profiles
 
                 if (currentUser == null)
                     throw new RestException(HttpStatusCode.NotFound,
-                        new {User = "User Not Found."});
+                        new { User = "User Not Found." });
 
                 currentUser.Bio = request.Bio;
                 currentUser.DisplayName = request.DisplayName;
