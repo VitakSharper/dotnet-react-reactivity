@@ -1,5 +1,5 @@
 import {RootStore} from "./Root.store";
-import {action, observable, runInAction} from "mobx";
+import {action, computed, observable, runInAction} from "mobx";
 import {IProfile} from "../models/profile";
 import {Profiles} from "../api/agent";
 import {toast} from "react-toastify";
@@ -14,6 +14,11 @@ export default class ProfileStore {
     @observable profile: IProfile | null = null;
     @observable loadingProfile = true;
 
+    @computed get isCurrentUser() {
+        if (this.rootStore.userStore.user && this.profile) {
+            return this.rootStore.userStore.user.username === this.profile.username
+        } else return false;
+    }
 
     @action Load = async (username: string) => {
         this.loadingProfile = true;
@@ -32,4 +37,5 @@ export default class ProfileStore {
             })
         }
     }
+
 }
