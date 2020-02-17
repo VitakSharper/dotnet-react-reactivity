@@ -10,10 +10,6 @@ const styles = {
     },
     item: {
         position: "relative",
-        listLabel: {
-            position: "absolute",
-            marginLeft: "1rem"
-        },
         itemContentExtra: {
             color: "orange"
         }
@@ -44,9 +40,8 @@ const ActivityDetailedSidebar: React.FC<IProps> = ({attendees}) => {
                             <Item style={styles.item} key={idx}>
                                 <Image size="tiny" src={a.image || "/assets/user.png"}/>
 
-                                <Item.Content verticalAlign="middle">
+                                <Item.Content verticalAlign="middle" style={{marginBottom: '2rem'}}>
                                     {a.isHost && <Label
-                                        style={styles.item.listLabel}
                                         color="orange"
                                         floating
                                         size={"mini"}

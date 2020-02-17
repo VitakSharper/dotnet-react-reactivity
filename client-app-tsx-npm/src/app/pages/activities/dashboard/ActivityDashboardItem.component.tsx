@@ -13,22 +13,38 @@ type IProps = {
     handleView: (activityId: string) => void;
 }
 
+const styles = {
+    itemImage: {
+        marginBottom: '3px'
+    },
+    catLabel: {
+        marginTop: '1rem'
+    },
+    markerIcon: {
+        marginLeft: '1rem'
+    }
+};
+
 const ActivityDashboardItem: React.FC<IProps> = ({activity, handleView}) => {
     const {date, category, city, description, title, venue, id, attendees, isGoing, isHost} = activity;
     const rootStore = useContext(RootStoreContext);
     const {activityStore: {submitting, deleteActivity, target}} = rootStore;
     const host = attendees.filter(a => a.isHost)[0];
+
     return (
         <Segment.Group>
             <Segment>
                 <Label attached={"top"}>
                     <Icon name={'clock'}/> {format(date!, 'h:mm a')}
-                    <Icon name={'marker'} style={{marginLeft: '1rem'}}/> {venue}, {city}
+                    <Icon name={'marker'} style={styles.markerIcon}/> {venue}, {city}
                 </Label>
 
                 <Item.Group>
                     <Item>
-                        <Item.Image size='tiny' circular src={host.image || `/assets/user.png`}/>
+                        <Item.Image size='tiny' circular
+                                    src={host.image || `/assets/user.png`}
+                                    style={styles.itemImage}
+                        />
                         <Item.Content>
                             <Item.Header as={Link} to={`/activities/${activity.id}`}>
                                 {title}
@@ -42,9 +58,9 @@ const ActivityDashboardItem: React.FC<IProps> = ({activity, handleView}) => {
                                 }
                             </Item.Header>
                             <Item.Description>
-                                Hosted by {host.displayName}
+                                Hosted by <Link to={`/profile/${host.username}`}>{host.displayName}</Link>
                             </Item.Description>
-                            <Label basic content={category} style={{marginTop: '1rem'}}/>
+                            <Label basic content={category} style={styles.catLabel}/>
                         </Item.Content>
 
                     </Item>
@@ -79,7 +95,6 @@ const ActivityDashboardItem: React.FC<IProps> = ({activity, handleView}) => {
                                     </Button>
                                 </>)
                         }
-
                     </Button.Group>
                 </Segment>
             </Segment>

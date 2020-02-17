@@ -3,6 +3,7 @@ import {IActivity} from "../models/activity";
 import {history} from "../../index";
 import {toast} from "react-toastify";
 import {IUser, IUserFormValues} from "../models/user";
+import {IProfile} from "../models/profile";
 
 axios.defaults.baseURL = 'http://localhost:5000/api/';
 
@@ -62,5 +63,9 @@ const Users = {
     register: (user: IUserFormValues): Promise<IUser> => requests.post('/user/register', user),
 };
 
-export {Activities, Users};
+const Profiles = {
+    get: (username: string): Promise<IProfile> => requests.get(`/profile/${username}`)
+};
+
+export {Activities, Users, Profiles};
 

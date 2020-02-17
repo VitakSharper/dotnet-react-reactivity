@@ -10,6 +10,7 @@ import NotFound from "./components/NotFound.component";
 
 import ActivityDashboard from "./pages/activities/dashboard/AcivityDashboard.page";
 import ActivityDetails from "./pages/activities/activityDetail/ActivityDetails.page";
+import ProfilePage from "./pages/profiles/ProfilePage.component";
 import ActivityFormModal from "./components/Modals/ActivityFormModal.component";
 import ModalContainer from "./components/Modals/ModalContainer.component";
 
@@ -47,6 +48,7 @@ const App: React.FC<RouteComponentProps> = ({location}) => {
                             <Route key={location.key} path={['/createActivity', '/manageActivity/:id']}
                                    component={ActivityFormModal}/>
                             <Route path={'/login'} component={LoginForm}/>
+                            <Route path={'/profile/:username'} component={ProfilePage}/>
                             <Route component={NotFound}/>
                         </Switch>
                     </Container>

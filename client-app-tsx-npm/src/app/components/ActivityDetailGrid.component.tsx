@@ -19,19 +19,19 @@ const ActivityDetailGrid = () => {
     const {activity} = rootStore.activityStore;
 
     return (
-        <Grid>
-            <Grid.Column width={10}>
-                <Segment style={styles.groupSegment}>
+        <Segment style={styles.groupSegment}>
+            <Grid>
+                <Grid.Column width={10}>
                     <ActivityDetailedHeader activity={activity}/>
                     <ActivityDetailedInfo activity={activity}/>
                     <ActivityDetailedChat/>
-                </Segment>
-            </Grid.Column>
+                </Grid.Column>
 
-            <Grid.Column width={6}>
-                <ActivityDetailedSidebar attendees={activity!.attendees}/>
-            </Grid.Column>
-        </Grid>
+                <Grid.Column width={6}>
+                    <ActivityDetailedSidebar attendees={activity!.attendees}/>
+                </Grid.Column>
+            </Grid>
+        </Segment>
     )
 };
 
