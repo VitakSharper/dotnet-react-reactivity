@@ -18,6 +18,7 @@ const ProfileContent = () => {
             menu={{fluid: true, vertical: true, secondary: true}}
             menuPosition={'right'}
             panes={panes}
+            activeIndex={1}
         />
     )
 };

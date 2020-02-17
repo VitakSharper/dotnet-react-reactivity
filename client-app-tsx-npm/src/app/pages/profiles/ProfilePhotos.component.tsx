@@ -1,11 +1,13 @@
 import React, {useContext, useState} from "react";
 import {Tab, Header, Card, Image, Button, Icon, Grid, Reveal} from "semantic-ui-react";
 import {RootStoreContext} from "../../store/Root.store";
+import PhotoUploadWidget from "../../components/photoUpload/PhotoUploadWidget.component";
 
 const ProfilePhotos = () => {
     const rootStore = useContext(RootStoreContext);
     const {profile, isCurrentUser} = rootStore.profileStore;
-    const [addPhotoMode, setAddPhotoMode] = useState(false);
+    const [addPhotoMode, setAddPhotoMode] = useState(true);
+
     return (
         <Tab.Pane>
             <Grid>
@@ -16,39 +18,27 @@ const ProfilePhotos = () => {
                         </Grid.Column>
                         <Grid.Column width={6}>
                             {isCurrentUser &&
-                            <Button.Group floated={"right"} fluid>
-
-                                <Reveal animated="move">
-                                    <Reveal.Content visible style={{width: "100%"}}>
-                                        <Button fluid color="teal" content="Following"/>
-                                    </Reveal.Content>
-                                    <Reveal.Content hidden>
-                                        <Button
-                                            fluid
-                                            basic
-                                            color={true ? "red" : "green"}
-                                            content={true ? "Unfollow" : "Follow"}
-                                            icon={}
-                                        />
-                                    </Reveal.Content>
-                                </Reveal>
-
-                                <Button animated circular
-                                        type={'button'}
+                            <Reveal animated={'move right'}>
+                                <Reveal.Content visible style={{width: "100%"}}>
+                                    <Button fluid color="teal" content={addPhotoMode ? 'Cancel' : 'Add Photo'}/>
+                                </Reveal.Content>
+                                <Reveal.Content hidden>
+                                    <Button
+                                        fluid
+                                        basic
+                                        negative={addPhotoMode}
                                         onClick={() => setAddPhotoMode(!addPhotoMode)}
-                                >
-                                    <Button.Content hidden>{addPhotoMode ? 'Cancel' : 'Add Photo'}</Button.Content>
-                                    <Button.Content visible>
-                                        <Icon name={addPhotoMode ? 'cancel' : 'add'}/>
-                                    </Button.Content>
-                                </Button>
-                            </Button.Group>}
+                                        icon={addPhotoMode ? 'cancel' : 'add'}
+                                    />
+                                </Reveal.Content>
+                            </Reveal>
+                            }
                         </Grid.Column>
                     </Grid>
                 </Grid.Column>
                 <Grid.Column width={16}>
                     {addPhotoMode ? (
-                        <p>Photo widget will go here</p>
+                        <PhotoUploadWidget/>
                     ) : (
                         <Card.Group itemsPerRow={5}>
                             {profile && profile?.photos.map(p => (
