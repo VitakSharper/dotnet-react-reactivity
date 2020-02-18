@@ -13,6 +13,7 @@ export default class ProfileStore {
 
     @observable profile: IProfile | null = null;
     @observable loadingProfile = true;
+    @observable uploadingPhoto = false;
 
     @computed get isCurrentUser() {
         if (this.rootStore.userStore.user && this.profile) {
@@ -51,6 +52,28 @@ export default class ProfileStore {
             })
         } catch (e) {
             toast.error(e.response.data.title);
+        }
+    };
+
+    @action uploadPhoto = async (file: Blob) => {
+        this.uploadingPhoto = true;
+        try {
+            const photo = await Profiles.updloadPhoto(file);
+            runInAction(() => {
+                if (this.profile) {
+                    this.profile.photos.push(photo);
+                    if (photo.isMain && this.rootStore.userStore.user) {
+                        this.rootStore.userStore.user.image = photo.url;
+                        this.profile.image = photo.url;
+                    }
+                }
+            })
+        } catch (e) {
+            toast.error('Problem uploading Photo.')
+        } finally {
+            runInAction(() => {
+                this.uploadingPhoto = false;
+            })
         }
     }
 }
