@@ -1,11 +1,12 @@
 import React from "react";
 import {Tab} from "semantic-ui-react";
 
-import ProfilePhotos from "./ProfilePhotos.component";
+import ProfilePhotosTab from "./ProfilePhotosTab.component";
+import ProfileAboutTab from "./ProfileAboutTab.component";
 
 const panes = [
-    {menuItem: 'About', render: () => <Tab.Pane> About Content</Tab.Pane>},
-    {menuItem: 'Photos', render: () => <ProfilePhotos/>},
+    {menuItem: 'About', render: () => <ProfileAboutTab/>},
+    {menuItem: 'Photos', render: () => <ProfilePhotosTab/>},
     {menuItem: 'Activities', render: () => <Tab.Pane> Activities Content</Tab.Pane>},
     {menuItem: 'Followers', render: () => <Tab.Pane> Followers Content</Tab.Pane>},
     {menuItem: 'Following', render: () => <Tab.Pane> Following Content</Tab.Pane>},
@@ -18,7 +19,6 @@ const ProfileContent = () => {
             menu={{fluid: true, vertical: true, secondary: true}}
             menuPosition={'right'}
             panes={panes}
-            activeIndex={1}
         />
     )
 };

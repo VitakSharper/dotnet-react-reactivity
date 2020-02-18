@@ -37,7 +37,7 @@ const ProfilePhotos = () => {
                     </Grid>
                 </Grid.Column>
                 <Grid.Column width={16}>
-                    {addPhotoMode ? (
+                    {addPhotoMode && isCurrentUser ? (
                         <PhotoUploadWidget/>
                     ) : (
                         <Card.Group itemsPerRow={5}>

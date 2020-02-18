@@ -1,8 +1,11 @@
-import React from "react";
+import React, {useContext} from "react";
+import ProfileForm from "../../components/Forms/ProfileForm.component";
+
 import {
     Segment,
     Item,
     Header,
+    Popup,
     Button,
     Grid,
     Statistic,
@@ -10,12 +13,18 @@ import {
     Reveal,
 } from "semantic-ui-react";
 import {IProfile} from "../../models/profile";
+import {RootStoreContext} from "../../store/Root.store";
+import {observer} from "mobx-react-lite";
 
 interface IProps {
     profile: IProfile
 }
 
 const ProfileHeader: React.FC<IProps> = ({profile: {displayName, image}}) => {
+    const rootStore = useContext(RootStoreContext);
+    const {isCurrentUser} = rootStore.profileStore;
+    const {modalState} = rootStore.modalStore;
+
     return (
         <Segment>
             <Grid>
@@ -24,7 +33,20 @@ const ProfileHeader: React.FC<IProps> = ({profile: {displayName, image}}) => {
                         <Item>
                             <Item.Image avatar size="small" src={image || "/assets/user.png"}/>
                             <Item.Content verticalAlign="middle">
-                                <Header as="h1">{displayName}</Header>
+                                <Header as={'h1'}>{displayName}</Header>
+                                {isCurrentUser && <Item.Meta>
+                                    <Popup content={'Edit your profile'}
+                                           inverted
+                                           trigger={
+                                               <Button circular color="teal" icon={'edit'}
+                                                       onClick={() => modalState(<ProfileForm/>, true)}
+                                               />
+                                           }/>
+                                </Item.Meta>}
+                            </Item.Content>
+                        </Item>
+                        <Item>
+                            <Item.Content verticalAlign={"middle"}>
                             </Item.Content>
                         </Item>
                     </Item.Group>
@@ -54,4 +76,4 @@ const ProfileHeader: React.FC<IProps> = ({profile: {displayName, image}}) => {
     );
 };
 
-export default ProfileHeader;
+export default observer(ProfileHeader);

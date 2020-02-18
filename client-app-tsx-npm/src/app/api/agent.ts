@@ -64,7 +64,8 @@ const Users = {
 };
 
 const Profiles = {
-    get: (username: string): Promise<IProfile> => requests.get(`/profile/${username}`)
+    get: (username: string): Promise<IProfile> => requests.get(`/profile/${username}`),
+    edit: (profileData: Partial<IProfile>) => requests.put(`/profile`, profileData)
 };
 
 export {Activities, Users, Profiles};

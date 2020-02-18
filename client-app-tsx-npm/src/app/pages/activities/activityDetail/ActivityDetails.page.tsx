@@ -2,8 +2,8 @@ import React, {useContext, useEffect} from "react";
 import {RouteComponentProps} from 'react-router';
 
 import {observer} from "mobx-react-lite";
-import LoadingSpinner from "../../../components/LoadingSpinner.component";
-import ActivityDetailGrid from "../../../components/ActivityDetailGrid.component";
+import LoadingSpinner from "../../../components/helpers/LoadingSpinner.component";
+import ActivityDetailGrid from "../../../components/activity/ActivityDetailGrid.component";
 import {RootStoreContext} from "../../../store/Root.store";
 
 interface DetailParams {

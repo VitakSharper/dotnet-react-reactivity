@@ -6,7 +6,7 @@ import ActivityDetailedHeader from "./ActivityDetailedHeader.component";
 import ActivityDetailedInfo from "./ActivityDetailedInfo.component";
 import ActivityDetailedChat from "./ActivityDetailedChat.component";
 import ActivityDetailedSidebar from "./ActivityDetailedSidebar.component";
-import {RootStoreContext} from "../store/Root.store";
+import {RootStoreContext} from "../../store/Root.store";
 
 const styles = {
     groupSegment: {

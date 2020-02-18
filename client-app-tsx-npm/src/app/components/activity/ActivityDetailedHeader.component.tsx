@@ -6,8 +6,8 @@ import {format} from 'date-fns'
 
 import {Segment, Item, Header, Button, Image, Icon} from "semantic-ui-react";
 
-import {IActivity} from "../models/activity";
-import {RootStoreContext} from "../store/Root.store";
+import {IActivity} from "../../models/activity";
+import {RootStoreContext} from "../../store/Root.store";
 
 const styles = {
     activityTopSegment: {

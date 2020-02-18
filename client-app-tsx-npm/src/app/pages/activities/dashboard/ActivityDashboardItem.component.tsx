@@ -3,7 +3,7 @@ import {Item, Button, Label, Icon, Segment} from 'semantic-ui-react'
 import {IActivity} from "../../../models/activity";
 import {format} from 'date-fns';
 
-import ActivityListItemAttendees from "../../../components/ActivityListItemAttendees.component";
+import ActivityListItemAttendees from "../../../components/activity/ActivityListItemAttendees.component";
 import {observer} from "mobx-react-lite";
 import {Link} from "react-router-dom";
 import {RootStoreContext} from "../../../store/Root.store";

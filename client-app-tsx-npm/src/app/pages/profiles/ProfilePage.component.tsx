@@ -3,7 +3,7 @@ import {RouteComponentProps} from 'react-router';
 
 import ProfileHeader from "./ProfileHeader.component";
 import ProfileContent from "./ProfileContent.component";
-import LoadingSpinner from "../../components/LoadingSpinner.component";
+import LoadingSpinner from "../../components/helpers/LoadingSpinner.component";
 
 import {Grid, Segment} from "semantic-ui-react";
 import {RootStoreContext} from "../../store/Root.store";

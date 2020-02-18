@@ -3,7 +3,7 @@ import React from "react";
 import {format} from 'date-fns';
 
 import {Segment, Grid, Icon} from "semantic-ui-react";
-import {IActivity} from "../models/activity";
+import {IActivity} from "../../models/activity";
 
 type someProps = {
     activity: IActivity | undefined;

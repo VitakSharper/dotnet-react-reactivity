@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.min.css';
 import 'react-widgets/lib/scss/react-widgets.scss';
 import './styles.scss';
 import App from './app/App';
-import ScrollToTop from "./app/components/ScrollToTop.component";
+import ScrollToTop from "./app/components/helpers/ScrollToTop.component";
 import * as serviceWorker from './serviceWorker';
 
 import dateFnsLocalizer from 'react-widgets-date-fns';

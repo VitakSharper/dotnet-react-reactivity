@@ -2,7 +2,7 @@ import React from 'react'
 import {Link} from "react-router-dom";
 
 import {Card, Image, Button, Icon} from 'semantic-ui-react'
-import {IActivity} from "../models/activity";
+import {IActivity} from "../../models/activity";
 
 type IProps = {
     activity: IActivity | undefined;
