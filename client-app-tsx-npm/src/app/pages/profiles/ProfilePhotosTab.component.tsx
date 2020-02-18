@@ -5,7 +5,7 @@ import PhotoUploadWidget from "../../components/photoUpload/PhotoUploadWidget.co
 
 const ProfilePhotos = () => {
     const rootStore = useContext(RootStoreContext);
-    const {profile, isCurrentUser} = rootStore.profileStore;
+    const {profile, isCurrentUser, uploadingPhoto, uploadPhoto} = rootStore.profileStore;
     const [addPhotoMode, setAddPhotoMode] = useState(true);
 
     return (
@@ -38,7 +38,7 @@ const ProfilePhotos = () => {
                 </Grid.Column>
                 <Grid.Column width={16}>
                     {addPhotoMode && isCurrentUser ? (
-                        <PhotoUploadWidget/>
+                        <PhotoUploadWidget uploadPhoto={uploadPhoto} loading={uploadingPhoto}/>
                     ) : (
                         <Card.Group itemsPerRow={5}>
                             {profile && profile?.photos.map(p => (

@@ -1,11 +1,16 @@
 import React, {Fragment, useEffect, useState} from "react";
 import {observer} from "mobx-react-lite";
 
-import {Header, Grid} from "semantic-ui-react";
+import {Header, Grid, Button, Icon, Card, Image} from "semantic-ui-react";
 import PhotoWidgetDropzone from "./PhotoWidgetDropzone.component";
 import PhotoWidgetCropper from "./PhotoWidgetCropper.component";
 
-const PhotoUploadWidget = () => {
+interface IProps {
+    loading: boolean;
+    uploadPhoto: (file: Blob) => void;
+}
+
+const PhotoUploadWidget: React.FC<IProps> = ({loading, uploadPhoto}) => {
     const [files, setFiles] = useState<any[]>([]);
     const [image, setImage] = useState<Blob | null>(null);
 
@@ -32,10 +37,37 @@ const PhotoUploadWidget = () => {
 
                 </Grid.Column>
                 <Grid.Column width={1}/>
-                <Grid.Column width={4}>
+                <Grid.Column width={6}>
                     <Header sub color="teal" content="Step 3 - Preview & Upload"/>
                     {files.length > 0 &&
-                    <div className={'img-preview'} style={{minHeight: '20rem', overflow: 'hidden'}}/>
+                    <>
+                        <Card>
+                            <Image as={'div'} className={'img-preview'}
+                                   style={{minHeight: '20rem', overflow: 'hidden'}}/>
+                            <Card.Content style={{padding: '0'}}>
+                                <Button.Group fluid>
+                                    <Button animated basic positive
+                                            loading={loading}
+                                            onClick={() => uploadPhoto(image!)}
+                                            type={'button'}>
+                                        <Button.Content
+                                            hidden>upload</Button.Content>
+                                        <Button.Content visible>
+                                            <Icon name={'check'}/>
+                                        </Button.Content>
+                                    </Button>
+                                    <Button.Or/>
+                                    <Button animated basic negative type={'button'}>
+                                        <Button.Content hidden>Delete</Button.Content>
+                                        <Button.Content visible>
+                                            <Icon name={'trash'}/>
+                                        </Button.Content>
+                                    </Button>
+                                </Button.Group>
+                            </Card.Content>
+                        </Card>
+                        {/*<div className={'img-preview'} style={{minHeight: '20rem', overflow: 'hidden'}}/>*/}
+                    </>
                     }
                 </Grid.Column>
             </Grid>
