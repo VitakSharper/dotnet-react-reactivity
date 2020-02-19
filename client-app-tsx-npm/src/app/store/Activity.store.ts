@@ -23,6 +23,7 @@ export default class ActivityStore {
     @observable editMode = false;
     @observable openForm = false;
     @observable target = '';
+    @observable profileChanged = false;
 
     @computed get activitiesByDate() {
         return this.groupActivitiesByDate(Array.from(this.activityRegistry.values()))
@@ -58,7 +59,7 @@ export default class ActivityStore {
     }
 
     @action loadActivities = async () => {
-        if (this.activityRegistry.size <= 1) {
+        if (this.activityRegistry.size <= 1 || this.profileChanged) {
             this.loading = true;
             try {
                 const response = await Activities.list();
@@ -72,6 +73,7 @@ export default class ActivityStore {
             } finally {
                 runInAction(() => {
                     this.loading = false;
+                    this.profileChanged = false;
                 })
             }
         }

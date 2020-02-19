@@ -2,6 +2,7 @@ export interface IPhoto {
     id: string;
     url: string;
     isMain: boolean;
+    status: boolean;
 }
 
 export interface IProfile {

@@ -6,9 +6,10 @@ import {observer} from "mobx-react-lite";
 
 const ProfilePhotos = () => {
     const rootStore = useContext(RootStoreContext);
-    const {profile, isCurrentUser, uploadingPhoto, uploadPhoto, loading, setMainPhoto, deletePhoto} = rootStore.profileStore;
+    const {profile, isCurrentUser, uploadingPhoto, uploadPhoto, loading, setMainPhoto, deletePhoto, setStatusPhoto} = rootStore.profileStore;
     const [addPhotoMode, setAddPhotoMode] = useState(false);
     const [target, setTarget] = useState<string | undefined>(undefined);
+
 
     const handleUploadPhoto = (photo: Blob) => {
         uploadPhoto(photo).then(() => setAddPhotoMode(false))
@@ -47,11 +48,17 @@ const ProfilePhotos = () => {
                         <PhotoUploadWidget handleUploadPhoto={handleUploadPhoto} loading={uploadingPhoto}/>
                     ) : (
                         <Card.Group itemsPerRow={5}>
-                            {profile && profile?.photos.map(p => (
+                            {profile && profile.photos.map(p => (
                                 <Card key={p.id}>
                                     <Image src={p.url}/>
-                                    {isCurrentUser && <Popup content='Make it private' trigger={
-                                        <Label as={'a'} corner={"right"} icon={'heart'}/>
+                                    {isCurrentUser &&
+                                    <Popup content={p.status ? 'Change to public' : 'Change to private'} trigger={
+                                        <Label
+                                            as={'a'}
+                                            corner={"right"}
+                                            icon={p.status ? 'lock' : 'lock open'}
+                                            onClick={() => setStatusPhoto(p.id)}
+                                        />
                                     }/>}
                                     <Card.Content style={{padding: '0'}}>
                                         {isCurrentUser && !p.isMain &&

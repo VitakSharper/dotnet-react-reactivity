@@ -26,13 +26,13 @@ export default class ProfileStore {
         this.loadingProfile = true;
         try {
             const profile = await Profiles.get(username);
-
             runInAction(() => {
-                this.profile = profile;
+                this.rootStore.userStore.user?.username === profile.username
+                    ? this.profile = profile
+                    : this.profile = {...profile, photos: [...profile.photos.filter(p => !p.status)]};
             })
-
         } catch (e) {
-            toast.error(e.response.data.title);
+            toast.error(e);
         } finally {
             runInAction(() => {
                 this.loadingProfile = false;
@@ -88,6 +88,7 @@ export default class ProfileStore {
                 this.profile!.photos.find(p => p.isMain)!.isMain = false;
                 this.profile!.photos.find(p => p.id === photo.id)!.isMain = true;
                 this.profile!.image = photo.url;
+                this.rootStore.activityStore.profileChanged = true;
             });
             toast.info('Main photo changed successfully.')
         } catch (e) {
@@ -96,6 +97,19 @@ export default class ProfileStore {
             runInAction(() => {
                 this.loading = false;
             })
+        }
+    };
+
+    @action setStatusPhoto = async (id: string) => {
+        try {
+            await Profiles.setStatusPhoto(id);
+            runInAction(() => {
+                this.profile?.photos.forEach(p => {
+                    if (p.id === id) p.status = !p.status
+                })
+            })
+        } catch (e) {
+            toast.error('Problem change photo status.')
         }
     };
 
