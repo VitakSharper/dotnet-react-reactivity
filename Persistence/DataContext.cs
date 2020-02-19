@@ -37,6 +37,10 @@ namespace Persistence
                 .HasOne(u => u.Activity)
                 .WithMany(a => a.UserActivities)
                 .HasForeignKey(u => u.ActivityId);
+
+            builder.Entity<Photo>()
+                .Property(photo => photo.Status)
+                .HasDefaultValue(false);
         }
     }
 }

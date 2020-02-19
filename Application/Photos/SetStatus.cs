@@ -1,17 +1,17 @@
-﻿using Application.Errors;
-using Application.Interfaces;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Persistence;
-using System;
+﻿using System;
 using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Errors;
+using Application.Interfaces;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Persistence;
 
 namespace Application.Photos
 {
-    public class SetMain
+    public class SetStatus
     {
         public class Command : IRequest
         {
@@ -22,7 +22,6 @@ namespace Application.Photos
         {
             private readonly DataContext _context;
             private readonly IUserAccessor _userAccessor;
-
 
             public Handler(DataContext context, IUserAccessor userAccessor)
             {
@@ -41,15 +40,8 @@ namespace Application.Photos
                     throw new RestException(HttpStatusCode.NotFound,
                         new {Photo = "Photo not found."});
 
-                var currentMain = currentUser.Photos.FirstOrDefault(f => f.IsMain);
-
-                if (currentMain != null && currentMain.Id == photo.Id)
-                    throw new RestException(HttpStatusCode.AlreadyReported,
-                        new {Photo = "Photo already set as main."});
-
-                photo.IsMain = true;
-                if (currentMain != null) currentMain.IsMain = false;
-
+                photo.Status = !photo.Status;
+                
                 if (await _context.SaveChangesAsync(cancellationToken) > 0) return Unit.Value;
 
                 throw new Exception("Problem saving changes.");
