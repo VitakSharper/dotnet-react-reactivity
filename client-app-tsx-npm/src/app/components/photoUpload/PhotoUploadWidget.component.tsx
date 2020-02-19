@@ -7,10 +7,10 @@ import PhotoWidgetCropper from "./PhotoWidgetCropper.component";
 
 interface IProps {
     loading: boolean;
-    uploadPhoto: (file: Blob) => void;
+    handleUploadPhoto: (file: Blob) => void;
 }
 
-const PhotoUploadWidget: React.FC<IProps> = ({loading, uploadPhoto}) => {
+const PhotoUploadWidget: React.FC<IProps> = ({loading, handleUploadPhoto}) => {
     const [files, setFiles] = useState<any[]>([]);
     const [image, setImage] = useState<Blob | null>(null);
 
@@ -40,34 +40,34 @@ const PhotoUploadWidget: React.FC<IProps> = ({loading, uploadPhoto}) => {
                 <Grid.Column width={6}>
                     <Header sub color="teal" content="Step 3 - Preview & Upload"/>
                     {files.length > 0 &&
-                    <>
-                        <Card>
-                            <Image as={'div'} className={'img-preview'}
-                                   style={{minHeight: '20rem', overflow: 'hidden'}}/>
-                            <Card.Content style={{padding: '0'}}>
-                                <Button.Group fluid>
-                                    <Button animated basic positive
-                                            loading={loading}
-                                            onClick={() => uploadPhoto(image!)}
-                                            type={'button'}>
-                                        <Button.Content
-                                            hidden>upload</Button.Content>
-                                        <Button.Content visible>
-                                            <Icon name={'check'}/>
-                                        </Button.Content>
-                                    </Button>
-                                    <Button.Or/>
-                                    <Button animated basic negative type={'button'}>
-                                        <Button.Content hidden>Delete</Button.Content>
-                                        <Button.Content visible>
-                                            <Icon name={'trash'}/>
-                                        </Button.Content>
-                                    </Button>
-                                </Button.Group>
-                            </Card.Content>
-                        </Card>
-                        {/*<div className={'img-preview'} style={{minHeight: '20rem', overflow: 'hidden'}}/>*/}
-                    </>
+                    <Card>
+                        <Image as={'div'} className={'img-preview'}
+                               style={{minHeight: '20rem', overflow: 'hidden'}}/>
+                        <Card.Content style={{padding: '0'}}>
+                            <Button.Group fluid>
+                                <Button animated basic positive
+                                        loading={loading}
+                                        onClick={() => handleUploadPhoto(image!)}
+                                        type={'button'}>
+                                    <Button.Content
+                                        hidden>upload</Button.Content>
+                                    <Button.Content visible>
+                                        <Icon name={'check'}/>
+                                    </Button.Content>
+                                </Button>
+                                <Button.Or/>
+                                <Button animated basic negative
+                                        disabled={loading}
+                                        type={'button'}
+                                        onClick={() => setFiles([])}>
+                                    <Button.Content hidden>Cancel</Button.Content>
+                                    <Button.Content visible>
+                                        <Icon name={'close'}/>
+                                    </Button.Content>
+                                </Button>
+                            </Button.Group>
+                        </Card.Content>
+                    </Card>
                     }
                 </Grid.Column>
             </Grid>

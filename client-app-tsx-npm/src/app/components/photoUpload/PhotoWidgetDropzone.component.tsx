@@ -14,7 +14,10 @@ const styles = {
         borderRadius: '0.5rem',
         paddingTop: '3rem',
         textAlign: 'center' as 'center',
-        maxHeight: "20rem"
+        maxHeight: "20rem",
+        '&:hover': {
+            borderColor: '#C8E6C9'
+        }
     },
     dropZoneActive: {
         borderColor: '#C8E6C9',
