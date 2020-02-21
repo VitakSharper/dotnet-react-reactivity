@@ -34,14 +34,16 @@ namespace Application.Photos
                 var currentUser = await _context.Users.SingleOrDefaultAsync(u =>
                     u.UserName == _userAccessor.GetCurrentUsername(), cancellationToken: cancellationToken);
 
+                _ = currentUser ?? throw new RestException(HttpStatusCode.NotFound,
+                    new {User = "Current user not found."});
+
                 var photo = currentUser.Photos.FirstOrDefault(p => p.Id == request.ImageId);
 
-                if (photo == null)
-                    throw new RestException(HttpStatusCode.NotFound,
-                        new {Photo = "Photo not found."});
+                _ = photo ?? throw new RestException(HttpStatusCode.NotFound,
+                    new {Photo = "Photo not found."});
 
                 photo.Status = !photo.Status;
-                
+
                 if (await _context.SaveChangesAsync(cancellationToken) > 0) return Unit.Value;
 
                 throw new Exception("Problem saving changes.");
