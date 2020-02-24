@@ -27,7 +27,7 @@ export default class ActivityStore {
     @observable profileChanged = false;
     @observable.ref hubConnection: HubConnection | null = null;
 
-    @action createHubConnection = () => {
+    @action createHubConnection = (activityId: string) => {
         this.hubConnection = new HubConnectionBuilder()
             .withUrl('http://localhost:5000/chat', {
                 accessTokenFactory: () => this.rootStore.commonStore.token!
@@ -38,17 +38,31 @@ export default class ActivityStore {
         this.hubConnection!
             .start()
             .then(() => console.log(this.hubConnection!.state))
+            .then(() => {
+                console.log('Attempting to join group.');
+                if (this.hubConnection!.state === 'Connected')
+                    this.hubConnection!.invoke('AddToGroup', activityId);
+            })
             .catch(err => console.log('Error establishing connection: ', err));
 
         this.hubConnection!.on('ReceiveComment', comment => {
             runInAction(() => {
                 this.activity!.comments.push(comment);
             })
+        });
+
+        this.hubConnection.on('Send', message => {
+            toast.info(message);
         })
     };
 
     @action stopHubConnection = () => {
-        this.hubConnection!.stop();
+        this.hubConnection!.invoke('RemoveFromGroup', this.activity!.id)
+            .then(() => {
+                this.hubConnection!.stop();
+            })
+            .then(() => console.log('Connection stopped!'))
+            .catch(err => console.log(err))
     };
 
     @action addComment = async (values: any) => {
@@ -170,10 +184,10 @@ export default class ActivityStore {
             let attendees = [];
             attendees.push(attendee);
             activity.attendees = attendees;
+            activity.comments = [];
             activity.isHost = true;
             runInAction('Create new activity', () => {
                 this.activityRegistry.set(activity.id, activity);
-                // this.activity = activity;
                 toast.info(`New activity added: ${activity.title}`);
             });
             history.push(`/activities/${activity.id}`)
