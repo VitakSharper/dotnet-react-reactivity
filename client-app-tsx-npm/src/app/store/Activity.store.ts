@@ -1,4 +1,4 @@
-import {action, computed, observable, runInAction} from "mobx";
+import {action, computed, observable, runInAction, values} from "mobx";
 import {SyntheticEvent} from "react";
 import {IActivity} from "../models/activity";
 import {Activities} from "../api/agent";
@@ -41,12 +41,23 @@ export default class ActivityStore {
             .catch(err => console.log('Error establishing connection: ', err));
 
         this.hubConnection!.on('ReceiveComment', comment => {
-            this.activity!.comments.push(comment);
+            runInAction(() => {
+                this.activity!.comments.push(comment);
+            })
         })
     };
 
     @action stopHubConnection = () => {
         this.hubConnection!.stop();
+    };
+
+    @action addComment = async (values: any) => {
+        values.activityId = this.activity!.id;
+        try {
+            await this.hubConnection!.invoke('SendComment', values); // not using axios bug invoke method directly to the api server
+        } catch (e) {
+            console.log(e)
+        }
     };
 
     @computed get activitiesByDate() {
