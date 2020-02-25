@@ -17,7 +17,7 @@ namespace Application.Followers
             public string Username { get; set; }
         }
 
-        public class Handler : IRequestHandler<Add.Command>
+        public class Handler : IRequestHandler<Command>
         {
             private readonly DataContext _context;
             private readonly IUserAccessor _userAccessor;
@@ -28,7 +28,7 @@ namespace Application.Followers
                 _userAccessor = userAccessor;
             }
 
-            public async Task<Unit> Handle(Add.Command request, CancellationToken cancellationToken)
+            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
                 var observer =
                     await _context.Users.FirstOrDefaultAsync(u => u.UserName == _userAccessor.GetCurrentUsername(),
