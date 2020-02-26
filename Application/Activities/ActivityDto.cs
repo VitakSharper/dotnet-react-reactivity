@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using Application.Comments;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using Application.Comments;
 
 namespace Application.Activities
 {

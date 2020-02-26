@@ -10,10 +10,10 @@ namespace API.Controllers
     {
         [HttpPost("{username}/follow")]
         public async Task<ActionResult<Unit>> Follow(string username) =>
-            await Mediator.Send(new Add.Command {Username = username});
+            await Mediator.Send(new Add.Command { Username = username });
 
         [HttpDelete("{username}/follow")]
-        public async Task<ActionResult<Unit>> Unfollow(string username) =>
-            await Mediator.Send(new Delete.Command {Username = username});
+        public async Task<ActionResult<Unit>> UnFollow(string username) =>
+            await Mediator.Send(new Delete.Command { Username = username });
     }
 }
