@@ -1,8 +1,9 @@
 import React from "react";
-import {Link} from "react-router-dom";
-import {Segment, List, Item, Label, Image} from "semantic-ui-react";
-import {IAttendee} from "../../models/activity";
 import {observer} from "mobx-react-lite";
+import {Link} from "react-router-dom";
+
+import {Segment, List, Item, Label, Image, Popup} from "semantic-ui-react";
+import {IAttendee} from "../../models/activity";
 
 const styles = {
     detailSegment: {
@@ -11,7 +12,7 @@ const styles = {
     item: {
         position: "relative",
         itemContentExtra: {
-            color: "orange"
+            color: "#FFA726"
         }
     }
 };
@@ -38,7 +39,12 @@ const ActivityDetailedSidebar: React.FC<IProps> = ({attendees}) => {
                     {
                         attendees.map((a, idx) => (
                             <Item style={styles.item} key={idx}>
-                                <Image size="tiny" src={a.image || "/assets/user.png"}/>
+
+                                <Popup
+                                    content={a.following
+                                        ? `You are following ${a.displayName[0].toUpperCase()}${a.displayName.substring(1).toLowerCase()}`
+                                        : `${a.displayName[0].toUpperCase()}${a.displayName.substring(1).toLowerCase()}`}
+                                    trigger={<Image size="tiny" src={a.image || "/assets/user.png"}/>}/>
 
                                 <Item.Content verticalAlign="middle" style={{marginBottom: '2rem'}}>
                                     {a.isHost && <Label
@@ -50,9 +56,10 @@ const ActivityDetailedSidebar: React.FC<IProps> = ({attendees}) => {
                                     </Label>}
                                     <Item.Header as="h3">
                                         <Link to={`/profile/${a.username}`}>{a.displayName}</Link>
-
                                     </Item.Header>
+                                    {a.following &&
                                     <Item.Extra style={styles.item.itemContentExtra}>Following</Item.Extra>
+                                    }
                                 </Item.Content>
                             </Item>
                         ))

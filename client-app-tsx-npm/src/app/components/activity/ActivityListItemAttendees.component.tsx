@@ -7,6 +7,13 @@ interface IProps {
     attendees: IAttendee[];
 }
 
+const styles = {
+    isFollowing: {
+        borderColor: '#FFA726',
+        borderWidth: '2'
+    }
+};
+
 const ActivityListItemAttendees: React.FC<IProps> = ({attendees}) => {
     return (
         <List horizontal>
@@ -15,8 +22,14 @@ const ActivityListItemAttendees: React.FC<IProps> = ({attendees}) => {
                     <List.Item key={idx}>
                         <Popup
                             inverted
-                            header={a.displayName}
-                            trigger={<Image size={"mini"} circular src={a.image || '/assets/user.png'}/>
+                            content={a.following
+                                ? `You are following ${a.displayName[0].toUpperCase()}${a.displayName.substring(1).toLowerCase()}`
+                                : `${a.displayName[0].toUpperCase()}${a.displayName.substring(1).toLowerCase()}`}
+                            trigger={
+                                <Image
+                                    size={"mini"} circular bordered
+                                    style={a.following ? styles.isFollowing : null}
+                                    src={a.image || '/assets/user.png'}/>
                             }
                         />
                     </List.Item>
