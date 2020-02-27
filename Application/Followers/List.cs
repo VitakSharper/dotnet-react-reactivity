@@ -24,10 +24,10 @@ namespace Application.Followers
         {
             private readonly DataContext _context;
             private readonly IProfileReader _profileReader;
-            private List<UserFollowing> _userFollowings = new List<UserFollowing>();
+
+            private List<UserFollowing> UserFollowings { get; set; } = new List<UserFollowing>();
 
             private List<Profile> Profiles { get; } = new List<Profile>();
-
 
             public Handler(DataContext context, IProfileReader profileReader)
             {
@@ -43,22 +43,22 @@ namespace Application.Followers
                 {
                     case "followers":
                         {
-                            _userFollowings = await queryable
+                            UserFollowings = await queryable
                                 .Where(f => f.Target.UserName == request.Username)
                                 .ToListAsync(cancellationToken: cancellationToken);
 
-                            _userFollowings.ForEach(async f =>
+                            UserFollowings.ForEach(async f =>
                                 Profiles.Add(await _profileReader.ReadProfile(f.Observer.UserName)));
                             break;
                         }
 
                     case "following":
                         {
-                            _userFollowings = await queryable
+                            UserFollowings = await queryable
                                 .Where(f => f.Observer.UserName == request.Username)
                                 .ToListAsync(cancellationToken: cancellationToken);
 
-                            _userFollowings.ForEach(async f =>
+                            UserFollowings.ForEach(async f =>
                                 Profiles.Add(await _profileReader.ReadProfile(f.Target.UserName)));
                             break;
                         }

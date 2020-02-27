@@ -4,6 +4,9 @@ import {RootStoreContext} from "../../store/Root.store";
 import PhotoUploadWidget from "../../components/photoUpload/PhotoUploadWidget.component";
 import {observer} from "mobx-react-lite";
 
+import './ProfilePhotosTab.scss'
+
+
 const ProfilePhotos = () => {
     const rootStore = useContext(RootStoreContext);
     const {profile, isCurrentUser, uploadingPhoto, uploadPhoto, loading, setMainPhoto, deletePhoto, setStatusPhoto} = rootStore.profileStore;
@@ -15,13 +18,14 @@ const ProfilePhotos = () => {
         uploadPhoto(photo).then(() => setAddPhotoMode(false))
     };
 
+
     return (
         <Tab.Pane>
             <Grid>
                 <Grid.Column width={16} style={{paddingBottom: '0'}}>
                     <Grid>
                         <Grid.Column width={10}>
-                            <Header floated={"left"} icon={'image'} content={addPhotoMode ? 'Add Photo' : 'Photos'}/>
+                            <Header floated={"left"} icon={'image'} content={addPhotoMode ? 'Add Photo' : 'My Photos'}/>
                         </Grid.Column>
                         <Grid.Column width={6}>
                             {isCurrentUser &&
@@ -52,14 +56,14 @@ const ProfilePhotos = () => {
                                 <Card key={p.id}>
                                     <Image src={p.url}/>
                                     {isCurrentUser &&
-                                    <Popup content={p.status ? 'Change to public' : 'Change to private'} trigger={
-                                        <Label
-                                            as={'a'}
-                                            corner={"right"}
-                                            icon={p.status ? 'lock' : 'lock open'}
-                                            onClick={() => setStatusPhoto(p.id)}
-                                        />
-                                    }/>}
+                                    <Label corner={"right"}>
+                                        <Popup content={p.status ? 'Change to public' : 'Change to private'}
+                                               trigger={
+                                                   <Icon
+                                                       circular
+                                                       name={p.status ? 'lock' : 'lock open'}
+                                                       onClick={() => setStatusPhoto(p.id)}
+                                                   />}/> </Label>}
                                     <Card.Content style={{padding: '0'}}>
                                         {isCurrentUser && !p.isMain &&
                                         <Button.Group fluid size={"mini"}>

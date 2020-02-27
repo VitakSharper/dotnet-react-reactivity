@@ -15,6 +15,7 @@ export default class ProfileStore {
     @observable loadingProfile = true;
     @observable uploadingPhoto = false;
     @observable loading = false;
+    @observable followings: IProfile[] = [];
 
     @computed get isCurrentUser() {
         if (this.rootStore.userStore.user && this.profile) {
@@ -123,6 +124,56 @@ export default class ProfileStore {
             toast.info('Photo deleted successfully.');
         } catch (e) {
             toast.error('Problem delete Photo.')
+        } finally {
+            runInAction(() => {
+                this.loading = false;
+            })
+        }
+    };
+
+    @action follow = async (username: string) => {
+        this.loading = true;
+        try {
+            await Profiles.follow(username);
+            runInAction(() => {
+                this.profile!.following = true;
+                this.profile!.followersCount++;
+            })
+        } catch (e) {
+            toast.error('Problem following user.')
+        } finally {
+            runInAction(() => {
+                this.loading = false;
+            })
+        }
+    };
+
+    @action unFollow = async (username: string) => {
+        this.loading = true;
+        try {
+            await Profiles.unFollow(username);
+            runInAction(() => {
+                this.profile!.following = false;
+                this.profile!.followersCount--;
+            })
+        } catch (e) {
+            toast.error('Problem unfollowing user.')
+        } finally {
+            runInAction(() => {
+                this.loading = false;
+            })
+        }
+    };
+
+    @action loadFollowings = async (are: string) => {
+        this.loading = true;
+        try {
+            const profiles = await Profiles.listFollowings(this.profile!.username, are);
+            runInAction(() => {
+                this.followings = profiles;
+            })
+        } catch (e) {
+            toast.error('Problem load followings.')
         } finally {
             runInAction(() => {
                 this.loading = false;
