@@ -13,6 +13,10 @@ const panes = [
     {menuItem: 'Following', render: () => <ProfileFollowings/>},
 ];
 
+interface IProps {
+    activeTab: (activeIndex: number) => void;
+}
+
 const ProfileContent = () => {
 
     return (

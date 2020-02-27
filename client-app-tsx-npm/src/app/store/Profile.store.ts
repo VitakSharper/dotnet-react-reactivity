@@ -16,6 +16,7 @@ export default class ProfileStore {
     @observable uploadingPhoto = false;
     @observable loading = false;
     @observable followings: IProfile[] = [];
+    @observable activeTab: number = 0;
 
     @computed get isCurrentUser() {
         if (this.rootStore.userStore.user && this.profile) {
@@ -179,5 +180,9 @@ export default class ProfileStore {
                 this.loading = false;
             })
         }
+    };
+
+    @action setActiveTab=(activeIndex:number)=>{
+        this.activeTab=activeIndex
     }
 }
