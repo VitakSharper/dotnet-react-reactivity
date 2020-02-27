@@ -14,16 +14,17 @@ const panes = [
 ];
 
 interface IProps {
-    activeTab: (activeIndex: number) => void;
+    activeTab: (activeIndex: any) => void;
 }
 
-const ProfileContent = () => {
+const ProfileContent: React.FC<IProps> = ({activeTab}) => {
 
     return (
         <Tab
             menu={{fluid: true, vertical: true, secondary: true}}
             menuPosition={'right'}
             panes={panes}
+            onTabChange={(e, data) => activeTab(data.activeIndex)}
         />
     )
 };

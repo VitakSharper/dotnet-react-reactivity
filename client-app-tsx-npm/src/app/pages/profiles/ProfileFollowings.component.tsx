@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from "react";
+import React, {useContext} from "react";
 import {Tab, Grid, Header, Card} from "semantic-ui-react";
 import {RootStoreContext} from "../../store/Root.store";
 import ProfileCard from "./ProfileCard.component";
@@ -6,11 +6,12 @@ import {observer} from "mobx-react-lite";
 
 const ProfileFollowings = () => {
     const rootStore = useContext(RootStoreContext);
-    const {profile, loadFollowings, followings, loading} = rootStore.profileStore;
+    const {profile, followings, loading, activeTab} = rootStore.profileStore;
 
-    useEffect(() => {
-        loadFollowings('following');
-    }, [loadFollowings]);
+    const menu: any = {
+        3: {item: `People following ${profile!.displayName}`},
+        4: {item: `People ${profile!.displayName} is following`}
+    };
 
     return (
         <Tab.Pane loading={loading}>
@@ -19,11 +20,7 @@ const ProfileFollowings = () => {
                     <Header
                         floated="left"
                         icon="user"
-                        content={
-                            true
-                                ? `People following ${profile!.displayName}`
-                                : `People ${profile!.displayName} is following`
-                        }
+                        content={menu[activeTab].item}
                     />
                 </Grid.Column>
                 <Grid.Column width={16}>

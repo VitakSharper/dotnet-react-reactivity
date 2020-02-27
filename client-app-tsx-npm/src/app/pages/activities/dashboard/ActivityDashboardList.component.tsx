@@ -9,14 +9,14 @@ import {format} from "date-fns";
 
 const styles = {
     activityListSegment: {
-        background: '#E3F2FD',
-        padding: 0
+        background: '#E3F2FD'
     }
 };
 
 const ActivityDashboardList = () => {
     const rootStore = useContext(RootStoreContext);
     const {activitiesByDate} = rootStore.activityStore;
+    const {isCurrentUser} = rootStore.profileStore;
     const history = useHistory();
 
     const handleView = (activityId: string) => {

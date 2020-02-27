@@ -1,5 +1,5 @@
 import {RootStore} from "./Root.store";
-import {action, computed, observable, runInAction} from "mobx";
+import {action, computed, observable, reaction, runInAction} from "mobx";
 import {IPhoto, IProfile} from "../models/profile";
 import {Profiles} from "../api/agent";
 import {toast} from "react-toastify";
@@ -9,6 +9,27 @@ export default class ProfileStore {
 
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;
+
+        reaction(
+            () => this.activeTab,
+            activeTab => {
+                switch (activeTab) {
+                    case 0:
+                    case 1:
+                    case 2:
+                        break;
+                    case 3:
+                        this.loadFollowings('followers');
+                        break;
+                    case 4:
+                        this.loadFollowings('following');
+                        break;
+                    default:
+                        this.followings = [];
+                        break;
+                }
+            }
+        )
     }
 
     @observable profile: IProfile | null = null;
@@ -182,7 +203,7 @@ export default class ProfileStore {
         }
     };
 
-    @action setActiveTab=(activeIndex:number)=>{
-        this.activeTab=activeIndex
+    @action setActiveTab = (activeIndex: number) => {
+        this.activeTab = activeIndex
     }
 }
