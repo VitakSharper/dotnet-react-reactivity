@@ -1,4 +1,4 @@
-import {action, computed, observable, runInAction, values} from "mobx";
+import {action, computed, observable, runInAction} from "mobx";
 import {SyntheticEvent} from "react";
 import {IActivity} from "../models/activity";
 import {Activities} from "../api/agent";
@@ -9,6 +9,8 @@ import {createAttendee, setActivityProps} from "../components/Forms/util";
 import {toast} from "react-toastify";
 import {RootStore} from "./Root.store";
 import {HubConnection, HubConnectionBuilder, LogLevel} from "@microsoft/signalr";
+
+const LIMIT = 2;
 
 export default class ActivityStore {
     rootStore: RootStore;
@@ -26,6 +28,20 @@ export default class ActivityStore {
     @observable target = '';
     @observable profileChanged = false;
     @observable.ref hubConnection: HubConnection | null = null;
+    @observable activityCount = 0;
+    @observable page = 0;
+
+    @computed get totalPages() {
+        return Math.ceil(this.activityCount / LIMIT);
+    }
+
+    @computed get activitiesByDate() {
+        return this.groupActivitiesByDate(Array.from(this.activityRegistry.values()))
+    };
+
+    @action setPage = (page: number) => {
+        this.page = page;
+    };
 
     @action createHubConnection = (activityId: string) => {
         this.hubConnection = new HubConnectionBuilder()
@@ -74,10 +90,6 @@ export default class ActivityStore {
         }
     };
 
-    @computed get activitiesByDate() {
-        return this.groupActivitiesByDate(Array.from(this.activityRegistry.values()))
-    }
-
     groupActivitiesByDate(activities: IActivity[]) {
         const sortedActivities = activities.slice().sort(
             (a, b) => a.date.getTime() - b.date.getTime()
@@ -108,23 +120,22 @@ export default class ActivityStore {
     }
 
     @action loadActivities = async () => {
-        if (this.activityRegistry.size <= 1 || this.profileChanged) {
-            this.loading = true;
-            try {
-                const response = await Activities.list();
-                runInAction('Loading Activities', () => {
-                    this.activityRegistry = response
-                        .map(a => setActivityProps(a, this.rootStore.userStore.user!))
-                        .reduce((acc, v) => acc.set(v.id, v), new Map<string, IActivity>());
-                });
-            } catch (e) {
-                toast.error('Problem to load activities.')
-            } finally {
-                runInAction(() => {
-                    this.loading = false;
-                    this.profileChanged = false;
-                })
-            }
+        this.loading = true;
+        try {
+            const {activities, activityCount} = await Activities.list(LIMIT, this.page);
+            runInAction('Loading Activities', () => {
+                this.activityRegistry = activities
+                    .map(a => setActivityProps(a, this.rootStore.userStore.user!))
+                    .reduce((acc, v) => acc.set(v.id, v), new Map<string, IActivity>());
+                this.activityCount = activityCount;
+            });
+        } catch (e) {
+            toast.error('Problem to load activities.')
+        } finally {
+            runInAction(() => {
+                this.loading = false;
+                this.profileChanged = false;
+            })
         }
     };
 
