@@ -4,7 +4,7 @@ import {Calendar} from "react-widgets";
 
 const ActivityDashboardFilter = () => (
     <Segment >
-        <Menu vertical secondary size={"large"} style={{width: "100%", marginTop: 30}}>
+        <Menu vertical secondary size={"large"} style={{width: "100%"}}>
             <Header icon={"filter"} attached color={"teal"} content={"Filters"}/>
             <Menu.Item color={"blue"} name={"all"} content={"All Activities"}/>
             <Menu.Item color={"blue"} name={"username"} content={"I'm Going"}/>

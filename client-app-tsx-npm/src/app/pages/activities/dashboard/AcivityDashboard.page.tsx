@@ -44,7 +44,7 @@ const ActivityDashboard = () => {
                     </Grid.Column>
                     <Grid.Column width={6}>
                         <Rail position={"right"}>
-                            <Sticky context={contextRef} offset={100}>
+                            <Sticky context={contextRef} offset={70}>
                                 <ActivityDashboardFilter/>
                             </Sticky>
                         </Rail>
