@@ -11,13 +11,13 @@ namespace API.Controllers
     public class ActivitiesController : BaseController
     {
         [HttpGet]
-        public async Task<ActionResult<List<ActivityDto>>> List() =>
-            await Mediator.Send(new List.Query());
+        public async Task<ActionResult<List.ActivitiesEnvelope>> List(int? limit, int? offset) =>
+            await Mediator.Send(new List.Query(limit, offset));
 
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<ActivityDto>> Details(Guid id) =>
-            await Mediator.Send(new Details.Query { Id = id });
+            await Mediator.Send(new Details.Query {Id = id});
 
         [HttpPost]
         public async Task<ActionResult<Unit>> Create(Create.Command command) =>
@@ -34,14 +34,14 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         [Authorize(Policy = "IsActivityHost")]
         public async Task<ActionResult<Unit>> Delete(Guid id) =>
-            await Mediator.Send(new Delete.Command { Id = id });
+            await Mediator.Send(new Delete.Command {Id = id});
 
         [HttpPost("{id}/attend")]
         public async Task<ActionResult<Unit>> Attend(Guid id) =>
-            await Mediator.Send(new Attend.Command { Id = id });
+            await Mediator.Send(new Attend.Command {Id = id});
 
         [HttpDelete("{id}/attend")]
         public async Task<ActionResult<Unit>> UnAttend(Guid id) =>
-            await Mediator.Send(new UnAttend.Command { Id = id });
+            await Mediator.Send(new UnAttend.Command {Id = id});
     }
 }
