@@ -122,19 +122,24 @@ export default class ActivityStore {
     @action loadActivities = async () => {
         this.loading = true;
         try {
-            const {activities, activityCount} = await Activities.list(LIMIT, this.page);
+            const activitiesEnvelope = await Activities.list(LIMIT, this.page);
+            const {activityCount, activities} = activitiesEnvelope;
+
             runInAction('Loading Activities', () => {
-                this.activityRegistry = activities
-                    .map(a => setActivityProps(a, this.rootStore.userStore.user!))
-                    .reduce((acc, v) => acc.set(v.id, v), new Map<string, IActivity>());
                 this.activityCount = activityCount;
+                activities
+                    .map(a => setActivityProps(a, this.rootStore.userStore.user!))
+                    .reduce((acc, v) => acc.set(v.id, v), this.activityRegistry);
+                // activities.forEach(a => {
+                //     setActivityProps(a, this.rootStore.userStore.user!);
+                //     this.activityRegistry.set(a.id, a);
+                // })
             });
         } catch (e) {
             toast.error('Problem to load activities.')
         } finally {
             runInAction(() => {
                 this.loading = false;
-                this.profileChanged = false;
             })
         }
     };
