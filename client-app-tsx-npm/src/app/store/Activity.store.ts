@@ -4,7 +4,7 @@ import {IActivity} from "../models/activity";
 import {Activities} from "../api/agent";
 import {history} from "../../index";
 
-import {createAttendee, setActivityProps} from "../components/Forms/util";
+import {createAttendee, setActivityProps} from "../components/helpers/util";
 
 import {toast} from "react-toastify";
 import {RootStore} from "./Root.store";

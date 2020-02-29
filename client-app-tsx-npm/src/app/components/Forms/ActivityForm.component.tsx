@@ -10,7 +10,7 @@ import {combineValidators, composeValidators, hasLengthGreaterThan, isRequired} 
 import {ActivityFormValues} from "../../models/activity";
 import {observer} from "mobx-react-lite";
 import ActivityFormInputs from "./ActivityFormInputs.component";
-import {combineDateAndTime} from "./util";
+import {combineDateAndTime} from "../helpers/util";
 import {RootStoreContext} from "../../store/Root.store";
 
 

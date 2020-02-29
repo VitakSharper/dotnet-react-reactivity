@@ -1,5 +1,6 @@
 import {IActivity, IAttendee} from "../../models/activity";
 import {IUser} from "../../models/user";
+import {IProfile} from "../../models/profile";
 
 export const combineDateAndTime = (date: Date, time: Date) => {
     const timeString = `${time.getHours()}:${time.getMinutes()}:00`;
@@ -25,7 +26,6 @@ export const setActivityProps = (activity: IActivity, user: IUser) => {
     return activity;
 };
 
-
 export const createAttendee = (user: IUser): IAttendee => {
     return {
         displayName: user.displayName,
@@ -34,3 +34,16 @@ export const createAttendee = (user: IUser): IAttendee => {
         image: user.image!
     }
 };
+
+export const transformUserData = (user: IUser, displayName?: string): IUser =>
+    ({
+        ...user,
+        displayName: `${user.displayName[0].toUpperCase()}${user.displayName.substring(1, user.displayName.length).toLowerCase()}`
+    });
+
+export const transformProfileData = (profile: IProfile): IProfile =>
+    ({
+        ...profile,
+        displayName: `${profile.displayName[0].toUpperCase()}${profile.displayName.substring(1, profile.displayName.length).toLowerCase()}`
+    });
+

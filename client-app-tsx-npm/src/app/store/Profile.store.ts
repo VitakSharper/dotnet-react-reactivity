@@ -1,8 +1,10 @@
 import {RootStore} from "./Root.store";
 import {action, computed, observable, reaction, runInAction} from "mobx";
-import {IPhoto, IProfile} from "../models/profile";
 import {Profiles} from "../api/agent";
 import {toast} from "react-toastify";
+import {transformProfileData} from "../components/helpers/util";
+
+import {IPhoto, IProfile} from "../models/profile";
 
 export default class ProfileStore {
     rootStore: RootStore;
@@ -50,9 +52,12 @@ export default class ProfileStore {
         try {
             const profile = await Profiles.get(username);
             runInAction(() => {
-                this.rootStore.userStore.user?.username === profile.username
-                    ? this.profile = profile
-                    : this.profile = {...profile, photos: [...profile.photos.filter(p => !p.status)]};
+                this.rootStore.userStore.user?.username.toLowerCase() === profile.username.toLowerCase()
+                    ? this.profile = transformProfileData(profile)
+                    : this.profile = transformProfileData({
+                        ...profile,
+                        photos: [...profile.photos.filter(p => !p.status)]
+                    });
             })
         } catch (e) {
             toast.error(e);

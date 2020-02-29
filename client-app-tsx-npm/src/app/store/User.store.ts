@@ -3,6 +3,8 @@ import {IUser, IUserFormValues} from "../models/user";
 import {Users} from "../api/agent";
 import {RootStore} from "./Root.store";
 import {history} from "../../index";
+import {toast} from "react-toastify";
+import {transformUserData} from "../components/helpers/util";
 
 export default class UserStore {
 
@@ -22,24 +24,27 @@ export default class UserStore {
         try {
             const user = await Users.login(values);
             runInAction(() => {
-                this.user = user;
+                this.user = transformUserData(user);
+                this.rootStore.commonStore.setToken(user.token);
+                this.rootStore.modalStore.modalState(null, false);
             });
-            this.rootStore.commonStore.setToken(user.token);
             history.push('/activities');
-            this.rootStore.modalStore.modalState(null, false);
         } catch (e) {
-            throw e;
+            toast.error('Not log in.');
         }
     };
+
 
     @action Register = async (values: IUserFormValues) => {
         try {
             const user = await Users.register(values);
-            this.rootStore.commonStore.setToken(user.token);
-            this.rootStore.modalStore.modalState(null, false);
+            runInAction(() => {
+                this.rootStore.commonStore.setToken(user.token);
+                this.rootStore.modalStore.modalState(null, false);
+            });
             history.push('/activities');
         } catch (e) {
-            throw e;
+            toast.error('Problem to register.');
         }
     };
 
@@ -52,7 +57,7 @@ export default class UserStore {
         try {
             const user = await Users.current();
             runInAction(() => {
-                this.user = user;
+                this.user = transformUserData(user);
             })
         } catch (e) {
             console.log(e);
