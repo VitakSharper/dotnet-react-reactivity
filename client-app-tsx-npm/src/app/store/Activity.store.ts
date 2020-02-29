@@ -1,4 +1,4 @@
-import {action, computed, observable, runInAction} from "mobx";
+import {action, computed, observable, reaction, runInAction} from "mobx";
 import {SyntheticEvent} from "react";
 import {IActivity} from "../models/activity";
 import {Activities} from "../api/agent";
@@ -17,6 +17,14 @@ export default class ActivityStore {
 
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;
+        reaction(
+            () => this.predicate.keys(),
+            () => {
+                this.page = 0;
+                this.activityRegistry.clear();
+                this.loadActivities();
+            }
+        )
     }
 
     @observable activityRegistry = new Map<string, IActivity>();
@@ -30,6 +38,28 @@ export default class ActivityStore {
     @observable.ref hubConnection: HubConnection | null = null;
     @observable activityCount = 0;
     @observable page = 0;
+    @observable predicate = new Map();
+
+    @action setPredicate = (predicate: string, value: string | Date) => {
+        this.predicate.clear();
+        if (predicate !== 'all') {
+            this.predicate.set(predicate, value)
+        }
+    };
+
+    @computed get axiosParams() {
+        const params = new URLSearchParams();
+        params.append('limit', LIMIT.toString());
+        params.append('offset', `${this.page ? this.page * LIMIT : 0}`);
+        this.predicate.forEach((value, key) => {
+            if (key === 'startDate') {
+                params.append(key, value.toISOString())
+            } else {
+                params.append(key, value)
+            }
+        });
+        return params;
+    }
 
     @computed get totalPages() {
         return Math.ceil(this.activityCount / LIMIT);
@@ -122,9 +152,8 @@ export default class ActivityStore {
     @action loadActivities = async () => {
         this.loading = true;
         try {
-            const activitiesEnvelope = await Activities.list(LIMIT, this.page);
+            const activitiesEnvelope = await Activities.list(this.axiosParams);
             const {activityCount, activities} = activitiesEnvelope;
-
             runInAction('Loading Activities', () => {
                 this.activityCount = activityCount;
                 activities
