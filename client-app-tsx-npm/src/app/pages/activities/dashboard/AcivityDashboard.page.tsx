@@ -11,6 +11,12 @@ import InfiniteScroll from 'react-infinite-scroller';
 import {observer} from "mobx-react-lite";
 import {RootStoreContext} from "../../../store/Root.store";
 
+const styles = {
+    activityListSegment: {
+        background: '#7986CB'
+    }
+};
+
 const ActivityDashboard = () => {
     const rootStore = useContext(RootStoreContext);
     const {loadActivities, loading, setPage, page, totalPages} = rootStore.activityStore;
@@ -32,7 +38,7 @@ const ActivityDashboard = () => {
     return (
         <Grid>
             <Ref innerRef={contextRef}>
-                <Segment>
+                <Segment style={styles.activityListSegment}>
                     <Grid.Column width={10}>
                         <InfiniteScroll
                             pageStart={0}

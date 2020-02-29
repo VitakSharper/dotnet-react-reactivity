@@ -40,9 +40,6 @@ namespace Application.Activities
                 var user =
                     await _context.Users.SingleOrDefaultAsync(u =>
                         u.UserName == _userAccessor.GetCurrentUsername(), cancellationToken: cancellationToken);
-                
-                user.DisplayName =
-                    $"{user.DisplayName[0].ToString().ToUpper()}{user.DisplayName.Substring(1, user.DisplayName.Length).ToLower()}";
 
                 var attendance =
                     await _context.UserActivities.SingleOrDefaultAsync(a =>

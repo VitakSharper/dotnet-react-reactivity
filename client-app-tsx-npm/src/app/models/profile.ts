@@ -15,3 +15,10 @@ export interface IProfile {
     followingCount: number;
     photos: IPhoto[];
 }
+
+export interface IUserActivity {
+    id: string;
+    title: string;
+    category: string;
+    date: Date;
+}

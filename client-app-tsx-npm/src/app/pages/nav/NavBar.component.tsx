@@ -6,7 +6,7 @@ import {Menu, Container, Icon, MenuHeaderProps, Image, Dropdown} from 'semantic-
 import {RootStoreContext} from "../../store/Root.store";
 
 const menuBar = {
-    background: 'linear-gradient(#009eda, #007cbe,#9575CD 100%)',
+    background: 'linear-gradient(#009eda, #007cbe,#7986CB 100%)',
     boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.2)',
     borderBottom: '1px solid #29B6F6'
 };

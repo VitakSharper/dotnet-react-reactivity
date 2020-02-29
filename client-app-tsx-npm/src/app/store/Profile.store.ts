@@ -4,7 +4,7 @@ import {Profiles} from "../api/agent";
 import {toast} from "react-toastify";
 import {transformProfileData} from "../components/helpers/util";
 
-import {IPhoto, IProfile} from "../models/profile";
+import {IPhoto, IProfile, IUserActivity} from "../models/profile";
 
 export default class ProfileStore {
     rootStore: RootStore;
@@ -40,12 +40,30 @@ export default class ProfileStore {
     @observable loading = false;
     @observable followings: IProfile[] = [];
     @observable activeTab: number = 0;
+    @observable userActivities: IUserActivity[] = [];
+    @observable loadingActivities = false;
 
     @computed get isCurrentUser() {
         if (this.rootStore.userStore.user && this.profile) {
             return this.rootStore.userStore.user.username === this.profile.username
         } else return false;
     }
+
+    @action loadUserActivities = async (username: string, predicate?: string) => {
+        this.loadingActivities = true;
+        try {
+            const activities = await Profiles.listUserActivities(username, predicate!);
+            runInAction(() => {
+                this.userActivities = activities;
+            })
+        } catch (e) {
+            toast.error('Problem loading user activities.')
+        } finally {
+            runInAction(() => {
+                this.loadingActivities = false;
+            })
+        }
+    };
 
     @action Load = async (username: string) => {
         this.loadingProfile = true;
