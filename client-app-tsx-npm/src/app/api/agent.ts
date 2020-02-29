@@ -56,7 +56,7 @@ const requests = {
 
 const Activities = {
     list: (params: URLSearchParams): Promise<IActivitiesEnvelope> =>
-        axios.get(`/activities`, {params}).then(responseBody),
+        axios.get(`/activities`, {params}).then(sleep(1000)).then(responseBody),
     details: (id: string) => requests.get(`/activities/${id}`),
     create: (activity: IActivity) => requests.post('/activities', activity),
     update: (activity: IActivity) => requests.put(`/activities/${activity.id}`, activity),

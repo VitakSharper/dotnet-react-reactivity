@@ -18,7 +18,7 @@ export default class ActivityStore {
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;
         reaction(
-            () => this.predicate.keys(),
+            () => this.filtering.keys(),
             () => {
                 this.page = 0;
                 this.activityRegistry.clear();
@@ -38,20 +38,20 @@ export default class ActivityStore {
     @observable.ref hubConnection: HubConnection | null = null;
     @observable activityCount = 0;
     @observable page = 0;
-    @observable predicate = new Map();
+    @observable filtering = new Map();
 
-    @action setPredicate = (predicate: string, value: string | Date) => {
-        this.predicate.clear();
-        if (predicate !== 'all') {
-            this.predicate.set(predicate, value)
+    @action setFiltering = (filterStatus: string, value: boolean | Date) => {
+        this.filtering.clear();
+        if (filterStatus !== 'all') {
+            this.filtering.set(filterStatus, value)
         }
     };
 
-    @computed get axiosParams() {
+    @computed get urlParams() {
         const params = new URLSearchParams();
         params.append('limit', LIMIT.toString());
         params.append('offset', `${this.page ? this.page * LIMIT : 0}`);
-        this.predicate.forEach((value, key) => {
+        this.filtering.forEach((value, key) => {
             if (key === 'startDate') {
                 params.append(key, value.toISOString())
             } else {
@@ -152,7 +152,7 @@ export default class ActivityStore {
     @action loadActivities = async () => {
         this.loading = true;
         try {
-            const activitiesEnvelope = await Activities.list(this.axiosParams);
+            const activitiesEnvelope = await Activities.list(this.urlParams);
             const {activityCount, activities} = activitiesEnvelope;
             runInAction('Loading Activities', () => {
                 this.activityCount = activityCount;
