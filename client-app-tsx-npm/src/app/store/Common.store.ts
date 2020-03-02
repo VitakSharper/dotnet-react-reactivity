@@ -6,6 +6,7 @@ export default class CommonStore {
 
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;
+
         reaction(
             () => this.token,
             token => {

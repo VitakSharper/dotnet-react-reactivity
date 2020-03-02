@@ -6,6 +6,7 @@ import LoginForm from "../../components/Forms/LoginForm.component";
 import RegisterForm from "../../components/Forms/RegisterForm.component";
 
 const HomePage = () => {
+    const token = window.localStorage.getItem('jwt');
     const rootStore = useContext(RootStoreContext);
     const {isLoggedIn, user} = rootStore.userStore;
     const {modalState} = rootStore.modalStore;
@@ -22,14 +23,14 @@ const HomePage = () => {
                     Reactivities
                 </Header>
                 {
-                    isLoggedIn && user ? <>
+                    isLoggedIn && user && token
+                        ? <>
                             <Header as="h2" inverted content={`Welcome back ${user?.displayName}`}/>
                             <Button as={Link} to="/activities" size="huge" inverted>
                                 Go to activities!
                             </Button>
                         </>
-                        :
-                        <>
+                        : <>
                             <Header as="h2" inverted content="Welcome to Reactivities"/>
                             <Button.Group>
                                 <Button animated inverted size="huge"

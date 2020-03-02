@@ -18,6 +18,7 @@ import {ToastContainer} from "react-toastify";
 import LoginForm from "./components/Forms/LoginForm.component";
 import {RootStoreContext} from "./store/Root.store";
 import LoadingSpinner from "./components/helpers/LoadingSpinner.component";
+import PrivateRoute from "./PrivateRoute.component";
 
 const App: React.FC<RouteComponentProps> = ({location}) => {
     const rootStore = useContext(RootStoreContext);
@@ -31,7 +32,7 @@ const App: React.FC<RouteComponentProps> = ({location}) => {
             : setAppLoaded()
     }, [setAppLoaded, token, getUser]);
 
-    if (!appLoaded) return <LoadingSpinner content={'Loading app...'}/>;
+    if (!appLoaded) return <LoadingSpinner inverted={true} content={'Loading app...'}/>;
 
     return (
         <>
@@ -43,12 +44,12 @@ const App: React.FC<RouteComponentProps> = ({location}) => {
                     <NavBar/>
                     <Container>
                         <Switch>
-                            <Route exact path={'/activities'} component={ActivityDashboard}/>
-                            <Route path={'/activities/:id'} component={ActivityDetails}/>
-                            <Route key={location.key} path={['/createActivity', '/manageActivity/:id']}
-                                   component={ActivityFormModal}/>
-                            <Route path={'/login'} component={LoginForm}/>
-                            <Route path={'/profile/:username'} component={ProfilePage}/>
+                            <PrivateRoute exact path={'/activities'} component={ActivityDashboard}/>
+                            <PrivateRoute path={'/activities/:id'} component={ActivityDetails}/>
+                            <PrivateRoute key={location.key} path={['/createActivity', '/manageActivity/:id']}
+                                          component={ActivityFormModal}/>
+                            <PrivateRoute path={'/login'} component={LoginForm}/>
+                            <PrivateRoute path={'/profile/:username'} component={ProfilePage}/>
                             <Route component={NotFound}/>
                         </Switch>
                     </Container>

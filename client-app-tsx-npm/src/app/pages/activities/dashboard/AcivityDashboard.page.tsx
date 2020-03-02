@@ -1,14 +1,13 @@
 import React, {useContext, useEffect, useState} from "react";
+import {observer} from "mobx-react-lite";
+import InfiniteScroll from 'react-infinite-scroller';
 import {Grid, Segment, Loader, Sticky, Rail, Ref} from "semantic-ui-react";
 
 import ActivityDashboardList from "./ActivityDashboardList.component";
-import LoadingSpinner from "../../../components/helpers/LoadingSpinner.component";
-
 import ActivityDashboardFilter from "./ActivityDashboardFilter.component";
+import ActivityListItemPlaceholder from "../../../components/helpers/ActivityListItemPlaceholder.component";
 
-import InfiniteScroll from 'react-infinite-scroller';
 
-import {observer} from "mobx-react-lite";
 import {RootStoreContext} from "../../../store/Root.store";
 
 const styles = {
@@ -33,24 +32,26 @@ const ActivityDashboard = () => {
         loadActivities();
     }, [loadActivities]);
 
-    if (loading && page === 0) return <LoadingSpinner content={'Loading activities...'} inverted={true}/>;
-
     return (
         <Grid>
             <Ref innerRef={contextRef}>
                 <Segment style={styles.activityListSegment}>
                     <Grid.Column width={10}>
-                        <InfiniteScroll
-                            pageStart={0}
-                            loadMore={handleGetNext}
-                            hasMore={!loadingNext && page + 1 < totalPages}
-                            initialLoad={false}>
-                            <ActivityDashboardList/>
-                        </InfiniteScroll>
+                        {loading && page === 0
+                            ? (<ActivityListItemPlaceholder/>)
+                            : (
+                                <InfiniteScroll
+                                    pageStart={0}
+                                    loadMore={handleGetNext}
+                                    hasMore={!loadingNext && page + 1 < totalPages}
+                                    initialLoad={false}>
+                                    <ActivityDashboardList/>
+                                </InfiniteScroll>
+                            )}
                     </Grid.Column>
                     <Grid.Column width={6}>
                         <Rail position={"right"}>
-                            <Sticky context={contextRef} offset={70}>
+                            <Sticky context={contextRef} offset={70} style={{marginTop: '100px', zIndex: '1'}}>
                                 <ActivityDashboardFilter/>
                             </Sticky>
                         </Rail>
