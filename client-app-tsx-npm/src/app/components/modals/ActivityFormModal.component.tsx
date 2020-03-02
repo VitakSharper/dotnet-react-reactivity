@@ -16,13 +16,15 @@ const ActivityFormModal: React.FC<RouteComponentProps<DetailParams>> = ({match})
     const rootStore = useContext(RootStoreContext);
     const {activityStore: {openForm, loading, editMode, activity, setEditMode, setOpenForm, setActivityNull, getActivityById, setActivity}} = rootStore;
 
+
     useEffect(() => {
         if (match.params.id) {
-            getActivityById(match.params.id).then((activity) => {
-                setActivity(activity);
-                setEditMode(true);
-                setOpenForm(true);
-            });
+            getActivityById(match.params.id)
+                .then((activity) => {
+                    setActivity(activity!);
+                    setEditMode(true);
+                    setOpenForm(true);
+                });
         } else {
             setActivityNull();
             setEditMode(false);

@@ -1,4 +1,4 @@
-import {action, computed, observable, reaction, runInAction} from "mobx";
+import {action, computed, observable, reaction, runInAction, toJS} from "mobx";
 import {SyntheticEvent} from "react";
 import {IActivity} from "../models/activity";
 import {Activities} from "../api/agent";
@@ -196,20 +196,20 @@ export default class ActivityStore {
     };
 
     @action getActivityById = async (id: string) => {
-        const activity = this.activityRegistry.get(id);
+        let activity = this.activityRegistry.get(id);
         if (activity) {
             this.activity = activity;
-            return activity;
+            return toJS(activity);
         } else {
             this.loading = true;
             try {
-                const response = await Activities.details(id);
+                activity = await Activities.details(id);
                 runInAction('Getting activity', () => {
-                    setActivityProps(response, this.rootStore.userStore.user!);
-                    this.activity = response;
-                    this.activityRegistry.set(response.id, response);
+                    setActivityProps(activity!, this.rootStore.userStore.user!);
+                    this.activity = activity;
+                    this.activityRegistry.set(activity!.id, activity!);
                 });
-                return response;
+                return activity;
             } catch (e) {
                 console.log(e);
             } finally {

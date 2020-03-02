@@ -16,7 +16,7 @@ const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({match, hi
 
     useEffect(() => {
         getActivityById(match.params.id).then(activity => {
-            setActivity(activity);
+            setActivity(activity!);
         });
     }, [getActivityById, match.params.id, setActivity]);
 
