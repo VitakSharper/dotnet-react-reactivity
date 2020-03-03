@@ -75,7 +75,7 @@ export default class ActivityStore {
 
     @action createHubConnection = (activityId: string) => {
         this.hubConnection = new HubConnectionBuilder()
-            .withUrl('http://localhost:5000/chat', {
+            .withUrl(process.env.REACT_APP_API_CHAT_URL!, {
                 accessTokenFactory: () => this.rootStore.commonStore.token!
             })
             .configureLogging(LogLevel.Information)
@@ -83,9 +83,8 @@ export default class ActivityStore {
 
         this.hubConnection!
             .start()
-            .then(() => console.log(this.hubConnection!.state))
+            // .then(() => console.log(this.hubConnection!.state))
             .then(() => {
-                console.log('Attempting to join group.');
                 if (this.hubConnection!.state === 'Connected')
                     this.hubConnection!.invoke('AddToGroup', activityId);
             })

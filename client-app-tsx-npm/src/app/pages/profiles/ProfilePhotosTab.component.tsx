@@ -57,7 +57,7 @@ const ProfilePhotos = () => {
                                     <Image src={p.url}/>
                                     {isCurrentUser &&
                                     <Label corner={"right"}>
-                                        <Popup content={p.status ? 'Change to public' : 'Change to private'}
+                                        <Popup content={`Make it ${p.status ? 'public' : 'private'}`}
                                                trigger={
                                                    <Icon
                                                        circular
