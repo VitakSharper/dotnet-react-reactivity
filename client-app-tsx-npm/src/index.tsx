@@ -5,6 +5,7 @@ import {createBrowserHistory} from 'history';
 
 import 'react-toastify/dist/ReactToastify.min.css';
 import 'react-widgets/lib/scss/react-widgets.scss';
+import 'semantic-ui-css/semantic.min.css';
 import './styles.scss';
 import App from './app/App';
 import ScrollToTop from "./app/components/helpers/ScrollToTop.component";
