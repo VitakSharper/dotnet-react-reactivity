@@ -1,11 +1,8 @@
-using System;
-using System.Text;
-using System.Threading.Tasks;
+using API.Middleware;
+using API.SignalR;
 using Application.Activities;
 using Application.Interfaces;
 using Application.Profiles;
-using API.Middleware;
-using API.SignalR;
 using AutoMapper;
 using Domain;
 using FluentValidation.AspNetCore;
@@ -25,6 +22,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Serialization;
 using Persistence;
+using System;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace API
 {
@@ -38,7 +38,7 @@ namespace API
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureDevelopmentServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(opt =>
             {
@@ -46,6 +46,28 @@ namespace API
                 opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            ConfigureServices(services);
+        }
+
+        public void ConfigureProductionServices(IServiceCollection services)
+        {
+            var server = Configuration["DbServer"] ?? "localhost";
+            var port = Configuration["DbPort"] ?? "1433";
+            var user = Configuration["DbUser"] ?? "sa";
+            var password = Configuration["DbPassword"] ?? "4zpYD72Av";
+
+            services.AddDbContext<DataContext>(opt =>
+            {
+                opt.UseLazyLoadingProxies();
+                opt.UseSqlServer(
+                    $"Server={server},{port};Initial Catalog=ReactivityDb;User ID={user};Password={password}");
+            });
+
+            ConfigureServices(services);
+        }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
             services.AddCors(opt =>
             {
                 opt.AddPolicy("CorsPolicy", policy =>
@@ -71,10 +93,10 @@ namespace API
             services.AddSignalR();
 
             services.AddControllers(opt =>
-            {
-                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-                opt.Filters.Add(new AuthorizeFilter(policy));
-            })
+                {
+                    var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                    opt.Filters.Add(new AuthorizeFilter(policy));
+                })
                 .AddFluentValidation(cfg => { cfg.RegisterValidatorsFromAssemblyContaining<Create>(); })
                 .AddNewtonsoftJson(opt =>
                 {
@@ -141,7 +163,6 @@ namespace API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
             if (env.IsDevelopment())

@@ -1,6 +1,7 @@
 ﻿using Domain;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Configurations;
 
 namespace Persistence
 {
@@ -10,7 +11,6 @@ namespace Persistence
         {
         }
 
-        public DbSet<Value> Values { get; set; }
         public DbSet<Activity> Activities { get; set; }
         public DbSet<UserActivity> UserActivities { get; set; }
         public DbSet<Photo> Photos { get; set; }
@@ -21,43 +21,13 @@ namespace Persistence
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Value>()
-                .HasData(
-                    new Value { Id = 1, Name = "Value 101" },
-                    new Value { Id = 2, Name = "Value 102" },
-                    new Value { Id = 3, Name = "Value 103" }
-                );
 
-            builder.Entity<UserActivity>(x => x.HasKey(ua => new { ua.AppUserId, ua.ActivityId }));
-
-            builder.Entity<UserActivity>()
-                .HasOne(u => u.AppUser)
-                .WithMany(a => a.UserActivities)
-                .HasForeignKey(u => u.AppUserId);
-
-            builder.Entity<UserActivity>()
-                .HasOne(u => u.Activity)
-                .WithMany(a => a.UserActivities)
-                .HasForeignKey(u => u.ActivityId);
-
-            builder.Entity<Photo>()
-                .Property(photo => photo.Status)
-                .HasDefaultValue(false);
-
-            builder.Entity<UserFollowing>(b =>
-            {
-                b.HasKey(k => new { k.ObserverId, k.TargetId });
-
-                b.HasOne(o => o.Observer)
-                    .WithMany(f => f.Followings)
-                    .HasForeignKey(o => o.ObserverId)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                b.HasOne(o => o.Target)
-                    .WithMany(f => f.Followers)
-                    .HasForeignKey(o => o.TargetId)
-                    .OnDelete(DeleteBehavior.Restrict);
-            });
+            builder.ApplyConfiguration(new ActivityConfiguration());
+            builder.ApplyConfiguration(new AppUserConfiguration());
+            builder.ApplyConfiguration(new UserActivityConfiguration());
+            builder.ApplyConfiguration(new PhotoConfiguration());
+            builder.ApplyConfiguration(new UserFollowingConfiguration());
+            builder.ApplyConfiguration(new CommentConfiguration());
         }
     }
 }
