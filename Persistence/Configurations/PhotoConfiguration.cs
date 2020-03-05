@@ -8,9 +8,6 @@ namespace Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Photo> builder)
         {
-            builder.Property(p => p.Id)
-                .HasMaxLength(50);
-
             builder.Property(p => p.Url)
                 .HasMaxLength(255);
 

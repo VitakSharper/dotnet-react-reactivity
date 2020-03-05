@@ -43,26 +43,28 @@ namespace Application.Followers
                 {
                     case "followers":
                         {
-                            UserFollowings = await queryable
-                                .Where(f => f.Target.UserName == request.Username)
-                                .ToListAsync(cancellationToken: cancellationToken);
+                            UserFollowings = await queryable.Where(x =>
+                                x.Target.UserName == request.Username).ToListAsync(cancellationToken: cancellationToken);
 
-                            UserFollowings.ForEach(async f =>
-                                Profiles.Add(await _profileReader.ReadProfile(f.Observer.UserName)));
+                            foreach (var follower in UserFollowings)
+                            {
+                                Profiles.Add(await _profileReader.ReadProfile(follower.Observer.UserName));
+                            }
+
                             break;
                         }
-
                     case "following":
                         {
-                            UserFollowings = await queryable
-                                .Where(f => f.Observer.UserName == request.Username)
-                                .ToListAsync(cancellationToken: cancellationToken);
+                            UserFollowings = await queryable.Where(x =>
+                                x.Observer.UserName == request.Username).ToListAsync(cancellationToken: cancellationToken);
 
-                            UserFollowings.ForEach(async f =>
-                                Profiles.Add(await _profileReader.ReadProfile(f.Target.UserName)));
+                            foreach (var follower in UserFollowings)
+                            {
+                                Profiles.Add(await _profileReader.ReadProfile(follower.Target.UserName));
+                            }
+
                             break;
                         }
-
                     default:
                         throw new RestException(HttpStatusCode.BadRequest, new { Are = "Bad parameter." });
                 }
