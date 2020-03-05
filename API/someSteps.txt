@@ -1,0 +1,1 @@
+ dotnet publish -c Release -o publish --self-contained false .\dotnet-react-reactivity.sln

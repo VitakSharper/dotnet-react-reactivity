@@ -68,10 +68,17 @@ const ActivityDashboardItem: React.FC<IProps> = ({activity, handleView}) => {
 
                 <Segment secondary>
                     <ActivityListItemAttendees attendees={attendees}/>
+
                 </Segment>
 
                 <Segment clearing>
-                    <span>{description}</span>
+                     <span style={{
+                         display: 'block',
+                         width: '20rem',
+                         overflow: 'hidden',
+                         whiteSpace: 'nowrap',
+                         textOverflow: 'ellipsis'
+                     }}>{description}</span>
                     <Button.Group floated={"right"}>
                         <Button animated basic positive onClick={() => handleView(id)}>
                             <Button.Content hidden>View</Button.Content>
