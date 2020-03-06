@@ -30,7 +30,7 @@ export default class UserStore {
             });
             history.push('/activities');
         } catch (e) {
-            toast.error('Not log in.');
+            throw e;
         }
     };
 
@@ -44,7 +44,7 @@ export default class UserStore {
             });
             history.push('/activities');
         } catch (e) {
-            toast.error('Problem to register.');
+            throw e;
         }
     };
 

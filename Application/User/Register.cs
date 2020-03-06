@@ -52,12 +52,12 @@ namespace Application.User
             public async Task<User> Handle(Command request, CancellationToken cancellationToken)
             {
                 if (await _context.Users.AnyAsync(u => u.Email == request.Email, cancellationToken: cancellationToken))
-                    throw new RestException(HttpStatusCode.BadRequest, 
-                        new {Email = "Email already exists."});
+                    throw new RestException(HttpStatusCode.BadRequest,
+                        new { Email = "Email already exists." });
 
                 if (await _context.Users.AnyAsync(u => u.UserName == request.UserName, cancellationToken: cancellationToken))
-                    throw new RestException(HttpStatusCode.BadRequest, 
-                        new {UserName = "Username already exists."});
+                    throw new RestException(HttpStatusCode.BadRequest,
+                        new { UserName = "Username already exists." });
 
                 var user = new AppUser
                 {

@@ -7,6 +7,15 @@ import {Button, Form, Header, Icon} from "semantic-ui-react";
 import TextInput from "./reusable/TextInput.component";
 import ErrorMessage from "./ErrorMessage.component";
 import {observer} from "mobx-react-lite";
+import {combineValidators, isRequired} from "revalidate";
+
+const validate = combineValidators({
+    username: isRequired('username'),
+    displayName: isRequired('displayName'),
+    email: isRequired('email'),
+    password: isRequired('password')
+});
+
 
 const RegisterForm = () => {
     const rootStore = useContext(RootStoreContext);
@@ -18,8 +27,10 @@ const RegisterForm = () => {
             onSubmit={(values: IUserFormValues) => Register(values)
                 // get errors from response;
                 .catch(err => ({
-                    [FORM_ERROR]: err
-                }))}
+                        [FORM_ERROR]: err
+                    })
+                )}
+            validate={validate}
             render={({
                          handleSubmit,
                          submitting, form,
@@ -56,9 +67,9 @@ const RegisterForm = () => {
                     {
                         submitError
                         && !dirtySinceLastSubmit
-                        && <ErrorMessage
+                        && (<ErrorMessage
                             error={submitError}
-                        />
+                        />)
                     }
                     <Button.Group floated={"right"} fluid>
                         <Button animated basic positive

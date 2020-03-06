@@ -2,7 +2,6 @@
 using AutoMapper;
 using Domain;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using Persistence;
 using System.Linq;
 
