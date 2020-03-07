@@ -59,10 +59,10 @@ namespace API
             services.AddDbContext<DataContext>(opt =>
             {
                 opt.UseLazyLoadingProxies();
-                opt.UseSqlServer(
-                    $"Server={server},{port};Initial Catalog=ReactivityDb;User ID={user};Password={password}");
                 //opt.UseSqlServer(
-                //    $"Server=tcp:iplacestogo.database.windows.net,1433;Initial Catalog=iplacestogoDb;Persist Security Info=False;User ID=appuser;Password={password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+                //    $"Server={server},{port};Initial Catalog=ReactivityDb;User ID={user};Password={password}");
+                opt.UseSqlServer(
+                    $"Server=tcp:iplacestogo.database.windows.net,1433;Initial Catalog=iplacestogoDb;Persist Security Info=False;User ID=appuser;Password={password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             });
 
             ConfigureServices(services);
