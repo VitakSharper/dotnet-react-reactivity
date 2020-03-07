@@ -40,7 +40,7 @@ const NavBar = () => {
                     <img src="/assets/logo.png" alt="logo"/>
                 </Menu.Item>
                 <Menu.Item header>
-                    IMeetUp
+                    IPlacesToGo
                 </Menu.Item>
 
                 <Menu.Item

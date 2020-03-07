@@ -20,7 +20,7 @@ const HomePage = () => {
                         src="/assets/logo.png"
                         alt="logo"
                     />
-                    Reactivities
+                    IPlacesToGo
                 </Header>
                 {
                     isLoggedIn && user && token
@@ -35,9 +35,6 @@ const HomePage = () => {
                             <Button.Group>
                                 <Button animated inverted size="huge"
                                         onClick={() => modalState(<LoginForm/>, true)}
-                                    //as={Link} to="/login"
-                                    // loading={submitting}
-                                    // disabled={invalid && !dirtySinceLastSubmit || pristine}
                                         type={'button'}>
                                     <Button.Content hidden><Icon name={'sign-in'}/></Button.Content>
                                     <Button.Content visible>

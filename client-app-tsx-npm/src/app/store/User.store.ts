@@ -3,7 +3,6 @@ import {IUser, IUserFormValues} from "../models/user";
 import {Users} from "../api/agent";
 import {RootStore} from "./Root.store";
 import {history} from "../../index";
-import {toast} from "react-toastify";
 import {transformUserData} from "../components/helpers/util";
 
 export default class UserStore {
@@ -23,30 +22,30 @@ export default class UserStore {
     @action login = async (values: IUserFormValues) => {
         try {
             const user = await Users.login(values);
-            runInAction(() => {
-                this.user = transformUserData(user);
-                this.rootStore.commonStore.setToken(user.token);
-                this.rootStore.modalStore.modalState(null, false);
-            });
+            this.storeUser(user);
             history.push('/activities');
         } catch (e) {
             throw e;
         }
     };
-
 
     @action Register = async (values: IUserFormValues) => {
         try {
             const user = await Users.register(values);
-            runInAction(() => {
-                this.rootStore.commonStore.setToken(user.token);
-                this.rootStore.modalStore.modalState(null, false);
-            });
+            this.storeUser(user);
             history.push('/activities');
         } catch (e) {
             throw e;
         }
     };
+
+    storeUser(user: IUser) {
+        runInAction(() => {
+            this.user = transformUserData(user);
+            this.rootStore.commonStore.setToken(user.token);
+            this.rootStore.modalStore.modalState(null, false);
+        });
+    }
 
     @action logout = () => {
         this.rootStore.commonStore.setToken(null);

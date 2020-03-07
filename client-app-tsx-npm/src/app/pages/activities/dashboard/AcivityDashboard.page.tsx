@@ -34,9 +34,9 @@ const ActivityDashboard = () => {
 
     return (
         <Grid>
-            <Ref innerRef={contextRef}>
-                <Segment style={styles.activityListSegment}>
-                    <Grid.Column width={10}>
+            <>
+                <Grid.Column width={10}>
+                    <Segment style={styles.activityListSegment}>
                         {loading && page === 0
                             ? (<ActivityListItemPlaceholder/>)
                             : (
@@ -48,19 +48,21 @@ const ActivityDashboard = () => {
                                     <ActivityDashboardList/>
                                 </InfiniteScroll>
                             )}
-                    </Grid.Column>
-                    <Grid.Column width={6}>
-                        <Rail position={"right"}>
+                    </Segment>
+                </Grid.Column>
+                <Grid.Column width={6}>
+                    <Ref innerRef={contextRef}>
+                        <Rail position={"right"} attached internal>
                             <Sticky context={contextRef} offset={70} style={{marginTop: '100px', zIndex: '1'}}>
                                 <ActivityDashboardFilter/>
                             </Sticky>
                         </Rail>
-                    </Grid.Column>
-                    <Grid.Column width={10}>
-                        <Loader active={loadingNext}/>
-                    </Grid.Column>
-                </Segment>
-            </Ref>
+                    </Ref>
+                </Grid.Column>
+                <Grid.Column width={10}>
+                    <Loader active={loadingNext}/>
+                </Grid.Column>
+            </>
         </Grid>
     )
 };
