@@ -20,7 +20,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Serialization;
 using Persistence;
 using System;
 using System.Text;
@@ -99,12 +98,12 @@ namespace API
                     var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                     opt.Filters.Add(new AuthorizeFilter(policy));
                 })
-                .AddFluentValidation(cfg => { cfg.RegisterValidatorsFromAssemblyContaining<Create>(); })
-                .AddNewtonsoftJson(opt =>
-                {
-                    opt.SerializerSettings.ContractResolver =
-                        new CamelCasePropertyNamesContractResolver();
-                });
+                .AddFluentValidation(cfg => { cfg.RegisterValidatorsFromAssemblyContaining<Create>(); });
+            //.AddNewtonsoftJson(opt =>
+            //{
+            //    opt.SerializerSettings.ContractResolver =
+            //        new CamelCasePropertyNamesContractResolver();
+            //});
 
             var builder = services.AddIdentityCore<AppUser>();
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
@@ -155,11 +154,6 @@ namespace API
             services.AddScoped<IProfileReader, ProfileReader>();
 
             services.Configure<CloudinarySettings>(Configuration.GetSection("Cloudinary"));
-
-            //services.AddSwaggerGen(setup =>
-            //{
-            //    setup.SwaggerDoc("v1", new OpenApiInfo {Title = "Reactivity API", Version = "v1"});
-            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -170,6 +164,10 @@ namespace API
             if (env.IsDevelopment())
             {
                 //app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseHsts();
             }
 
             app.UseXContentTypeOptions();
@@ -195,9 +193,6 @@ namespace API
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-            //app.UseSwagger();
-            //app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Reactivity API v1"); });
 
             app.UseEndpoints(endpoints =>
             {
